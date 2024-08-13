@@ -24,10 +24,11 @@ plot(image, '2_only circles')
 
 
 gray_image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-wells = circle_detection(gray_image)
-print(len(wells))
-
-plot_w_wells(image, wells)
+for radius in range(80,100):
+    for kernel in range(3,6):
+        wells = circle_detection(gray_image, radius)
+        print(len(wells))
+        plot_w_wells(image, wells, str(len(wells))+'finded_'+str(radius)+'-'+str(kernel))
 
 
 

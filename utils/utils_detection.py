@@ -5,11 +5,9 @@ import numpy as np
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
 
-def circle_detection(image):
-    print("punto 1")
-    blurred_image = cv.GaussianBlur(image, (5, 5), 0) #La imagen tiene que ser gris
-    circles = cv.HoughCircles(blurred_image, cv.HOUGH_GRADIENT, dp=2.5, minDist=207, param1=23, param2=11, minRadius=100, maxRadius=100)
-    print("punto 2")
+def circle_detection(image, radius, g_kernel=5):
+    blurred_image = cv.GaussianBlur(image, (g_kernel, g_kernel), 0) #La imagen tiene que ser gris
+    circles = cv.HoughCircles(blurred_image, cv.HOUGH_GRADIENT, dp=2.5, minDist=radius*2+5, param1=23, param2=11, minRadius=radius, maxRadius=radius)
     wells = []
     if circles is not None:
         circles = np.round(circles[0, :]).astype("int")
