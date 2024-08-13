@@ -59,3 +59,12 @@ def histogram_comparisson_graph(hist1,hist2,hist3,hist4):
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
+
+def plot(image, name):
+    cv.imwrite('Imagenes Resultado/'+name+'.jpg', image)
+    
+def plot_w_wells(image, wells, name='5_wells_detected'):
+    output_image = image.copy()
+    for (x, y, r) in wells:
+        cv.circle(output_image, (x, y), r, (0, 0, 255), 2)
+    plot(output_image, name)

@@ -1,23 +1,28 @@
 import cv2 as cv
 import numpy as np
 
+#--------------------------------------------------------------------------#
+#--------------------------------------------------------------------------#
+#--------------------------------------------------------------------------#
+
 def circle_detection(image):
-    gray_image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-    blurred_image = cv.GaussianBlur(gray_image, (5, 5), 0)
+    print("punto 1")
+    blurred_image = cv.GaussianBlur(image, (5, 5), 0) #La imagen tiene que ser gris
     circles = cv.HoughCircles(blurred_image, cv.HOUGH_GRADIENT, dp=2.5, minDist=207, param1=23, param2=11, minRadius=100, maxRadius=100)
-    pocillos = []
+    print("punto 2")
+    wells = []
     if circles is not None:
         circles = np.round(circles[0, :]).astype("int")
         for circle in circles:
             x, y, r = circle
-            pocillos.append((x, y, r))
-    return pocillos
+            wells.append((x, y, r))
+    return wells
 
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
 
-def completar_pocillos(radio, lista_pocillos, tolerancia, ancho, alto):
+def completar_wells(radio, lista_wells, tolerancia, ancho, alto):
     # Inicializar la matriz de círculos teóricos para almacenar las coordenadas
     circulos_teoricos = [[[0, 0] for _ in range(8)] for _ in range(12)]
 
@@ -40,7 +45,7 @@ def completar_pocillos(radio, lista_pocillos, tolerancia, ancho, alto):
         for j in range(8):
             centro_x, centro_y = circulos_teoricos[i][j]
             coincidencia = False
-            for (x, y, r) in lista_pocillos:
+            for (x, y, r) in lista_wells:
                 if abs(x - centro_x) <= tolerancia and abs(y - centro_y) <= tolerancia:
                     circulos_correctos.append((int(x), int(y), int(r)))
                     coincidencia = True

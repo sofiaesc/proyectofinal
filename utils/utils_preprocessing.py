@@ -40,3 +40,23 @@ Se puede modificar el tamaño del kernel en Gaussian Blur segun convenga
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
+
+def gamma_correction(image):
+    # Pasar imagen a grises si esta cargada a color
+    if len(image.shape) == 3:
+        gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+    else:
+        gray = image
+    
+    mean_intensity = np.mean(gray) / 255.0      # Intensidad media de la imagen
+    gamma = 1.0 / (mean_intensity + 1e-8)       # Gamma inversamente proporcional a la media de intensidad
+    gamma = np.clip(gamma, 0.5, 2.0)            # Limitar gamma
+
+    mean_intensity_cap = 1.0 / gamma
+    table = np.array([(i / 255.0) ** mean_intensity_cap * 255 for i in np.arange(0, 256)]).astype("uint8")
+    
+    return cv.LUT(image, table)
+
+#--------------------------------------------------------------------------#
+#--------------------------------------------------------------------------#
+#--------------------------------------------------------------------------#
