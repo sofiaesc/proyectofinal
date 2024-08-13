@@ -26,7 +26,6 @@ def is_elisa_test(input_image, threshold=0.65):
         
         # Compare histograms
         correlation = cv2.compareHist(hist_input, hist_ref, cv2.HISTCMP_CORREL)
-        print(f'Histogram correlation: {correlation}')
         
         if correlation > threshold:
             return True
