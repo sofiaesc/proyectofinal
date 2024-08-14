@@ -65,8 +65,8 @@ def recorte_a_placa(image):
 #--------------------------------------------------------------------------#
 
 def edge_reduction(image):
-  porcental_x = 77/1206
-  porcental_y = 49/792
+  porcental_x = 0.03
+  porcental_y = 0.03
 
   H, W, _ = image.shape
   edge_H = int(H*porcental_y)
