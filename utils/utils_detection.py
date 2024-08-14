@@ -24,117 +24,73 @@ def circle_detection(image, radius, g_kernel):
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
 
-def find_rightmost_circles(wells, n=8):
-    wells_sorted = sorted(wells, key=lambda c: c[0], reverse=True)
+def find_extreme_circles(wells, n, direction):
+    if direction == "left":
+        wells_sorted = sorted(wells, key=lambda c: c[0])
+    elif direction == "right":
+        wells_sorted = sorted(wells, key=lambda c: c[0], reverse=True)
+    elif direction == "top":
+        wells_sorted = sorted(wells, key=lambda c: c[1])
+    elif direction == "bottom":
+        wells_sorted = sorted(wells, key=lambda c: c[1], reverse=True)
+    else:
+        raise ValueError("Direction must be 'left', 'right', 'top', or 'bottom'")
+
     return wells_sorted[:n]
 
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
 
-def find_leftmost_circles(wells, n=8):
-    wells_sorted = sorted(wells, key=lambda c: c[0])
-    return wells_sorted[:n]
-
-#--------------------------------------------------------------------------#
-#--------------------------------------------------------------------------#
-#--------------------------------------------------------------------------#
-
-def find_topmost_circles(wells, n=12):
-    wells_sorted = sorted(wells, key=lambda c: c[1])
-    return wells_sorted[:n]
-
-#--------------------------------------------------------------------------#
-#--------------------------------------------------------------------------#
-#--------------------------------------------------------------------------#
-
-def find_bottommost_circles(wells, n=12):
-    wells_sorted = sorted(wells, key=lambda c: c[1], reverse=True)
-    return wells_sorted[:n]
-
-#--------------------------------------------------------------------------#
-#--------------------------------------------------------------------------#
-#--------------------------------------------------------------------------#
-
-def draw_best_fit_line(line_image, circles):
-    # Extraer coordenadas de los centros de los círculos
+def calculate_best_fit_line(circles):
     points = np.array([circle[:2] for circle in circles], dtype=np.float32)
-    
-    # Ajuste de línea usando la función de ajuste por mínimos cuadrados
-    if len(points) < 2:
-        return line_image
-    
     [vx, vy, x, y] = cv.fitLine(points, cv.DIST_L2, 0, 0.01, 0.01)
     slope = vy / vx
     intercept = y - slope * x
-    
-    # Determinar los puntos de la línea en la imagen
-    h, w = line_image.shape[:2]
-    pt1 = (0, int(intercept))
-    pt2 = (w, int(slope * w + intercept))
-    
-    # Dibujar la línea en la imagen
-    cv.line(line_image, pt1, pt2, (0, 255, 0), 2)
-    
-    # Dibujar líneas de distancia desde los círculos a la línea
+    return slope[0], intercept[0]
+
+#--------------------------------------------------------------------------#
+#--------------------------------------------------------------------------#
+#--------------------------------------------------------------------------#
+
+def calculate_distance(circles, slope, intercept):
     total_distance = 0
     for (x, y, r) in circles:
         x = int(x)
         y = int(y)
-        cv.circle(line_image, (x, y), r, (0, 0, 255), 2)
-        
-        # Coefficients of the line equation (Ax + By + C = 0)
+
         A = slope
         B = -1
         C = intercept
         
-        # Calcular la distancia desde el círculo a la línea
         distance = abs(A * x + B * y + C) / np.sqrt(A**2 + B**2)
-        total_distance+=distance
-        # Punto en la línea más cercano al círculo
-        if A != 0:  # Avoid division by zero
-            x_line = (B * (B * x - A * y) - A * C) / (A**2 + B**2)
-            y_line = (A * (-B * x + A * y) - B * C) / (A**2 + B**2)
-            point_on_line = (int(x_line), int(y_line))
-            cv.line(line_image, (x, y), point_on_line, (255, 0, 0), 2)
+        total_distance += distance
+        
+    return total_distance
+
+#--------------------------------------------------------------------------#
+#--------------------------------------------------------------------------#
+#--------------------------------------------------------------------------#
+
+def calculate_intersection(slope1, intercept1, slope2, intercept2):
+    if slope1 != slope2:  # Verifica que las líneas no sean paralelas
+        x = (intercept2 - intercept1) / (slope1 - slope2)
+        y = slope1 * x + intercept1
+        return int(x), int(y)
+    else:
+        return None  # No hay intersección si las líneas son paralelas
     
-    return line_image, total_distance
-
-
-
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
 
-def completar_wells(radio, lista_wells, tolerancia, ancho, alto):
-    # Inicializar la matriz de círculos teóricos para almacenar las coordenadas
-    circulos_teoricos = [[[0, 0] for _ in range(8)] for _ in range(12)]
+def generate_grid_points(left_limit, right_limit, top_limit, bottom_limit, n_cols=12, n_rows=8):
+    # Generar puntos de la malla
+    x_coords = np.linspace(left_limit, right_limit, n_cols)
+    y_coords = np.linspace(top_limit, bottom_limit, n_rows)
+    grid_points = [(int(x), int(y)) for y in y_coords for x in x_coords]
+    return grid_points
 
-    # Calcular los espaciados horizontal y vertical entre los círculos
-    h_ancho = (ancho - (12 * 2 * radio)) / 13
-    h_alto = (alto - (8 * 2 * radio)) / 9
-
-    # Calcular las coordenadas de los centros de los círculos
-    for i in range(12):
-        for j in range(8):
-            circulos_teoricos[i][j][0] = radio + (2 * radio + h_ancho) * i + h_ancho
-            circulos_teoricos[i][j][1] = radio + (2 * radio + h_alto) * j + h_alto
-
-    # Listas para almacenar los círculos correctos e incorrectos
-    circulos_correctos = []
-    circulos_incorrectos = []
-
-    # Comparar los círculos detectados con la matriz de referencia
-    for i in range(12):
-        for j in range(8):
-            centro_x, centro_y = circulos_teoricos[i][j]
-            coincidencia = False
-            for (x, y, r) in lista_wells:
-                if abs(x - centro_x) <= tolerancia and abs(y - centro_y) <= tolerancia:
-                    circulos_correctos.append((int(x), int(y), int(r)))
-                    coincidencia = True
-                    break
-            if not coincidencia:
-                circulos_incorrectos.append((int(centro_x), int(centro_y), int(radio)))
-
-    return circulos_teoricos, circulos_correctos, circulos_incorrectos
+#--------------------------------------------------------------------------#
+#--------------------------------------------------------------------------#
+#--------------------------------------------------------------------------#
