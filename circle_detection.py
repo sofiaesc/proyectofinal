@@ -74,7 +74,7 @@ def circle_detection_corrected(image):
         grid_points = generate_grid_points(left_limit, right_limit, top_limit, bottom_limit)
         image_circles = image.copy()
         for pt in grid_points:
-            cv.circle(image_circles, pt, best_radius, (255, 0, 0), -1)  # Dibujar puntos de la malla en azul
+            cv.circle(image_circles, pt, best_radius, (255, 0, 0), 4)  # Dibujar puntos de la malla en azul
         plot(image_circles, "Imagen con circulos o algo asi")
         
     return 
