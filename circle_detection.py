@@ -12,8 +12,9 @@ def circle_detection_corrected(image):
     best_inter_br = None
 
     gray_image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-    for radius in range(85, 105):                   #   Modificar estos bucles, cambiar rangos e incluso el parámetro en sí para encontrar el Hugh mas general posible
-        for kernel in range(5, 6, 2):               #   Modificar estos bucles, cambiar rangos e incluso el parámetro en sí para encontrar el Hugh mas general posible
+
+    for radius in range(85, 105):                 
+        for kernel in range(5, 6, 2):            
             wells = circle_detection(gray_image, radius, kernel)
             
             rightmost_wells  = find_extreme_circles(wells, 8, "right")
@@ -46,15 +47,15 @@ def circle_detection_corrected(image):
                 best_inter_br = inter_bottom_right
                 best_radius = radius
             
-            #--- Sección de graficación ---# COMENTAR PARA PRODUCCION
+            #--- Plot section ---# Comment for final product
             image_draw = image.copy()
-            image_draw = draw_line_and_circles(image_draw, rightmost_wells,  slope_right,  intercept_right)  # Dibujar línea y círculos
+            image_draw = draw_line_and_circles(image_draw, rightmost_wells,  slope_right,  intercept_right)  
             image_draw = draw_line_and_circles(image_draw, leftmost_wells,   slope_left,   intercept_left)
             image_draw = draw_line_and_circles(image_draw, topmost_wells,    slope_top,    intercept_top)
             image_draw = draw_line_and_circles(image_draw, bottommost_wells, slope_bottom, intercept_bottom)
             for pt in [inter_top_left, inter_bottom_left, inter_top_right, inter_bottom_right]:
                 if pt is not None:
-                    cv.circle(image_draw, pt, 20, (0, 255, 255), -1)  # Puntos amarillos para marcar las intersecciones
+                    cv.circle(image_draw, pt, 20, (0, 255, 255), -1)  # Yellow points for th eintersections
                     
             plot_w_wells(image_draw, wells, f'{int(total_dist)}_r_{radius}k_{kernel}')
             
@@ -72,9 +73,5 @@ def circle_detection_corrected(image):
         print(top_limit)
         print(bottom_limit)
         grid_points = generate_grid_points(left_limit, right_limit, top_limit, bottom_limit)
-        image_circles = image.copy()
-        for pt in grid_points:
-            cv.circle(image_circles, pt, best_radius, (255, 0, 0), 4)  # Dibujar puntos de la malla en azul
-        plot(image_circles, "Imagen con circulos o algo asi")
         
-    return 
+    return grid_points, best_radius

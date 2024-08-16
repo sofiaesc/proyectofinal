@@ -1,6 +1,5 @@
 import cv2 as cv
 import numpy as np
-from sklearn.linear_model import LinearRegression
 
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
@@ -73,19 +72,19 @@ def calculate_distance(circles, slope, intercept):
 #--------------------------------------------------------------------------#
 
 def calculate_intersection(slope1, intercept1, slope2, intercept2):
-    if slope1 != slope2:  # Verifica que las líneas no sean paralelas
+    if slope1 != slope2:  # Verifies that the lines aren't parallel
         x = (intercept2 - intercept1) / (slope1 - slope2)
         y = slope1 * x + intercept1
         return int(x), int(y)
     else:
-        return None  # No hay intersección si las líneas son paralelas
+        return None  # If the lines are paralel, there's no intersection
     
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
 
 def generate_grid_points(left_limit, right_limit, top_limit, bottom_limit, n_cols=12, n_rows=8):
-    # Generar puntos de la malla
+    # Generate mesh points
     x_coords = np.linspace(left_limit, right_limit, n_cols)
     y_coords = np.linspace(top_limit, bottom_limit, n_rows)
     grid_points = [(int(x), int(y)) for y in y_coords for x in x_coords]

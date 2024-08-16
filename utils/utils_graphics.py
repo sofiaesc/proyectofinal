@@ -38,11 +38,6 @@ def histogram_well_graph(yellow_channel, detected_centers):
     plt.tight_layout()
     plt.show()
     
-#####--- CUESTIONES A TENER EN CUENTA ---#####
-'''
-Probablemente hay que cambiar los valores de x e y
-'''
-    
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
@@ -78,17 +73,16 @@ def plot_w_wells(image, wells, name='5_wells_detected'):
 #--------------------------------------------------------------------------#
 
 def draw_line_and_circles(line_image, circles, slope, intercept):
-    # Dibujar la línea de mejor ajuste
+    # Draw the line of best adjustment 
     h, w = line_image.shape[:2]
     pt1 = (0, int(intercept))
     pt2 = (w, int(slope * w + intercept))
     cv.line(line_image, pt1, pt2, (0, 255, 0), 2)
     
-    # Dibujar los círculos y las líneas de distancia
+    # Draw the circles and lines of distance
     for (x, y, r) in circles:
         x = int(x)
         y = int(y)
-        # Dibujar el círculo
         cv.circle(line_image, (x, y), r, (0, 0, 255), 2)
         
         # Coefficients of the line equation (Ax + By + C = 0)
@@ -96,12 +90,12 @@ def draw_line_and_circles(line_image, circles, slope, intercept):
         B = -1
         C = intercept
         
-        # Calcular el punto en la línea más cercano al círculo
-        if A != 0:  # Evitar división por cero
+        # Calcualte the point in the line closer to the circle
+        if A != 0:  # Avoid division by zero
             x_line = (B * (B * x - A * y) - A * C) / (A**2 + B**2)
             y_line = (A * (-B * x + A * y) - B * C) / (A**2 + B**2)
             point_on_line = (int(x_line), int(y_line))
-            # Dibujar la línea desde el círculo hasta el punto en la línea de mejor ajuste
+            # Draw the line from the circle to the point of the best line
             cv.line(line_image, (x, y), point_on_line, (255, 0, 0), 2)
     
     return line_image

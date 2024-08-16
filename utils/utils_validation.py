@@ -1,18 +1,26 @@
 import cv2
 
+#--------------------------------------------------------------------------#
+#--------------------------------------------------------------------------#
+#--------------------------------------------------------------------------#
+
 def calculate_histogram(image):
     # Calculate and normalize the histogram
     hist = cv2.calcHist([image], [0], None, [256], [0, 256])
     cv2.normalize(hist, hist)
     return hist
 
+#--------------------------------------------------------------------------#
+#--------------------------------------------------------------------------#
+#--------------------------------------------------------------------------#
+
 def is_elisa_test(input_image, threshold=0.65):
     # Reference images are fixed
     reference_images = [
-        cv2.imread('references/reference_1.jpg', cv2.IMREAD_GRAYSCALE),
-        cv2.imread('references/reference_2.jpg', cv2.IMREAD_GRAYSCALE),
-        cv2.imread('references/reference_3.jpg', cv2.IMREAD_GRAYSCALE),
-        cv2.imread('references/reference_4.jpg', cv2.IMREAD_GRAYSCALE)
+        cv2.imread('utils/references/reference_1.jpg', cv2.IMREAD_GRAYSCALE),
+        cv2.imread('utils/references/reference_2.jpg', cv2.IMREAD_GRAYSCALE),
+        cv2.imread('utils/references/reference_3.jpg', cv2.IMREAD_GRAYSCALE),
+        cv2.imread('utils/references/reference_4.jpg', cv2.IMREAD_GRAYSCALE)
     ]
 
     # Compare the input image histogram with each reference image
@@ -31,3 +39,7 @@ def is_elisa_test(input_image, threshold=0.65):
             return True
 
     return False
+
+#--------------------------------------------------------------------------#
+#--------------------------------------------------------------------------#
+#--------------------------------------------------------------------------#

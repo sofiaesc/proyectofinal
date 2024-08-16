@@ -5,52 +5,44 @@ import numpy as np
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
 
-def shadow_removing(imagen_bgr):
+def shadow_removing(bgr_image):
     
-    # Convertir la imagen al espacio de color HSV
-    imagen_hsv = cv.cvtColor(imagen_bgr, cv.COLOR_BGR2HSV)
-    h, s, v = cv.split(imagen_hsv)
+    # Convert the image to the HSV color space
+    hsv_image = cv.cvtColor(bgr_image, cv.COLOR_BGR2HSV)
+    h, s, v = cv.split(hsv_image)
 
-    # Aplicar la corrección de sombras en el canal de value (V)
-    v_log = np.log1p(v.astype(np.float32))                      # Calculo el logaritmo de la componente de value para aumentar el rango del value claro y disminuir el oscuro
-    v_log_blurred = cv.GaussianBlur(v_log, (29, 29), 0)         # Aplico un filtro de desenfoque para eliminar los detalles finos como las sombras
-    v_log_shadow_removed = v_log - v_log_blurred                # Resto la imagen desenfocada a la imagen original, para quedarme solo con los detalles importantes
-    v_shadow_removed = np.expm1(v_log_shadow_removed)           # vuelvo a la distribucion original de value
+    # Apply shadow correction on the value (V) channel
+    v_log = np.log1p(v.astype(np.float32))                      # Calculate the logarithm of the value component to increase the range of bright values and decrease the dark ones
+    v_log_blurred = cv.GaussianBlur(v_log, (29, 29), 0)         # Apply a blur filter to remove fine details like shadows
+    v_log_shadow_removed = v_log - v_log_blurred                # Subtract the blurred image from the original image, keeping only the important details
+    v_shadow_removed = np.expm1(v_log_shadow_removed)           # Return to the original value distribution
 
-    # Normalizar el canal de luminosidad corregido
+    # Normalize the corrected luminosity channel
     v_shadow_removed = cv.normalize(v_shadow_removed, None, 0, 255, cv.NORM_MINMAX)
     v_shadow_removed = np.uint8(v_shadow_removed)
 
-    # Recombinar los canales H, S y V corregido
-    imagen_hsv_corrected = cv.merge([h, s, v_shadow_removed])
+    # Recombine the H, S, and corrected V channels
+    hsv_image_corrected = cv.merge([h, s, v_shadow_removed])
 
-    # Convertir de nuevo al espacio de color RGB
-    imagen_rgb_corrected = cv.cvtColor(imagen_hsv_corrected, cv.COLOR_HSV2BGR)
+    # Convert back to the RGB color space
+    rgb_image_corrected = cv.cvtColor(hsv_image_corrected, cv.COLOR_HSV2BGR)
 
-    return imagen_rgb_corrected
-
-
-#####--- CUESTIONES A TENER EN CUENTA ---#####
-'''
-Se puede modificar el tamaño del kernel en Gaussian Blur segun convenga
-
-
-'''
+    return rgb_image_corrected
 
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
 
 def gamma_correction(image):
-    # Pasar imagen a grises si esta cargada a color
+    # Convert image to grayscale if it's loaded in color
     if len(image.shape) == 3:
         gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
     else:
         gray = image
     
-    mean_intensity = np.mean(gray) / 255.0      # Intensidad media de la imagen
-    gamma = 1.0 / (mean_intensity + 1e-8)       # Gamma inversamente proporcional a la media de intensidad
-    gamma = np.clip(gamma, 0.5, 2.0)            # Limitar gamma
+    mean_intensity = np.mean(gray) / 255.0      # Average intensity of the image
+    gamma = 1.0 / (mean_intensity + 1e-8)       # Gamma inversely proportional to the average intensity
+    gamma = np.clip(gamma, 0.5, 2.0)            # Limit gamma
 
     mean_intensity_cap = 1.0 / gamma
     table = np.array([(i / 255.0) ** mean_intensity_cap * 255 for i in np.arange(0, 256)]).astype("uint8")
