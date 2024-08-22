@@ -4,45 +4,64 @@ import cv2 as cv
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
 
-def select_and_crop_elisa_plate(image):
+import cv2 as cv
 
-    # Get image dimensions
+def select_and_crop_elisa_plate(image):
+    # Obtener dimensiones de la imagen
     image_height, image_width = image.shape[:2]
 
-    # Define maximum window size 
+    # Definir el tamaño máximo de la ventana
     max_window_width = 800
     max_window_height = 600
 
-    # Calculate the scaling factor to fit the image to the window
+    # Calcular el factor de escalado para ajustar la imagen a la ventana
     scale_factor = min(max_window_width / image_width, max_window_height / image_height)
-    
-    # Calculate the new window dimensions
+
+    # Calcular las nuevas dimensiones de la ventana
     window_width = int(image_width * scale_factor)
     window_height = int(image_height * scale_factor)
 
-    # Resize the image to fit the window
+    # Redimensionar la imagen para ajustarla a la ventana
     resized_image = cv.resize(image, (window_width, window_height))
 
-    # Resize the window
+    # Redimensionar la ventana
     window_name = "Select the ELISA Plate"
     cv.namedWindow(window_name, cv.WINDOW_NORMAL)
     cv.resizeWindow(window_name, window_width, window_height)
 
-    # Display the image and allow the user to select the rectangle
+    # Mostrar la imagen y permitir que el usuario seleccione el rectángulo
     print("Select the region containing the ELISA plate and press ENTER or SPACE.")
     roi = cv.selectROI(window_name, resized_image)
 
-    # Adjust the crop coordinates to the original image
+    # Ajustar las coordenadas de recorte a la imagen original
     x, y, w, h = roi
     x_original = int(x / scale_factor)
     y_original = int(y / scale_factor)
     w_original = int(w / scale_factor)
     h_original = int(h / scale_factor)
 
-    # Crop the image according to the user's selection
+    # Recorte original
     crop = image[y_original:y_original+h_original, x_original:x_original+w_original]
 
-    return crop
+    # Cálculo del 10% para ampliación y reducción
+    delta_w = int(w_original * 0.02)
+    delta_h = int(h_original * 0.02)
+
+    # Recorte ampliado (hacia afuera)
+    x_enlarged = max(0, x_original - delta_w)
+    y_enlarged = max(0, y_original - delta_h)
+    w_enlarged = min(image_width - x_enlarged, w_original + 2 * delta_w)
+    h_enlarged = min(image_height - y_enlarged, h_original + 2 * delta_h)
+    enlarged_crop = image[y_enlarged:y_enlarged+h_enlarged, x_enlarged:x_enlarged+w_enlarged]
+
+    # Recorte reducido (hacia adentro)
+    x_reduced = x_original + delta_w
+    y_reduced = y_original + delta_h
+    w_reduced = max(1, w_original - 2 * delta_w)
+    h_reduced = max(1, h_original - 2 * delta_h)
+    reduced_crop = image[y_reduced:y_reduced+h_reduced, x_reduced:x_reduced+w_reduced]
+
+    return crop, enlarged_crop, reduced_crop
 
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
