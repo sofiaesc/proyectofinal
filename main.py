@@ -7,7 +7,7 @@ from circle_detection import *
 from analyze_wells import *
 
 # Initial input of the image
-image = cv.imread('test_folios/osc_bla2.jpg')
+image = cv.imread('test_folios/osc_nar2.jpg')
 images = list(select_and_crop_elisa_plate(image))
 
 # Validation to check if it's an ELISA test:
