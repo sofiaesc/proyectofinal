@@ -24,8 +24,11 @@ for i in range(len(images)):
 centers, radius, image = circle_detection_corrected(images)
 
 # Pre-processing the image before determining the results:
-image = shadow_removing(image)
-image = gamma_correction(image)
+preprocessed_image = shadow_removing(image)
+preprocessed_image = gamma_correction(image)
 
 # Obtaining the results for each well:
-_ = analyze_wells(image, centers, radius)
+intensities = analyze_wells(preprocessed_image, centers, radius)
+
+# Plot the results with the original image
+plot_wells_with_intensity(image, centers, radius, intensities)

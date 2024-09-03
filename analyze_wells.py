@@ -32,9 +32,6 @@ def analyze_wells(image, grid_points, well_radius):
         col = i % 12
         intensities[row, col] = round(mean_intensity, 2)
     
-    # Plot the results
-    plot_wells_with_intensity(image, grid_points, well_radius, intensities)
-
     return intensities
 
 #--------------------------------------------------------------------------#
@@ -47,7 +44,7 @@ def plot_wells_with_intensity(image, grid_points, well_radius, intensities):
 
     for _, (pt, intensity) in enumerate(zip(grid_points, intensities.flatten())):
         # Determine the circle color based on the intensity
-        if intensity > 100:
+        if intensity > 100: # 100 is set arbitrarily 
             circle_color = 'green'
         else:
             circle_color = 'red'
@@ -57,7 +54,7 @@ def plot_wells_with_intensity(image, grid_points, well_radius, intensities):
         plt.gca().add_patch(circle)
         
         # Add the intensity value as text
-        plt.text(pt[0], pt[1], str(int(intensity)), color='black', fontsize=12, ha='center', va='center')
+        # plt.text(pt[0], pt[1], str(int(intensity)), color='black', fontsize=12, ha='center', va='center')
 
     plt.axis('off')
     plt.show()
