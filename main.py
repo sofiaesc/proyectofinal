@@ -7,7 +7,7 @@ from circle_detection import *
 from analyze_wells import *
 
 # Initial input of the image
-image = cv.imread('base_1.jpg')
+image = cv.imread('test_folios/osc_bla2.jpg')
 images = list(select_and_crop_elisa_plate(image))
 
 # Validation to check if it's an ELISA test:
@@ -25,7 +25,7 @@ centers, radius, image = circle_detection_corrected(images)
 
 # Pre-processing the image before determining the results:
 preprocessed_image = shadow_removing(image)
-preprocessed_image = gamma_correction(image)
+preprocessed_image = gamma_correction(preprocessed_image)
 
 # Obtaining the results for each well:
 intensities = analyze_wells(preprocessed_image, centers, radius)
