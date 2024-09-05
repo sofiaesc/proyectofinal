@@ -7,7 +7,7 @@ from circle_detection import *
 from analyze_wells import *
 
 # Initial input of the image
-image = cv.imread('test_folios/osc_nar2.jpg')
+image = cv.imread('base_1.jpg')
 images = list(select_and_crop_elisa_plate(image))
 
 # Validation to check if it's an ELISA test:
@@ -19,6 +19,10 @@ if not bool_elisa:
 # Resolution changes to normalize circle detection:
 for i in range(len(images)):
     images[i] = change_resolution(edge_reduction(images[i]))
+
+plot(images[0], "0")
+plot(images[1], "1")
+plot(images[2], "2")
 
 # Detecting the plate's circles or wells:
 centers, radius, image = circle_detection_corrected(images)

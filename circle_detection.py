@@ -13,11 +13,12 @@ def circle_detection_corrected(images):
     best_idx = None
     
     gray_images = []
+    gray_images.append(cv.cvtColor(images[0], cv.COLOR_BGR2GRAY))
     gray_images.append(cv.cvtColor(images[1], cv.COLOR_BGR2GRAY))
     gray_images.append(cv.cvtColor(images[2], cv.COLOR_BGR2GRAY))
     
-    for radius in range(90, 110):
-        for idx in range(2):            
+    for radius in range(90, 110, 2):
+        for idx in range(3):            
             wells = circle_detection(gray_images[idx], radius)
             
             rightmost_wells  = find_extreme_circles(wells, 8, "right")
@@ -78,5 +79,5 @@ def circle_detection_corrected(images):
         #print(bottom_limit)
         grid_points = generate_grid_points(left_limit, right_limit, top_limit, bottom_limit)
     
-    plot(images[best_idx+1],"new_image")
-    return grid_points, best_radius, images[best_idx+1]
+    plot(images[best_idx],"new_image")
+    return grid_points, best_radius, images[best_idx]

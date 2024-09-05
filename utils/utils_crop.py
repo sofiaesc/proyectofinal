@@ -43,7 +43,7 @@ def select_and_crop_elisa_plate(image):
     # Recorte original
     crop = image[y_original:y_original+h_original, x_original:x_original+w_original]
 
-    # Cálculo del 10% para ampliación y reducción
+    # Cálculo del 2% para ampliación y reducción
     delta_w = int(w_original * 0.02)
     delta_h = int(h_original * 0.02)
 
@@ -68,8 +68,8 @@ def select_and_crop_elisa_plate(image):
 #--------------------------------------------------------------------------#
 
 def edge_reduction(image):  # Reducing the plate's edges off the image to obtain only the wells.
-  porcental_x = 0.03
-  porcental_y = 0.03
+  porcental_x = 0.06
+  porcental_y = 0.06
 
   H, W, _ = image.shape
   edge_H = int(H*porcental_y)
