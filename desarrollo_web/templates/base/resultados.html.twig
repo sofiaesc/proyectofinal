@@ -1,0 +1,29 @@
+{# templates/carga_imagen/resultados.html.twig #}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resultados del Procesamiento</title>
+</head>
+<body>
+    <table>
+    <thead>
+        <tr>
+            <th>Fila</th>
+            <th>Columna</th>
+            <th>Intensidad</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in intensities %}
+            <tr>
+                {% for intensity in row %}
+                    <td>{{ intensity }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>
