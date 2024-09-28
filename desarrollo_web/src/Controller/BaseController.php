@@ -10,6 +10,14 @@ use GuzzleHttp\Client;
 
 class BaseController extends AbstractController
 {
+    
+    #[Route('/index', name: 'app_index')]
+    public function index(): Response
+    {
+        return $this->render('front/index.html.twig', [
+        ]);
+    }
+    
     #[Route('/carga_imagen', name: 'app_carga_imagen')]
     public function carga_imagen(): Response
     {
@@ -61,14 +69,6 @@ class BaseController extends AbstractController
     public function pocillos_validos(): Response
     {
         return $this->render('pocillos_validos.html.twig', [
-            'controller_name' => 'BaseController',
-        ]);
-    }
-
-    #[Route('/index', name: 'app_base')]
-    public function index(): Response
-    {
-        return $this->render('index.html.twig', [
             'controller_name' => 'BaseController',
         ]);
     }
