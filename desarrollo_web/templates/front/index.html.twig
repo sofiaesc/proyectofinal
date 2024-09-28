@@ -16,14 +16,20 @@
             <span class="material-icons">chevron_left</span>
         </button>
         <div class="carousel-inner">
-            <div class="carousel-item active" data-text="Carga tu imagen">
-                <img src="images/img-1.png" alt="Image 1">
+            <div class="carousel-item active" data-text="Carga tu imagen" data-link="{{ path('app_image_upload') }}">
+                <a href="{{ path('app_image_upload') }}">
+                    <img src="images/img-1.png" alt="Image 1">
+                </a>
             </div>
-            <div class="carousel-item" data-text="Obten los resultados">
-                <img src="images/img-2.png" alt="Image 2">
+            <div class="carousel-item" data-text="Obtén los resultados" data-link="{{ path('app_test_list') }}">
+                <a href="{{ path('app_test_list') }}">
+                    <img src="images/img-2.png" alt="Image 2">
+                </a>
             </div>
-            <div class="carousel-item" data-text="Consulta su informe">
-                <img src="images/img-3.png" alt="Image 3">
+            <div class="carousel-item" data-text="Consulta tu informe" data-link="{{ path('app_test_list') }}">
+                <a href="{{ path('app_test_list') }}">
+                    <img src="images/img-3.png" alt="Image 3">
+                </a>
             </div>
         </div>
         <button class="carousel-btn next" id="next-btn">
