@@ -13,7 +13,7 @@ class BaseController extends AbstractController
     #[Route('/carga_imagen', name: 'app_carga_imagen')]
     public function carga_imagen(): Response
     {
-        return $this->render('base/carga_imagen.html.twig', [
+        return $this->render('carga_imagen.html.twig', [
             'controller_name' => 'BaseController',
         ]);
     }
@@ -45,7 +45,7 @@ class BaseController extends AbstractController
                 $data = json_decode($response->getBody(), true); // Asegúrate de decodificarlo como array asociativo
                 $intensities = $data['intensities'];
             
-                return $this->render('base/resultados.html.twig', [
+                return $this->render('resultados.html.twig', [
                     'intensities' => $intensities  // Pasar la lista correctamente a Twig
                 ]);
             } else {
@@ -57,10 +57,18 @@ class BaseController extends AbstractController
     }
 
 
-    #[Route('/base', name: 'app_base')]
+    #[Route('/pocillos_validos', name: 'app_pocillos_validos')]
+    public function pocillos_validos(): Response
+    {
+        return $this->render('pocillos_validos.html.twig', [
+            'controller_name' => 'BaseController',
+        ]);
+    }
+
+    #[Route('/index', name: 'app_base')]
     public function index(): Response
     {
-        return $this->render('base/index.html.twig', [
+        return $this->render('index.html.twig', [
             'controller_name' => 'BaseController',
         ]);
     }
