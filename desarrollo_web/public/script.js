@@ -11,10 +11,12 @@ menuBtn.addEventListener("click", () => {
     navLinks.classList.toggle("show-menu");
 });
 
-// Close the menu when a link is clicked
+// Close the menu when a link is clicked only on small screens
 navLinks.querySelectorAll("a").forEach(link => {
-    link.addEventListener("click", () => {
-        navLinks.classList.remove("show-menu");
+    link.addEventListener("click", (event) => {
+        if (window.innerWidth < 768) {
+            navLinks.classList.remove("show-menu");
+        }
     });
 });
 
