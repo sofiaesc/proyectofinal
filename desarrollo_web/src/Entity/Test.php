@@ -16,17 +16,8 @@ class Test
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $fecha = null;
-
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTimeInterface $hora = null;
-
     #[ORM\Column(length: 255)]
     private ?string $pocillos_hab = null;
-
-    #[ORM\Column(type: Types::BLOB, nullable: true)]
-    private $informe = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $nombre_alt = null;
@@ -43,6 +34,12 @@ class Test
     #[ORM\OneToMany(targetEntity: pocillo::class, mappedBy: 'test')]
     private Collection $pocillos;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $fechaHora = null;
+
+    #[ORM\Column(type: Types::BLOB)]
+    private $foto = null;
+
     public function __construct()
     {
         $this->pocillos = new ArrayCollection();
@@ -53,30 +50,6 @@ class Test
         return $this->id;
     }
 
-    public function getFecha(): ?\DateTimeInterface
-    {
-        return $this->fecha;
-    }
-
-    public function setFecha(\DateTimeInterface $fecha): static
-    {
-        $this->fecha = $fecha;
-
-        return $this;
-    }
-
-    public function getHora(): ?\DateTimeInterface
-    {
-        return $this->hora;
-    }
-
-    public function setHora(\DateTimeInterface $hora): static
-    {
-        $this->hora = $hora;
-
-        return $this;
-    }
-
     public function getPocillosHab(): ?string
     {
         return $this->pocillos_hab;
@@ -85,18 +58,6 @@ class Test
     public function setPocillosHab(string $pocillos_hab): static
     {
         $this->pocillos_hab = $pocillos_hab;
-
-        return $this;
-    }
-
-    public function getInforme()
-    {
-        return $this->informe;
-    }
-
-    public function setInforme($informe): static
-    {
-        $this->informe = $informe;
 
         return $this;
     }
@@ -163,6 +124,30 @@ class Test
                 $pocillo->setTest(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFechaHora(): ?\DateTimeInterface
+    {
+        return $this->fechaHora;
+    }
+
+    public function setFechaHora(\DateTimeInterface $fechaHora): static
+    {
+        $this->fechaHora = $fechaHora;
+
+        return $this;
+    }
+
+    public function getFoto()
+    {
+        return $this->foto;
+    }
+
+    public function setFoto($foto): static
+    {
+        $this->foto = $foto;
 
         return $this;
     }
