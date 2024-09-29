@@ -362,7 +362,7 @@ form button:hover {
 }
 
 /* Mobile Styles */
-@media (max-width: 900px) {
+@media (max-width: 899px) {
     .navbar :is(.menu-btn, .close-btn) {
         display: block; /* Show menu button on smaller screens */
     }
@@ -402,6 +402,22 @@ form button:hover {
         display: block; /* Show menu button on smaller screens */
         color: #fff;
     }
+
+    .container {
+        background-color: #597085;
+        border: 2px solid #638198;
+        border-radius: 15px;
+        padding: 20px;
+        width: 80vw;
+        text-align: center;
+        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    #imageCanvas {
+        border-radius: 15px;
+        width: 70vw;
+        height: auto;
+    }
 }
 
 @media (min-width: 900px) {
@@ -422,4 +438,37 @@ form button:hover {
         margin: 0 15px;
         list-style: none;
     }
+
+    .container {
+        background-color: #597085;
+        border: 2px solid #638198;
+        border-radius: 15px;
+        padding: 20px;
+        width: 50vw;
+        text-align: center;
+        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    #imageCanvas {
+        border-radius: 15px;
+        width: 45vw;
+        height: auto; /* Set a height to ensure the background is visible */
+        }
+    
+}
+
+.custom-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #87B1D7;
+    color: #fff;
+    border: 2px solid #6D94B9;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.custom-button:hover {
+    background-color: #45a049;
 }

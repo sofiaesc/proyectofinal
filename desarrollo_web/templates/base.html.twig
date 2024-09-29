@@ -16,15 +16,15 @@
     <header>
         <nav class="navbar">
             <span class="menu-btn material-symbols-rounded">menu</span>
-            <a href="#" class="logo">
+            <a href="{{path('app_index')}}" class="logo">
                 <img src="images/logo.png" alt="logo" class="logo-img">
                 <h2>ELISATester</h2>
             </a>
             <ul class="nav-links">
-                <li><a href="{{path('app_index')}}">Home</a></li>
-                <li><a href="{{path('app_image_upload')}}">Upload</a></li>
-                <li><a href="{{ path('app_test_list') }}">Results</a></li>
-                <li><a href="{{ path('app_index') }}">Contact</a></li>
+                <li><a href="{{path('app_index')}}">Inicio</a></li>
+                <li><a href="{{path('app_image_upload')}}">Carga</a></li>
+                <li><a href="{{ path('app_test_list') }}">Resultados</a></li>
+                <li><a href="{{ path('app_index') }}">Contacto</a></li>
             </ul>
             <button class="login-btn">Iniciar Sesión</button>
         </nav>
