@@ -15,7 +15,7 @@ class TestType extends AbstractType
     {
         $builder
             ->add('photo', FileType::class, [
-                'label' => 'Selecciona una imagen',
+                'label' => false,
                 'required' => true,
                 'constraints' => [
                     new File([

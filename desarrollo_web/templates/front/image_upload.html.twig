@@ -1,10 +1,9 @@
-{# templates/image/upload.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Cargar Imagen{% endblock %}
 
 {% block body %}
-    <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <div style="display: flex; justify-content: center; align-items: center; height: 110vh; flex-direction: column;">
         <div>
             <h1 style="text-align: center;">Cargar Imagen</h1>
 
@@ -14,6 +13,198 @@
                     <button type="submit">Cargar</button>
                 </div>
             {{ form_end(form) }}
+            <div style="display: flex; justify-content: center; align-items: center;">
+                <canvas id="imageCanvas" style="
+                    border: 1px solid black;
+                    width: 40vw; 
+                    height: 22.5vw;
+                "></canvas>
+            </div>
         </div>
+
+        <!-- Contenedor para mostrar las coordenadas de los puntos -->
+        <div id="coordinates" style="margin-top: 20px; font-size: 18px; text-align: center;"></div>
     </div>
+
+    <script>
+        const fileInput = document.querySelector('input[type="file"]');
+        const canvas = document.getElementById('imageCanvas');
+        const ctx = canvas.getContext('2d');
+        let img, imgScale, imgX, imgY;
+        let draggingPoint = null;
+
+        // Variables para las esquinas del rectángulo (x, y)
+        let rectPoints = [];
+
+        const pointRadius = 10;  // Tamaño aumentado de los puntos grises
+
+        // Función para ajustar el tamaño del canvas en píxeles
+        function adjustCanvasSize() {
+            const canvasStyleWidth = canvas.clientWidth;
+            const canvasStyleHeight = canvas.clientHeight;
+            canvas.width = canvasStyleWidth;
+            canvas.height = canvasStyleHeight;
+        }
+
+        adjustCanvasSize();
+
+        fileInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                img = new Image();
+                img.onload = function() {
+                    adjustCanvasSize();
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    const canvasWidth = canvas.width;
+                    const canvasHeight = canvas.height;
+
+                    imgScale = Math.min(canvasWidth / img.width, canvasHeight / img.height);
+                    imgX = (canvasWidth - img.width * imgScale) / 2;
+                    imgY = (canvasHeight - img.height * imgScale) / 2;
+
+                    // Dibujar la imagen
+                    ctx.drawImage(img, imgX, imgY, img.width * imgScale, img.height * imgScale);
+
+                    // Inicializar los puntos del rectángulo en proporción 1/3 y 2/3 de la imagen
+                    const rectX1 = imgX + (img.width * imgScale) * (1 / 3);  // 1/3 del ancho de la imagen
+                    const rectX2 = imgX + (img.width * imgScale) * (2 / 3);  // 2/3 del ancho de la imagen
+                    const rectY1 = imgY + (img.height * imgScale) * (1 / 3); // 1/3 de la altura de la imagen
+                    const rectY2 = imgY + (img.height * imgScale) * (2 / 3); // 2/3 de la altura de la imagen
+
+                    rectPoints = [
+                        { x: rectX1, y: rectY1 },  // Esquina superior izquierda
+                        { x: rectX2, y: rectY1 },  // Esquina superior derecha
+                        { x: rectX2, y: rectY2 },  // Esquina inferior derecha
+                        { x: rectX1, y: rectY2 }   // Esquina inferior izquierda
+                    ];
+
+                    // Dibujar el rectángulo interactivo
+                    drawInteractiveRectangle();
+                };
+                img.src = e.target.result;
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Función para dibujar el rectángulo con puntos interactivos y área de selección
+        function drawInteractiveRectangle() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Volver a dibujar la imagen
+            ctx.drawImage(img, imgX, imgY, img.width * imgScale, img.height * imgScale);
+            
+            // Dibujar el área de selección con transparencia
+            ctx.fillStyle = 'rgba(0, 255, 0, 0.3)'; // Color verde con transparencia
+            ctx.beginPath();
+            ctx.moveTo(rectPoints[0].x, rectPoints[0].y);
+            ctx.lineTo(rectPoints[1].x, rectPoints[1].y);
+            ctx.lineTo(rectPoints[2].x, rectPoints[2].y);
+            ctx.lineTo(rectPoints[3].x, rectPoints[3].y);
+            ctx.closePath();
+            ctx.fill();
+
+            // Dibujar líneas negras del rectángulo
+            ctx.beginPath();
+            ctx.moveTo(rectPoints[0].x, rectPoints[0].y);
+            for (let i = 1; i < rectPoints.length; i++) {
+                ctx.lineTo(rectPoints[i].x, rectPoints[i].y);
+            }
+            ctx.closePath();
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Dibujar puntos grises en las esquinas
+            for (const point of rectPoints) {
+                ctx.beginPath();
+                ctx.arc(point.x, point.y, pointRadius, 0, Math.PI * 2);
+                ctx.fillStyle = "gray";
+                ctx.fill();
+                ctx.closePath();
+            }
+
+            // Dibujar líneas en el medio del rectángulo
+            const midX = (rectPoints[0].x + rectPoints[1].x) / 2; // Línea vertical
+            const midY = (rectPoints[0].y + rectPoints[3].y) / 2; // Línea horizontal
+
+            ctx.beginPath();
+            ctx.moveTo(midX, rectPoints[0].y);
+            ctx.lineTo(midX, rectPoints[2].y); // Línea vertical
+            ctx.moveTo(rectPoints[0].x, midY);
+            ctx.lineTo(rectPoints[1].x, midY); // Línea horizontal
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 1;
+            ctx.stroke();
+        }
+
+        // Evento para detectar si se está arrastrando una esquina
+        canvas.addEventListener('mousedown', function(event) {
+            const mouseX = event.clientX - canvas.getBoundingClientRect().left;
+            const mouseY = event.clientY - canvas.getBoundingClientRect().top;
+
+            // Detectar si el clic está sobre algún punto del rectángulo
+            for (let i = 0; i < rectPoints.length; i++) {
+                const point = rectPoints[i];
+                const distance = Math.sqrt((mouseX - point.x) ** 2 + (mouseY - point.y) ** 2);
+                if (distance < pointRadius) {
+                    draggingPoint = i;
+                    break;
+                }
+            }
+        });
+
+        // Evento para mover el punto arrastrado
+        canvas.addEventListener('mousemove', function(event) {
+            if (draggingPoint !== null) {
+                const mouseX = event.clientX - canvas.getBoundingClientRect().left;
+                const mouseY = event.clientY - canvas.getBoundingClientRect().top;
+
+                // Restringir el movimiento de los puntos dentro de la imagen
+                const minX = imgX;
+                const maxX = imgX + img.width * imgScale;
+                const minY = imgY;
+                const maxY = imgY + img.height * imgScale;
+
+                // Ajustar el punto en función de cuál esquina se está moviendo
+                switch (draggingPoint) {
+                    case 0: // Esquina superior izquierda
+                        rectPoints[draggingPoint].x = Math.max(minX, Math.min(mouseX, rectPoints[1].x));
+                        rectPoints[draggingPoint].y = Math.max(minY, Math.min(mouseY, rectPoints[3].y));
+                        rectPoints[1].y = rectPoints[draggingPoint].y; // Esquina superior derecha
+                        rectPoints[3].x = rectPoints[draggingPoint].x; // Esquina inferior izquierda
+                        break;
+                    case 1: // Esquina superior derecha
+                        rectPoints[draggingPoint].x = Math.min(maxX, Math.max(mouseX, rectPoints[0].x));
+                        rectPoints[draggingPoint].y = Math.max(minY, Math.min(mouseY, rectPoints[2].y));
+                        rectPoints[0].y = rectPoints[draggingPoint].y; // Esquina superior izquierda
+                        rectPoints[2].x = rectPoints[draggingPoint].x; // Esquina inferior derecha
+                        break;
+                    case 2: // Esquina inferior derecha
+                        rectPoints[draggingPoint].x = Math.min(maxX, Math.max(mouseX, rectPoints[3].x));
+                        rectPoints[draggingPoint].y = Math.min(maxY, Math.max(mouseY, rectPoints[1].y));
+                        rectPoints[3].y = rectPoints[draggingPoint].y; // Esquina inferior izquierda
+                        rectPoints[1].x = rectPoints[draggingPoint].x; // Esquina superior derecha
+                        break;
+                    case 3: // Esquina inferior izquierda
+                        rectPoints[draggingPoint].x = Math.max(minX, Math.min(mouseX, rectPoints[2].x));
+                        rectPoints[draggingPoint].y = Math.min(maxY, Math.max(mouseY, rectPoints[0].y));
+                        rectPoints[2].y = rectPoints[draggingPoint].y; // Esquina inferior derecha
+                        rectPoints[0].x = rectPoints[draggingPoint].x; // Esquina superior izquierda
+                        break;
+                }
+
+                drawInteractiveRectangle();
+            }
+        });
+
+        // Evento para soltar el punto
+        canvas.addEventListener('mouseup', function() {
+            draggingPoint = null;
+        });
+    </script>
 {% endblock %}
