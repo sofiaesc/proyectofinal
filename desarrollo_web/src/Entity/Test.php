@@ -31,7 +31,7 @@ class Test
     /**
      * @var Collection<int, pocillo>
      */
-    #[ORM\OneToMany(targetEntity: pocillo::class, mappedBy: 'test')]
+    #[ORM\OneToMany(targetEntity: Pocillo::class, mappedBy: 'test')]
     private Collection $pocillos;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -106,7 +106,7 @@ class Test
         return $this->pocillos;
     }
 
-    public function addPocillo(pocillo $pocillo): static
+    public function addPocillo(Pocillo $pocillo): static
     {
         if (!$this->pocillos->contains($pocillo)) {
             $this->pocillos->add($pocillo);
@@ -116,7 +116,7 @@ class Test
         return $this;
     }
 
-    public function removePocillo(pocillo $pocillo): static
+    public function removePocillo(Pocillo $pocillo): static
     {
         if ($this->pocillos->removeElement($pocillo)) {
             // set the owning side to null (unless already changed)

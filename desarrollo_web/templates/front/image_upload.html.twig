@@ -206,5 +206,35 @@
         canvas.addEventListener('mouseup', function() {
             draggingPoint = null;
         });
+
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form[name="test"]');  // Selecciona tu formulario
+        const rectCanvas = document.getElementById('canvas');  // Donde el usuario selecciona el rectángulo
+        let startX, startY, endX, endY;
+
+        // Ejemplo de cómo capturar las coordenadas cuando el usuario selecciona un rectángulo
+        rectCanvas.addEventListener('mousedown', function(e) {
+            startX = e.offsetX;
+            startY = e.offsetY;
+        });
+
+        rectCanvas.addEventListener('mouseup', function(e) {
+            endX = e.offsetX;
+            endY = e.offsetY;
+
+            // Asignar los valores de las coordenadas a los campos ocultos en el formulario
+            document.querySelector('input[name="test[x1]"]').value = startX;
+            document.querySelector('input[name="test[y1]"]').value = startY;
+            document.querySelector('input[name="test[x2]"]').value = endX;
+            document.querySelector('input[name="test[y2]"]').value = endY;
+        });
+
+        // Enviar el formulario de forma normal
+        form.addEventListener('submit', function(e) {
+            
+        });
+    });
     </script>
 {% endblock %}
