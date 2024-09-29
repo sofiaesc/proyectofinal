@@ -4,22 +4,17 @@
 
 {% block body %}
     <div style="display: flex; justify-content: center; align-items: center; height: 110vh; flex-direction: column;">
-        <div>
-            <h1 style="text-align: center;">Cargar Imagen</h1>
+        <div class="container">
+            <div style="display: flex; justify-content: center; align-items: center;">
+                <canvas id="imageCanvas"></canvas>
+            </div>
 
             {{ form_start(form) }}
                 {{ form_widget(form) }}
-                <div style="text-align: center;">
-                    <button type="submit">Cargar</button>
+                <div>
+                    <button type="submit" class="custom-button">Cargar imagen</button>
                 </div>
             {{ form_end(form) }}
-            <div style="display: flex; justify-content: center; align-items: center;">
-                <canvas id="imageCanvas" style="
-                    border: 1px solid black;
-                    width: 40vw; 
-                    height: 22.5vw;
-                "></canvas>
-            </div>
         </div>
 
         <!-- Contenedor para mostrar las coordenadas de los puntos -->
@@ -38,7 +33,6 @@
 
         const pointRadius = 10;  // Tamaño aumentado de los puntos grises
 
-        // Función para ajustar el tamaño del canvas en píxeles
         function adjustCanvasSize() {
             const canvasStyleWidth = canvas.clientWidth;
             const canvasStyleHeight = canvas.clientHeight;
@@ -64,23 +58,20 @@
                     imgX = (canvasWidth - img.width * imgScale) / 2;
                     imgY = (canvasHeight - img.height * imgScale) / 2;
 
-                    // Dibujar la imagen
                     ctx.drawImage(img, imgX, imgY, img.width * imgScale, img.height * imgScale);
 
-                    // Inicializar los puntos del rectángulo en proporción 1/3 y 2/3 de la imagen
-                    const rectX1 = imgX + (img.width * imgScale) * (1 / 3);  // 1/3 del ancho de la imagen
-                    const rectX2 = imgX + (img.width * imgScale) * (2 / 3);  // 2/3 del ancho de la imagen
-                    const rectY1 = imgY + (img.height * imgScale) * (1 / 3); // 1/3 de la altura de la imagen
-                    const rectY2 = imgY + (img.height * imgScale) * (2 / 3); // 2/3 de la altura de la imagen
+                    const rectX1 = imgX + (img.width * imgScale) * (1 / 3);
+                    const rectX2 = imgX + (img.width * imgScale) * (2 / 3);
+                    const rectY1 = imgY + (img.height * imgScale) * (1 / 3);
+                    const rectY2 = imgY + (img.height * imgScale) * (2 / 3);
 
                     rectPoints = [
-                        { x: rectX1, y: rectY1 },  // Esquina superior izquierda
-                        { x: rectX2, y: rectY1 },  // Esquina superior derecha
-                        { x: rectX2, y: rectY2 },  // Esquina inferior derecha
-                        { x: rectX1, y: rectY2 }   // Esquina inferior izquierda
+                        { x: rectX1, y: rectY1 },
+                        { x: rectX2, y: rectY1 },
+                        { x: rectX2, y: rectY2 },
+                        { x: rectX1, y: rectY2 }
                     ];
 
-                    // Dibujar el rectángulo interactivo
                     drawInteractiveRectangle();
                 };
                 img.src = e.target.result;
@@ -91,15 +82,11 @@
             }
         });
 
-        // Función para dibujar el rectángulo con puntos interactivos y área de selección
         function drawInteractiveRectangle() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Volver a dibujar la imagen
             ctx.drawImage(img, imgX, imgY, img.width * imgScale, img.height * imgScale);
-            
-            // Dibujar el área de selección con transparencia
-            ctx.fillStyle = 'rgba(0, 255, 0, 0.3)'; // Color verde con transparencia
+
+            ctx.fillStyle = 'rgba(0, 255, 0, 0.3)';
             ctx.beginPath();
             ctx.moveTo(rectPoints[0].x, rectPoints[0].y);
             ctx.lineTo(rectPoints[1].x, rectPoints[1].y);
@@ -108,7 +95,6 @@
             ctx.closePath();
             ctx.fill();
 
-            // Dibujar líneas negras del rectángulo
             ctx.beginPath();
             ctx.moveTo(rectPoints[0].x, rectPoints[0].y);
             for (let i = 1; i < rectPoints.length; i++) {
@@ -119,7 +105,6 @@
             ctx.lineWidth = 2;
             ctx.stroke();
 
-            // Dibujar puntos grises en las esquinas
             for (const point of rectPoints) {
                 ctx.beginPath();
                 ctx.arc(point.x, point.y, pointRadius, 0, Math.PI * 2);
@@ -128,26 +113,23 @@
                 ctx.closePath();
             }
 
-            // Dibujar líneas en el medio del rectángulo
-            const midX = (rectPoints[0].x + rectPoints[1].x) / 2; // Línea vertical
-            const midY = (rectPoints[0].y + rectPoints[3].y) / 2; // Línea horizontal
+            const midX = (rectPoints[0].x + rectPoints[1].x) / 2;
+            const midY = (rectPoints[0].y + rectPoints[3].y) / 2;
 
             ctx.beginPath();
             ctx.moveTo(midX, rectPoints[0].y);
-            ctx.lineTo(midX, rectPoints[2].y); // Línea vertical
+            ctx.lineTo(midX, rectPoints[2].y);
             ctx.moveTo(rectPoints[0].x, midY);
-            ctx.lineTo(rectPoints[1].x, midY); // Línea horizontal
+            ctx.lineTo(rectPoints[1].x, midY);
             ctx.strokeStyle = "black";
             ctx.lineWidth = 1;
             ctx.stroke();
         }
 
-        // Evento para detectar si se está arrastrando una esquina
         canvas.addEventListener('mousedown', function(event) {
             const mouseX = event.clientX - canvas.getBoundingClientRect().left;
             const mouseY = event.clientY - canvas.getBoundingClientRect().top;
 
-            // Detectar si el clic está sobre algún punto del rectángulo
             for (let i = 0; i < rectPoints.length; i++) {
                 const point = rectPoints[i];
                 const distance = Math.sqrt((mouseX - point.x) ** 2 + (mouseY - point.y) ** 2);
