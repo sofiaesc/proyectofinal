@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use GuzzleHttp\Client;
+use App\Form\TestType;
 
 class BaseController extends AbstractController
 {
@@ -18,10 +19,28 @@ class BaseController extends AbstractController
         ]);
     }
     
-    #[Route('/image_upload', name: 'app_image_upload')]
-    public function image_upload(): Response
+    #[Route('/image_upload', name: 'app_image_upload', methods: ['GET', 'POST'])]
+    public function image_upload(Request $request): Response
     {
+        $form = $this->createForm(TestType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form->get('photo')->getData();
+
+            if ($file) {
+                // Procesar la imagen (ej. mover a un directorio)
+                $filePath = '/tmp/' . $file->getClientOriginalName();
+                $file->move('/tmp/', $file->getClientOriginalName());
+
+                // Aquí puedes agregar la lógica para enviar la imagen a la aplicación Python
+
+                return new Response('Imagen cargada con éxito.');
+            }
+        }
+
         return $this->render('front/image_upload.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 
@@ -32,46 +51,6 @@ class BaseController extends AbstractController
 
         return $this->render('front/test/test_list.html.twig', [
         ]);
-    }
-
-
-
-    #[Route('/procesar_imagen', name: 'app_procesar_imagen', methods: ['POST'])]
-    public function procesarImagen(Request $request): Response
-    {
-        // Obtener el archivo de la solicitud
-        $file = $request->files->get('photo');
-
-        if ($file) {
-            // Mover la foto a un directorio temporal
-            $filePath = '/tmp/' . $file->getClientOriginalName();
-            $file->move('/tmp/', $file->getClientOriginalName());
-
-            // Enviar la imagen a la aplicación Python
-            $client = new Client();
-            $response = $client->request('POST', 'http://localhost:5000/procesar-foto', [
-                'multipart' => [
-                    [
-                        'name' => 'photo',
-                        'contents' => fopen($filePath, 'r'),
-                        'filename' => $file->getClientOriginalName(),
-                    ]
-                ]
-            ]);
-            
-            if ($response->getStatusCode() == 200) {
-                $data = json_decode($response->getBody(), true); // Asegúrate de decodificarlo como array asociativo
-                $intensities = $data['intensities'];
-            
-                return $this->render('resultados.html.twig', [
-                    'intensities' => $intensities  // Pasar la lista correctamente a Twig
-                ]);
-            } else {
-                return new Response('Error al procesar la imagen en la aplicación Python', 500);
-            }
-        }
-
-        return new Response('No se ha cargado ninguna imagen', 400);
     }
 
 
