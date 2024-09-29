@@ -19,31 +19,8 @@ class BaseController extends AbstractController
         ]);
     }
     
-<<<<<<< HEAD
-    #[Route('/image_upload', name: 'app_image_upload')]
-    public function image_upload(): Response
-    {
-        return $this->render('front/image_upload.html.twig', [
-        ]);
-    }
-
-
-    #[Route('/test_list', name: 'app_test_list')]
-    public function test_list(): Response
-    {
-
-        return $this->render('front/test/test_list.html.twig', [
-        ]);
-    }
-
-
-
-    #[Route('/procesar_imagen', name: 'app_procesar_imagen', methods: ['POST'])]
-    public function procesarImagen(Request $request): Response
-=======
     #[Route('/image_upload', name: 'app_image_upload', methods: ['GET', 'POST'])]
     public function image_upload(Request $request): Response
->>>>>>> 9de0472b7d36d6b320d2d7bfda54550c3dee1ab9
     {
         $form = $this->createForm(TestType::class);
         $form->handleRequest($request);
@@ -84,8 +61,4 @@ class BaseController extends AbstractController
             'controller_name' => 'BaseController',
         ]);
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 9de0472b7d36d6b320d2d7bfda54550c3dee1ab9

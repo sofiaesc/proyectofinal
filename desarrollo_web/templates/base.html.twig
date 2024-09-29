@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script src="script.js" defer></script>
+    <script src="{{ asset('script.js') }}" defer></script>
 
 </head>
 <body>
@@ -21,10 +21,10 @@
                 <h2>ELISATester</h2>
             </a>
             <ul class="nav-links">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Upload</a></li>
-                <li><a href="#">Results</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="{{path('app_index')}}">Home</a></li>
+                <li><a href="{{path('app_image_upload')}}">Upload</a></li>
+                <li><a href="{{ path('app_test_list') }}">Results</a></li>
+                <li><a href="{{ path('app_index') }}">Contact</a></li>
             </ul>
             <button class="login-btn">Iniciar Sesión</button>
         </nav>
