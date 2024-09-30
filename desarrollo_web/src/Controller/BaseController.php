@@ -29,36 +29,56 @@ class BaseController extends AbstractController
     }
     
     #[Route('/image_upload', name: 'app_image_upload', methods: ['GET', 'POST'])]
-public function image_upload(Request $request): Response
-{
-    $test = new Test();
-    $form = $this->createForm(TestType::class, $test);
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid()) {
-        // Procesar la imagen
-        $foto = $form->get('foto')->getData();
-
-        // Obtener las coordenadas directamente del formulario
-        $x1 = $form->get('x1')->getData();
-        $y1 = $form->get('y1')->getData();
-        $x2 = $form->get('x2')->getData();
-        $y2 = $form->get('y2')->getData();
-
-        // Puedes hacer lo que necesites con la imagen y las coordenadas aquí
-
-        // En lugar de redirigir, loguear las variables
-        dump($foto, $x1, $y1, $x2, $y2); // Muestra en la consola
-        die(); // Detiene la ejecución para que veas los resultados
-
-        // O, si prefieres seguir adelante después de ver los datos
-        // return $this->redirectToRoute('success_route');
+    public function image_upload(Request $request, HttpClientInterface $client): Response
+    {
+        $test = new Test();
+        $form = $this->createForm(TestType::class, $test);
+        $form->handleRequest($request);
+    
+        $respuesta_python = null;  // Inicializar la variable
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Procesar la imagen
+            $foto = $form->get('foto')->getData();
+            $x1 = (int) $form->get('x1')->getData();
+            $y1 = (int) $form->get('y1')->getData();
+            $x2 = (int) $form->get('x2')->getData();
+            $y2 = (int) $form->get('y2')->getData();
+    
+            // Enviar la imagen y coordenadas al servidor Flask
+            $imagePath = $foto->getPathname(); // Ruta temporal del archivo subido
+    
+            // Crear un array de datos para enviar
+            $formData = [
+                'top_left_x' => $x1,
+                'top_left_y' => $y1,
+                'bottom_right_x' => $x2,
+                'bottom_right_y' => $y2,
+                'image' => fopen($imagePath, 'r'), // Añadir la imagen aquí
+            ];
+    
+            // Hacer la petición
+            $response = $client->request('POST', 'http://localhost:5000/process', [
+                'headers' => [
+                    'Content-Type' => 'multipart/form-data',
+                ],
+                'body' => $formData, // Usar 'body' en lugar de 'multipart'
+            ]);
+    
+            // Procesar la respuesta
+            if ($response->getStatusCode() === 200) {
+                $respuesta_python = $response->toArray(); // Obtener datos de la respuesta
+            } else {
+                $errorData = $response->toArray(); // Obtener datos de error
+                // Maneja el error usando $errorData['message']...
+            }
+        }
+    
+        return $this->render('front/image_upload.html.twig', [
+            'respuesta_python' => $respuesta_python, // Pasar respuesta de Python
+            'form' => $form->createView(),
+        ]);
     }
-
-    return $this->render('front/image_upload.html.twig', [
-        'form' => $form->createView(),
-    ]);
-}
 
 
     #[Route('/test_list', name: 'app_test_list')]

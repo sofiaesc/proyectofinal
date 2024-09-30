@@ -63,6 +63,42 @@ def select_and_crop_elisa_plate(image):
 
     return crop, enlarged_crop, reduced_crop
 
+
+def crop_elisa_plate(image, top_left_x, top_left_y, bottom_right_x, bottom_right_y):
+    # Obtener dimensiones de la imagen
+    image_height, image_width = image.shape[:2]
+
+    # Asegurarse de que las coordenadas están dentro de los límites de la imagen
+    top_left_x = max(0, top_left_x)
+    top_left_y = max(0, top_left_y)
+    bottom_right_x = min(image_width, bottom_right_x)
+    bottom_right_y = min(image_height, bottom_right_y)
+
+    # Recorte original usando las coordenadas proporcionadas
+    crop = image[top_left_y:bottom_right_y, top_left_x:bottom_right_x]
+
+    # Cálculo del 2% para ampliación y reducción
+    w_original = bottom_right_x - top_left_x
+    h_original = bottom_right_y - top_left_y
+    delta_w = int(w_original * 0.02)
+    delta_h = int(h_original * 0.02)
+
+    # Recorte ampliado (hacia afuera)
+    x_enlarged = max(0, top_left_x - delta_w)
+    y_enlarged = max(0, top_left_y - delta_h)
+    w_enlarged = min(image_width - x_enlarged, w_original + 2 * delta_w)
+    h_enlarged = min(image_height - y_enlarged, h_original + 2 * delta_h)
+    enlarged_crop = image[y_enlarged:y_enlarged + h_enlarged, x_enlarged:x_enlarged + w_enlarged]
+
+    # Recorte reducido (hacia adentro)
+    x_reduced = top_left_x + delta_w
+    y_reduced = top_left_y + delta_h
+    w_reduced = max(1, w_original - 2 * delta_w)
+    h_reduced = max(1, h_original - 2 * delta_h)
+    reduced_crop = image[y_reduced:y_reduced + h_reduced, x_reduced:x_reduced + w_reduced]
+
+    return crop, enlarged_crop, reduced_crop
+
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
