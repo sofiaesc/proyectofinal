@@ -5,9 +5,7 @@ from utils.utils_graphics import *
 from utils.utils_preprocessing import *
 from circle_detection import *
 from analyze_wells import *
-import io
 import os
-from PIL import Image
 
 app = Flask(__name__)
 
@@ -25,24 +23,29 @@ def process_data():
         if image_file.content_type not in ['image/jpeg', 'image/png']:
             return jsonify({"error": "Unsupported file type. Please upload a JPEG or PNG image."}), 200
 
-        # Abrir la imagen
-        image = Image.open(image_file.stream)
+        # Leer la imagen con OpenCV directamente desde el archivo de imagen
+        image_file_bytes = np.frombuffer(image_file.read(), np.uint8)  # Convertir el archivo a bytes
+        image = cv.imdecode(image_file_bytes, cv.IMREAD_COLOR)  # Decodificar la imagen desde los bytes
 
         # Verificar si la imagen es nula
         if image is None:
             print("Received image is null.")
             return jsonify({"error": "Received image is null."}), 200
-        
-        # Convertir la imagen a un array de NumPy
-        image_array = np.array(image)
 
-        # Guardar la imagen en un directorio específico
+        # Guardar la imagen en un directorio específico usando OpenCV
         save_directory = 'uploads'
         os.makedirs(save_directory, exist_ok=True)  # Crear el directorio si no existe
         image_path = os.path.join(save_directory, f"{os.path.splitext(image_file.filename)[0]}_processed.png")
-        image.save(image_path)  # Guardar la imagen
+        cv.imwrite(image_path, image)  # Guardar la imagen
 
-        images = list(crop_elisa_plate(image_array, top_left_x, top_left_y, bottom_right_x, bottom_right_y))
+        # Convertir a escala de grises si es necesario
+        if len(image.shape) == 3 and image.shape[2] == 3:  # Comprobar si tiene 3 canales (RGB)
+            image_gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+        else:
+            image_gray = image
+
+        # Recortar la imagen (usando tus utilidades)
+        images = list(crop_elisa_plate(image, top_left_x, top_left_y, bottom_right_x, bottom_right_y))
 
         # Procesar la imagen 
         bool_elisa = is_elisa_test(images[0])
@@ -66,6 +69,7 @@ def process_data():
         # Convertir intensities a una lista si es un ndarray
         if isinstance(intensities, np.ndarray):
             intensities = intensities.tolist()
+
         print(intensities)
         # Retornar los resultados
         return jsonify({"intensities": intensities})
@@ -73,3 +77,6 @@ def process_data():
     except Exception as e:
         print(f"Error: {e}")  # Imprimir el error en consola
         return jsonify({"error": str(e)}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True)
