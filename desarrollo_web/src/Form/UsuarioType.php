@@ -6,29 +6,33 @@ use App\Entity\Usuario;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 class UsuarioType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', null, [
+            ->add('email', EmailType::class, [
                 'constraints' => [
-                    new Assert\NotBlank(),
-                    new Assert\Email(),
-                    new UniqueEntity([
-                        'fields' => 'email',
-                        'message' => 'Este correo ya está en uso.',
+                    new Assert\NotBlank([
+                        'message' => 'El correo no puede estar vacío.',
+                    ]),
+                    new Assert\Email([
+                        'message' => 'Por favor, ingrese un correo electrónico válido.',
                     ]),
                 ],
             ])
-            ->add('password', null, [
+            ->add('password', PasswordType::class, [
                 'constraints' => [
-                    new Assert\NotBlank(),
+                    new Assert\NotBlank([
+                        'message' => 'La contraseña no puede estar vacía.',
+                    ]),
                     new Assert\Length([
-                        'min' => 8, // Cambiado a 8 caracteres mínimos
+                        'min' => 6,
                         'minMessage' => 'La contraseña debe tener al menos {{ limit }} caracteres.',
                     ]),
                     new Assert\Regex([
@@ -43,28 +47,35 @@ class UsuarioType extends AbstractType
                         'pattern' => '/[0-9]/',
                         'message' => 'La contraseña debe contener al menos un número.',
                     ]),
-                    new Assert\Regex([
-                        'pattern' => '/[\W_]/',
-                        'message' => 'La contraseña debe contener al menos un carácter especial.',
+                ],
+            ])
+            ->add('nombre', TextType::class, [
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'El nombre no puede estar vacío.',
                     ]),
                 ],
             ])
-            ->add('nombre', null, [
+            ->add('apellido', TextType::class, [
                 'constraints' => [
-                    new Assert\NotBlank(),
+                    new Assert\NotBlank([
+                        'message' => 'El apellido no puede estar vacío.',
+                    ]),
                 ],
             ])
-            ->add('apellido', null, [
+            ->add('dni', TextType::class, [
                 'constraints' => [
-                    new Assert\NotBlank(),
-                ],
-            ])
-            ->add('dni', null, [
-                'constraints' => [
-                    new Assert\NotBlank(),
-                    new UniqueEntity([
-                        'fields' => 'dni',
-                        'message' => 'Este DNI ya está en uso.',
+                    new Assert\NotBlank([
+                        'message' => 'El DNI no puede estar vacío.',
+                    ]),
+                    new Assert\Length([
+                        'min' => 8,
+                        'max' => 8,
+                        'exactMessage' => 'El DNI debe tener exactamente {{ limit }} dígitos.',
+                    ]),
+                    new Assert\Regex([
+                        'pattern' => '/^\d{8}$/',
+                        'message' => 'El DNI debe contener exactamente 8 dígitos numéricos.',
                     ]),
                 ],
             ]);

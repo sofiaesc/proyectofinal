@@ -8,7 +8,11 @@
     <h1>AAAAAAAAA</h1>
     <h1>AAAAAAAAA</h1>
     <h1>AAAAAAAAA</h1>
+
     {{ form_start(form) }}
         {{ form_widget(form) }}
+
+        {# Aquí agregamos un botón de envío para cargar los datos #}
+        <button type="submit" class="btn btn-primary">Cargar Datos</button>
     {{ form_end(form) }}
 {% endblock %}
