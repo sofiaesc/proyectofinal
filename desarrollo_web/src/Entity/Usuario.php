@@ -45,7 +45,7 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, test>
      */
-    #[ORM\OneToMany(targetEntity: test::class, mappedBy: 'usuario')]
+    #[ORM\OneToMany(targetEntity: Test::class, mappedBy: 'usuario')]
     private Collection $tests;
 
     public function __construct()
@@ -172,7 +172,7 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->tests;
     }
 
-    public function addTest(test $test): static
+    public function addTest(Test $test): static
     {
         if (!$this->tests->contains($test)) {
             $this->tests->add($test);
@@ -182,7 +182,7 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeTest(test $test): static
+    public function removeTest(Test $test): static
     {
         if ($this->tests->removeElement($test)) {
             // set the owning side to null (unless already changed)

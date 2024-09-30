@@ -10,6 +10,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use GuzzleHttp\Client;
 use App\Form\TestType;
 use App\Entity\Test;
+use App\Form\UsuarioType;
+use App\Entity\Usuario;
 
 class BaseController extends AbstractController
 {
@@ -89,6 +91,15 @@ class BaseController extends AbstractController
         ]);
     }
 
+    #[Route('/new_user', name: 'app_new_user')]
+    public function new_user(): Response
+    {
+        $usuario = new Usuario();
+        $form = $this->createForm(UsuarioType::class, $usuario);
+        return $this->render('front/user/new_user.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
 
     #[Route('/pocillos_validos', name: 'app_pocillos_validos')]
     public function pocillos_validos(): Response
