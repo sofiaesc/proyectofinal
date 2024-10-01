@@ -32,7 +32,8 @@ class UsuarioController extends AbstractController
                 $usuario->getPassword() // Obtiene la contraseña en texto plano del objeto Usuario
             );
             $usuario->setPassword($hashedPassword); // Establece la contraseña hasheada
-
+            $roles = ["ROLE_USER"];
+            $usuario->setRoles($roles);
             // Guardar la entidad en la base de datos
             $entityManager->persist($usuario);
             $entityManager->flush();
