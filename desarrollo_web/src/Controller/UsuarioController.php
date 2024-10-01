@@ -10,6 +10,7 @@ use App\Form\UsuarioType;
 use App\Entity\Usuario;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface; 
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class UsuarioController extends AbstractController
 {
@@ -43,5 +44,25 @@ class UsuarioController extends AbstractController
         return $this->render('front/user/new_user.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route('/login', name: 'app_login')]
+    public function login(AuthenticationUtils $authenticationUtils): Response {
+        // Obtén el error de inicio de sesión, si hay uno
+        $error = $authenticationUtils->getLastAuthenticationError();
+
+        // Último nombre de usuario ingresado (puede ser útil para el formulario)
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('front/user/login.html.twig', [
+            'last_username' => $lastUsername,
+            'error' => $error,
+        ]);
+    }
+
+    #[Route('/logout', name: 'app_logout')]
+    public function logout()
+    {
+        // Symfony manejará esto automáticamente, no necesitas escribir nada aquí
     }
 }

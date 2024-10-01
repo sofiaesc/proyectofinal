@@ -32,7 +32,7 @@ class UsuarioType extends AbstractType
                         'message' => 'La contraseña no puede estar vacía.',
                     ]),
                     new Assert\Length([
-                        'min' => 6,
+                        'min' => 8,
                         'minMessage' => 'La contraseña debe tener al menos {{ limit }} caracteres.',
                     ]),
                     new Assert\Regex([
@@ -71,11 +71,7 @@ class UsuarioType extends AbstractType
                     new Assert\Length([
                         'min' => 8,
                         'max' => 8,
-                        'exactMessage' => 'El DNI debe tener exactamente {{ limit }} dígitos.',
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/^\d{8}$/',
-                        'message' => 'El DNI debe contener exactamente 8 dígitos numéricos.',
+                        'exactMessage' => 'El DNI debe contener exactamente 8 dígitos numéricos.',
                     ]),
                 ],
             ]);
