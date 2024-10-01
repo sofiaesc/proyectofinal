@@ -42,7 +42,7 @@
 
                         <div class="mb-3">
                             <label for="password" class="form-label">Contraseña:</label>
-                            {{ form_widget(form.password, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_widget(form.password, {'attr': {'class': 'form-control', 'pattern': '(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d!@#$%^&*]{8,}', 'title': 'La contraseña debe tener al menos una letra mayúscula, una minúscula, un número y un mínimo de 8 caracteres.'}}) }}
                             {% for error in form.password.vars.errors %}
                                 <div class="text-danger">{{ error.message }}</div> <!-- Mostrar errores para el campo de contraseña -->
                             {% endfor %}
