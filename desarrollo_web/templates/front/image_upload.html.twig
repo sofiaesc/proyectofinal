@@ -3,6 +3,9 @@
 {% block title %}Cargar Imagen{% endblock %}
 
 {% block body %}
+
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
     <div style="display: flex; justify-content: center; align-items: center; height: 110vh; flex-direction: column;">
         <div class="container">
             <div style="display: flex; justify-content: center; align-items: center;">
@@ -14,14 +17,103 @@
             {{ form_start(form) }}
                 {{ form_widget(form) }}
                 <div>
+                    <button id="selectInterestButton" type="button" class="custom-button">Seleccionar pocillos de interés</button>
+                </div>
+                <div>
                     <button type="submit" class="custom-button">Cargar imagen</button>
                 </div>
             {{ form_end(form) }}
         </div>
-
-        <!-- Contenedor para mostrar las coordenadas de los puntos -->
-        <div id="coordinates" style="margin-top: 20px; font-size: 18px; text-align: center;"></div>
     </div>
+
+    <!-- MODAL PARA MOSTRAR LOS CIRCULOS -->
+    <div id="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background: white; padding: 20px; border-radius: 8px; position: relative; text-align: center;">
+            <h2>Seleccionar porciones de interés</h2>
+            <div class="container2">
+                {% set rows = 8 %}  <!-- 8 filas -->
+                {% set columns = 12 %} <!-- 12 columnas -->
+                {% for row in 1..rows %}
+                    {% for col in 1..columns %}
+                        <div class="circle"></div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            <div style="margin-top: 20px;">
+                <button id="selectAllButton" type="button" class="custom-button">Seleccionar todos los pocillos</button>
+                <button id="deselectAllButton" type="button" class="custom-button">Deseleccionar todos los pocillos</button>
+                <button id="closeModalButton" type="button" class="custom-button">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const selectInterestButton = document.getElementById('selectInterestButton');
+        const modal = document.getElementById('modal');
+        const closeModalButton = document.getElementById('closeModalButton');
+        const selectAllButton = document.getElementById('selectAllButton');
+        const deselectAllButton = document.getElementById('deselectAllButton');
+
+        // Mostrar el modal
+        selectInterestButton.addEventListener('click', function() {
+            modal.style.display = 'flex';
+        });
+
+        // Cerrar el modal y generar el string
+        closeModalButton.addEventListener('click', function() {
+            modal.style.display = 'none';
+
+            // Array para almacenar el estado de cada círculo
+            let stateString = '';
+
+            // Seleccionar todos los círculos del modal
+            document.querySelectorAll('.circle').forEach(circle => {
+                // Obtener el color de fondo calculado
+                let currentColor = window.getComputedStyle(circle).backgroundColor;
+
+                // Si el color es verde (rgba(51, 185, 11, 0.56)) es un '1', si es rojo (rgba(255, 0, 0, 0.46)) es un '0'
+                if (currentColor === 'rgba(51, 185, 11, 0.56)') { // verde con opacidad
+                    stateString += '1';
+                } else {
+                    stateString += '0';
+                }
+            });
+
+            // Mostrar el string en la consola
+            console.log(stateString);
+        });
+
+        // Evento click para cambiar color de los círculos
+        document.querySelectorAll('.circle').forEach(circle => {
+            circle.addEventListener('click', function() {
+                // Obtener el color de fondo calculado
+                let currentColor = window.getComputedStyle(this).backgroundColor;
+
+                // Comparar el color y cambiar el fondo
+                if (currentColor === 'rgba(255, 0, 0, 0.46)') {  // rojo con opacidad
+                    this.style.backgroundColor = 'rgba(51, 185, 11, 0.56)'; // verde con opacidad
+                } else {
+                    this.style.backgroundColor = 'rgba(255, 0, 0, 0.46)'; // rojo con opacidad
+                }
+            });
+        });
+
+        // Seleccionar todos los pocillos (cambiar todos los círculos a verde)
+        selectAllButton.addEventListener('click', function() {
+            document.querySelectorAll('.circle').forEach(circle => {
+                circle.style.backgroundColor = 'rgba(51, 185, 11, 0.56)'; // verde con opacidad
+            });
+        });
+
+        // Deseleccionar todos los pocillos (cambiar todos los círculos a rojo)
+        deselectAllButton.addEventListener('click', function() {
+            document.querySelectorAll('.circle').forEach(circle => {
+                circle.style.backgroundColor = 'rgba(255, 0, 0, 0.46)'; // rojo con opacidad
+            });
+        });
+    </script>
+
+
 
     <script>
         const fileInput = document.querySelector('input[type="file"]');

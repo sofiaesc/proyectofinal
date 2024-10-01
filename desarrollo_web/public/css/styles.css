@@ -1,44 +1,27 @@
-/* Estructura básica */
-body, html {
-    height: 100%;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #10419c;
-}
 
 /* Contenedor envolvente */
-.container {
-    width: 60vw; /* 75% del ancho de la ventana */
-    max-height: 60vh; /* Máximo 75% de la altura de la ventana */
-    position: relative;
-    display: flex;
+.container2 {
+    width: 60vw; /* 60% del ancho de la ventana */
+    max-height: 60vh; /* Máximo 60% de la altura de la ventana */
+    display: grid;
+    grid-template-columns: repeat(12, 50px); /* 12 columnas de 50px cada una */
+    grid-template-rows: repeat(8, 50px); /* 8 filas de 50px cada una */
+    gap: 5px; /* Espaciado entre círculos */
     justify-content: center;
     align-items: center;
-}
-
-/* Contenedor del rectángulo con proporción */
-#rectangle {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr); /* 12 columnas */
-    grid-template-rows: repeat(8, 1fr);     /* 8 filas */
-    background-color: rgba(255, 255, 255, 0.438);
-    width: 100%; /* Ocupa todo el ancho del contenedor envolvente */
-    height: 100%; /* Ocupa toda la altura del contenedor envolvente */
-    aspect-ratio: 12 / 8; /* Mantener la proporción 12:8 */
-    padding: 10px;
-    border: 2px solid black;
-    box-sizing: border-box;
+    margin: auto;
+    background-color: #f0f0f0; /* Color de fondo del contenedor */
+    padding: 20px; /* Espaciado interno */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra */
 }
 
 /* Estilos de los círculos */
 .circle {
-    width: 80%; /* Ancho al 80% de la celda del grid */
-    height: 80%; /* Alto al 80% de la celda del grid */
+    width: 50px;
+    height: 50px;
     background-color: rgba(255, 0, 0, 0.46); /* Color inicial rojo con opacidad */
     border-radius: 50%;
-    margin: auto;
     display: flex;
     justify-content: center;
     align-items: center;
