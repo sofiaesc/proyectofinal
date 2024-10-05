@@ -33,7 +33,6 @@ class BaseController extends AbstractController
     #[Route('/test_list', name: 'app_test_list')]
     public function test_list(): Response
     {
-
         return $this->render('front/test/test_list.html.twig', [
         ]);
     }

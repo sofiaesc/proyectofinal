@@ -5,24 +5,25 @@
 {% block body %}
 
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
-
-    <div style="display: flex; justify-content: center; align-items: center; height: 110vh; flex-direction: column;">
-        <div class="container">
-            <div style="display: flex; justify-content: center; align-items: center;">
-                <canvas id="imageCanvas"></canvas>
+    <div class="main-container">
+        <div class="body-container">
+            <div class="container">
+                <div style="display: flex; justify-content: center; align-items: center;">
+                    <canvas id="imageCanvas"></canvas>
+                </div>
+                {% if respuesta_python %}
+                    <h2>La imagen cargada no se reconoce como un test ELISA. Intente nuevamente</h2>
+                {% endif %}
+                {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <div>
+                        <button id="selectInterestButton" type="button" class="form-button">Seleccionar pocillos de interés</button>
+                    </div>
+                    <div>
+                        <button type="submit" class="form-button">Cargar imagen</button>
+                    </div>
+                {{ form_end(form) }}
             </div>
-            {% if respuesta_python %}
-                <h2>La imagen cargada no se reconoce como un test ELISA. Intente nuevamente</h2>
-            {% endif %}
-            {{ form_start(form) }}
-                {{ form_widget(form) }}
-                <div>
-                    <button id="selectInterestButton" type="button" class="custom-button">Seleccionar pocillos de interés</button>
-                </div>
-                <div>
-                    <button type="submit" class="custom-button">Cargar imagen</button>
-                </div>
-            {{ form_end(form) }}
         </div>
     </div>
 

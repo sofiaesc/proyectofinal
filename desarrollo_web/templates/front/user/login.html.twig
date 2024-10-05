@@ -3,35 +3,30 @@
 {% block title %}Login{% endblock %}
 
 {% block body %}
-<div style="display: flex; justify-content: center; align-items: center; height: 110vh; flex-direction: column;">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 offset-md-2 custom-form-container">
-                <div class="custom-card p-4 mt-4">
-                    {% if error %}
-                        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                    {% endif %}
+<div class="main-container">
+    <div class="body-container">
+        <form action="{{ path('app_login') }}" method="post">
+            <div class="container">
+                <div class="input-container">
+                    <span class="material-icons">mail</span>
+                    <input type="email" placeholder="Ingresa tu correo electrónico" name="email" required>
+                </div>
 
-                    <form action="{{ path('app_login') }}" method="post">
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Correo electrónico:</label>
-                            <input type="text" name="email" id="email" class="form-control" value="{{ last_username }}" required autofocus>
-                        </div>
+                <div class="input-container">
+                    <span class="material-icons">lock</span>
+                    <input type="password" placeholder="Ingresa tu contraseña" name="password" required>
+                </div>
 
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Contraseña:</label>
-                            <input type="password" name="password" id="password" class="form-control" required>
-                        </div>
+                <button type="submit" class="form-button">Iniciar sesión</button>
 
-                        <button type="submit" class="custom-button" style="margin-top: 20px;">Iniciar sesión</button>
-                    </form>
-
-                    <div class="form-label"> 
-                        <p class="texto-blanco">¿No tienes una cuenta? <strong><a href="{{ path('app_new_user') }}" class="text-white">Registrarse</a></strong></p>
-                    </div>
+                <div class="form-footer"> 
+                    <span class="reg">¿No tienes una cuenta? 
+                        <strong><a href="{{ path('app_new_user') }}" class="text-white">Registrarse</a></strong>
+                    </span>
+                    <span class="psw"><a href="#">¿Olvidaste tu contraseña?</a></span>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 {% endblock %}

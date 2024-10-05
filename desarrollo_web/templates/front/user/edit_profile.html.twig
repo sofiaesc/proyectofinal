@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block body %}
+
+<div class="main-container">
+
+    <div class="body-container">
+        <div class="container">
+            <p class="edit-title">Editar perfil</p>
+            
+            <div class="edit-container">
+                <div class="edit-label">Nombre</div>
+                <input type="text" class="form-control" id="nombre" placeholder="Ingrese su nombre">
+            </div>
+
+            <div class="edit-container">
+                <div class="edit-label">Apellido</div>
+                <input type="text" class="form-control" id="apellido" placeholder="Ingrese su apellido">
+            </div>
+
+            <div class="edit-container">
+                <div class="edit-label">Email</div>
+                <input type="email" class="form-control" id="email" placeholder="Ingrese su email">
+            </div>
+
+            <div class="edit-container">
+                <div class="edit-label">Nueva Contraseña</div>
+                <input type="password" class="form-control" id="newPassword" placeholder="Ingrese nueva contraseña">
+            </div>
+
+            <div class="edit-container">
+                <div class="edit-label">Confirmar Contraseña</div>
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirme su nueva contraseña">
+            </div>
+
+            <div class="edit-container">
+                <div class="edit-label">Contraseña Anterior</div>
+                <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña actual">
+            </div>
+
+            <button type="submit" class="form-button">Actualizar</button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

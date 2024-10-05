@@ -11,6 +11,7 @@ use App\Entity\Usuario;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface; 
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class UsuarioController extends AbstractController
 {
@@ -65,5 +66,13 @@ class UsuarioController extends AbstractController
     public function logout()
     {
         // Symfony manejará esto automáticamente, no necesitas escribir nada aquí
+    }
+
+    #[Route('/edit_profile', name: 'app_edit_profile')]
+    public function edit_profile(): Response
+    {
+        return $this->render('front/user/edit_profile.html.twig', [
+            /*'user' => $user,*/
+        ]);
     }
 }

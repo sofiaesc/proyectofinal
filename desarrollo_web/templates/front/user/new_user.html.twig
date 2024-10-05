@@ -1,62 +1,42 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Registrarse{% endblock %}
+
 {% block body %}
-<div style="display: flex; justify-content: center; align-items: center; height: 110vh; flex-direction: column;">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 offset-md-2 custom-form-container">
-                <div class="custom-card p-4 mt-4">
-                    {{ form_start(form, {'attr': {'class': 'form'}}) }}
-
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Correo electrónico:</label>
-                            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
-                            {% for error in form.email.vars.errors %}
-                                <div class="text-danger">{{ error.message }}</div> <!-- Mostrar errores para el campo de email -->
-                            {% endfor %}
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="nombre" class="form-label">Nombre:</label>
-                            {{ form_widget(form.nombre, {'attr': {'class': 'form-control'}}) }}
-                            {% for error in form.nombre.vars.errors %}
-                                <div class="text-danger">{{ error.message }}</div> <!-- Mostrar errores para el campo de nombre -->
-                            {% endfor %}
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="apellido" class="form-label">Apellido:</label>
-                            {{ form_widget(form.apellido, {'attr': {'class': 'form-control'}}) }}
-                            {% for error in form.apellido.vars.errors %}
-                                <div class="text-danger">{{ error.message }}</div> <!-- Mostrar errores para el campo de apellido -->
-                            {% endfor %}
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="dni" class="form-label">DNI:</label>
-                            {{ form_widget(form.dni, {'attr': {'class': 'form-control'}}) }}
-                            {% for error in form.dni.vars.errors %}
-                                <div class="text-danger">{{ error.message }}</div> <!-- Mostrar errores para el campo de DNI -->
-                            {% endfor %}
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Contraseña:</label>
-                            {{ form_widget(form.password, {'attr': {'class': 'form-control', 'pattern': '(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d!@#$%^&*]{8,}', 'title': 'La contraseña debe tener al menos una letra mayúscula, una minúscula, un número y un mínimo de 8 caracteres.'}}) }}
-                            {% for error in form.password.vars.errors %}
-                                <div class="text-danger">{{ error.message }}</div> <!-- Mostrar errores para el campo de contraseña -->
-                            {% endfor %}
-                        </div>
-                        
-                        <button type="submit" class="custom-button" style="margin-top: 20px;">Registrarse</button>
-                    {{ form_end(form) }}
-                    
-                    <div class="form-label"> 
-                        <p>¿Ya estás registrado? <strong><a href="{{ path('app_login') }}" class="text-white">Iniciar sesión</a></strong></p>
-                    </div>
+<div class='main-container'>
+    <div class="body-container">
+        {{ form_start(form, {'attr': {'class': 'form'}}) }}
+            <div class="container">
+                <div class="input-container">
+                    <span class="material-icons">mail</span>
+                    {{ form_widget(form.email, {'attr': {'placeholder': 'Ingresa tu correo electrónico', 'required': true}}) }}
                 </div>
+
+                <div class="input-container">
+                    <span class="material-icons">person</span>
+                    {{ form_widget(form.nombre, {'attr': {'placeholder': 'Ingresa tu nombre', 'required': true}}) }}
+                </div>
+
+                <div class="input-container">
+                    <span class="material-icons">person_outline</span>
+                    {{ form_widget(form.apellido, {'attr': {'placeholder': 'Ingresa tu apellido', 'required': true}}) }}
+                </div>
+
+                <div class="input-container">
+                    <span class="material-icons">assignment</span>
+                    {{ form_widget(form.dni, {'attr': {'placeholder': 'Ingresa tu DNI', 'required': true}}) }}
+                </div>
+
+                <div class="input-container">
+                    <span class="material-icons">lock</span>
+                    {{ form_widget(form.password, {'attr': {'placeholder': 'Ingresa tu contraseña', 'required': true, 'pattern': '(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d!@#$%^&*]{8,}', 'title': 'La contraseña debe tener al menos una letra mayúscula, una minúscula, un número y un mínimo de 8 caracteres.'}}) }}
+                </div>
+
+                <button type="submit" class="form-button">Registrarse</button>
+
+                <span class="reg">¿Ya estás registrado? <strong><a href="{{ path('app_login') }}" class="text-white">Iniciar sesión</a></strong></span>
             </div>
-        </div>
+        {{ form_end(form) }}
     </div>
 </div>
 {% endblock %}
