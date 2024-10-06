@@ -9,32 +9,32 @@
             <div class="container">
                 <div class="input-container">
                     <span class="material-icons">mail</span>
-                    {{ form_widget(form.email, {'attr': {'placeholder': 'Ingresa tu correo electrónico', 'required': true}}) }}
+                    {{ form_widget(form.email, {'attr': {'placeholder': 'Ingrese su correo electrónico', 'required': true}}) }}
                 </div>
 
                 <div class="input-container">
                     <span class="material-icons">person</span>
-                    {{ form_widget(form.nombre, {'attr': {'placeholder': 'Ingresa tu nombre', 'required': true}}) }}
+                    {{ form_widget(form.nombre, {'attr': {'placeholder': 'Ingrese su nombre', 'required': true}}) }}
                 </div>
 
                 <div class="input-container">
                     <span class="material-icons">person_outline</span>
-                    {{ form_widget(form.apellido, {'attr': {'placeholder': 'Ingresa tu apellido', 'required': true}}) }}
+                    {{ form_widget(form.apellido, {'attr': {'placeholder': 'Ingrese su apellido', 'required': true}}) }}
                 </div>
 
                 <div class="input-container">
                     <span class="material-icons">assignment</span>
-                    {{ form_widget(form.dni, {'attr': {'placeholder': 'Ingresa tu DNI', 'required': true}}) }}
+                    {{ form_widget(form.dni, {'attr': {'placeholder': 'Ingrese su DNI', 'required': true}}) }}
                 </div>
 
                 <div class="input-container">
                     <span class="material-icons">lock</span>
-                    {{ form_widget(form.password, {'attr': {'placeholder': 'Ingresa tu contraseña', 'required': true, 'pattern': '(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d!@#$%^&*]{8,}', 'title': 'La contraseña debe tener al menos una letra mayúscula, una minúscula, un número y un mínimo de 8 caracteres.'}}) }}
+                    {{ form_widget(form.password, {'attr': {'placeholder': 'Ingrese su contraseña', 'required': true, 'pattern': '(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d!@#$%^&*]{8,}', 'title': 'La contraseña debe tener al menos una letra mayúscula, una minúscula, un número y un mínimo de 8 caracteres.'}}) }}
                 </div>
 
                 <button type="submit" class="form-button">Registrarse</button>
 
-                <span class="reg">¿Ya estás registrado? <strong><a href="{{ path('app_login') }}" class="text-white">Iniciar sesión</a></strong></span>
+                <span class="reg">¿Ya está registrado? <strong><a href="{{ path('app_login') }}" class="text-white">Iniciar sesión</a></strong></span>
             </div>
         {{ form_end(form) }}
     </div>
