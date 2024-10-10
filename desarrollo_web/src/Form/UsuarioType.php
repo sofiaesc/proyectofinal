@@ -62,18 +62,6 @@ class UsuarioType extends AbstractType
                         'message' => 'El apellido no puede estar vacío.',
                     ]),
                 ],
-            ])
-            ->add('dni', TextType::class, [
-                'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'El DNI no puede estar vacío.',
-                    ]),
-                    new Assert\Length([
-                        'min' => 8,
-                        'max' => 8,
-                        'exactMessage' => 'El DNI debe contener exactamente 8 dígitos numéricos.',
-                    ]),
-                ],
             ]);
     }
 

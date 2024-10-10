@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UsuarioRepository::class)]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER', fields: ['email', 'dni'])] // Añadido para email y dni
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER', fields: ['email'])] 
 class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -43,18 +43,6 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank]
     private ?string $apellido = null;
 
-    #[ORM\Column(type: 'string', length: 8, unique: true)] // Se guarda como string para asegurar longitud
-    #[Assert\NotBlank]
-    #[Assert\Length(
-        min: 8,
-        max: 8,
-        exactMessage: 'El DNI debe tener exactamente {{ limit }} dígitos.'
-    )]
-    #[Assert\Regex(
-        pattern: '/^\d{8}$/',
-        message: 'El DNI debe contener exactamente 8 dígitos numéricos.'
-    )]
-    private ?string $dni = null;
 
     /**
      * @var Collection<int, Test>
@@ -162,18 +150,6 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     public function setApellido(string $apellido): static
     {
         $this->apellido = $apellido;
-
-        return $this;
-    }
-
-    public function getDni(): ?string
-    {
-        return $this->dni;
-    }
-
-    public function setDni(string $dni): static
-    {
-        $this->dni = $dni;
 
         return $this;
     }

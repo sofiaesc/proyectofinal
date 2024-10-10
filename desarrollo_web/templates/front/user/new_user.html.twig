@@ -23,11 +23,6 @@
                 </div>
 
                 <div class="input-container">
-                    <span class="material-icons">assignment</span>
-                    {{ form_widget(form.dni, {'attr': {'placeholder': 'Ingrese su DNI', 'required': true}}) }}
-                </div>
-
-                <div class="input-container">
                     <span class="material-icons">lock</span>
                     {{ form_widget(form.password, {'attr': {'placeholder': 'Ingrese su contraseña', 'required': true, 'pattern': '(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d!@#$%^&*]{8,}', 'title': 'La contraseña debe tener al menos una letra mayúscula, una minúscula, un número y un mínimo de 8 caracteres.'}}) }}
                 </div>
