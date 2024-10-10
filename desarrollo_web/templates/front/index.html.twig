@@ -31,14 +31,13 @@
         </button>
     </div>
     <div class="carousel-caption"></div>
-<!-- Botón para abrir el modal de descargo de responsabilidad -->
-    <button id="disclaimer" class="form-button">Descargo de responsabilidad</button>
+
+    <button id="disclaimer" class="form-button">Instrucciones</button>
 </div>
 
-<!-- Modal de descargo de responsabilidad -->
 <div id="modal-disclaimer" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1000; justify-content: center; align-items: center;">
     <div style="background: white; width: 50%; padding: 20px; border-radius: 8px; position: relative; text-align: center;">
-        <h2>Descargo de responsabilidad</h2>
+        <h2>Instrucciones</h2>
         <br>
         <p style="text-align: left;">Esta aplicación esta desarrollada específicamente para el análisis de Test ELISA para detectar la enfermedad de Leishmaniasis.</p>
         <p style="text-align: left;">La misma en ningún caso debería ser considerada un instrumento profesional para este tipo de detección.</p>
@@ -53,63 +52,5 @@
 </div>
 
 <div class="blur-bg-overlay"></div>
-
-<!-- Estilos para el botón "Cerrar" -->
-<style>
-    .custom-button {
-        background-color: #007BFF;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        font-size: 16px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.3s ease;
-    }
-
-    .custom-button:hover {
-        background-color: #0056b3;
-        transform: scale(1.05);
-    }
-
-    .custom-button:active {
-        background-color: #004085;
-    }
-
-    .custom-button:focus {
-        outline: none;
-    }
-</style>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Obtener elementos
-        const disclaimerButton = document.getElementById('disclaimer');
-        const modalDisclaimer = document.getElementById('modal-disclaimer');
-        const closeModalDisclaimer = document.getElementById('closeModalDisclaimer');
-
-        // Verificar si se obtiene el botón correctamente
-        if (disclaimerButton) {
-            // Mostrar el modal
-            disclaimerButton.addEventListener('click', function() {
-                modalDisclaimer.style.display = 'flex';
-            });
-
-            // Cerrar el modal
-            closeModalDisclaimer.addEventListener('click', function() {
-                modalDisclaimer.style.display = 'none';
-            });
-
-            // Cerrar el modal si se hace clic fuera de la caja del modal
-            window.addEventListener('click', function(event) {
-                if (event.target === modalDisclaimer) {
-                    modalDisclaimer.style.display = 'none';
-                }
-            });
-        } else {
-            console.error('No se encontraron los elementos del modal o el botón.');
-        }
-    });
-</script>
 
 {% endblock %}

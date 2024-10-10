@@ -240,10 +240,6 @@ header {
         height: 80px;
     }
 
-    .form-popup {
-        width: 95%;
-    }
-
     .form-box .form-content {
         padding: 30px 20px;
     }
@@ -377,27 +373,27 @@ input {
 
 .main-container {
     display: flex;
-    justify-content: center; /* Centra el contenedor principal horizontalmente */
-    align-items: center; /* Centra el contenedor principal verticalmente */
-    height: 100vh; /* Ocupa toda la altura de la ventana */
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
 }
 
 .body-container {
     display: flex;
-    justify-content: flex-start; /* Alinea el contenido hacia la parte superior */
-    align-items: flex-start; /* Alinea el contenido hacia la parte superior */
+    justify-content: flex-start; 
+    align-items: flex-start; 
     flex-direction: column;
-    padding-top: 100px; /* Agrega un padding superior para el espacio deseado */
+    padding-top: 100px; 
 }
 
-/* EDIT PROFILE */
+/* EDITAR PERFIL */
 
 .edit-container {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
-    border: 1px solid #ccc; /* Bordes suaves */
-    border-radius: 5px; /* Bordes redondeados */
+    border: 1px solid #ccc;
+    border-radius: 5px; 
 }
 .edit-title {
     font-family:'Source Sans Pro';
@@ -407,24 +403,49 @@ input {
     text-align: center;
 }
 .edit-label {
-    flex: 0 0 120px; /* Ancho fijo para la etiqueta */
+    flex: 0 0 120px; 
     text-align: left;
     font-size: 14px;
-    font-weight: bold; /* Negrita para resaltar la etiqueta */
-    background-color: #f0f0f0; /* Fondo gris */
-    padding: 15px; /* Espaciado interno para la etiqueta */
-    border-top-left-radius: 5px; /* Redondear esquinas superiores */
-    border-bottom-left-radius: 5px; /* Redondear esquinas inferiores */
+    font-weight: bold; 
+    background-color: #f0f0f0; 
+    padding: 15px; 
+    border-top-left-radius: 5px; 
+    border-bottom-left-radius: 5px; 
 }
 .form-control {
-    flex: 1; /* Rellenar el espacio restante */
-    border: none; /* Sin borde en el campo de entrada */
+    flex: 1; 
+    border: none; 
     padding: 10px;
-    border-top-right-radius: 5px; /* Redondear esquina superior derecha */
-    border-bottom-right-radius: 5px; /* Redondear esquina inferior derecha */
-    background-color: #fff; /* Fondo blanco para el input */
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    background-color: #fff;
 }
 .form-control:focus {
-    outline: none; /* Quitar el borde azul al enfocar */
+    outline: none; 
     box-shadow: none;
+}
+
+/* instrucciones */
+.custom-button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.custom-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.custom-button:active {
+    background-color: #004085;
+}
+
+.custom-button:focus {
+    outline: none;
 }
