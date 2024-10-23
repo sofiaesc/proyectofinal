@@ -33,7 +33,8 @@ class TestType extends AbstractType
             ->add('x1', HiddenType::class, ['mapped' => false])
             ->add('y1', HiddenType::class, ['mapped' => false])
             ->add('x2', HiddenType::class, ['mapped' => false])
-            ->add('y2', HiddenType::class, ['mapped' => false]);
+            ->add('y2', HiddenType::class, ['mapped' => false])
+            ->add('pocillos_hab', HiddenType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
