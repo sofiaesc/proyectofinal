@@ -1,0 +1,12 @@
+# Ignorar carpetas de caché de Python
+__pycache__/
+
+# Ignorar el archivo de entorno de Symfony
+desarrollo_web/.env
+
+# Ignorar otras carpetas de caché
+util/__pycache__/
+
+# Ignorar scripts de inicio
+start_servers.ps1
+exe_sv.bat
