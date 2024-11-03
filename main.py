@@ -32,11 +32,11 @@ def process_data():
             print("Received image is null.")
             return jsonify({"error": "Received image is null."}), 200
 
-        # Guardar la imagen en un directorio específico usando OpenCV
-        save_directory = 'uploads'
-        os.makedirs(save_directory, exist_ok=True)  # Crear el directorio si no existe
-        image_path = os.path.join(save_directory, f"{os.path.splitext(image_file.filename)[0]}_processed.png")
-        cv.imwrite(image_path, image)  # Guardar la imagen
+        ## Guardar la imagen en un directorio específico usando OpenCV
+        #save_directory = 'uploads'
+        #os.makedirs(save_directory, exist_ok=True)  # Crear el directorio si no existe
+        #image_path = os.path.join(save_directory, f"{os.path.splitext(image_file.filename)[0]}_processed.png")
+        #cv.imwrite(image_path, image)  # Guardar la imagen
 
         # Convertir a escala de grises si es necesario
         if len(image.shape) == 3 and image.shape[2] == 3:  # Comprobar si tiene 3 canales (RGB)

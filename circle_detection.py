@@ -18,7 +18,7 @@ def circle_detection_corrected(images):
     gray_images.append(cv.cvtColor(images[2], cv.COLOR_BGR2GRAY))
     
     for radius in range(90, 110, 2):
-        for idx in range(3):            
+        for idx in range(0, 3, 1):            
             wells = circle_detection(gray_images[idx], radius)
             
             rightmost_wells  = find_extreme_circles(wells, 8, "right")
@@ -36,7 +36,7 @@ def circle_detection_corrected(images):
                             calculate_distance(topmost_wells,    slope_top,    intercept_top)   +
                             calculate_distance(bottommost_wells, slope_bottom, intercept_bottom))
             
-            print(radius, "Distancia total: ", total_dist)
+            print("rad",radius,"idx",idx, "Distancia total: ", total_dist)
             
             inter_top_left     = calculate_intersection(slope_left,  intercept_left,  slope_top,    intercept_top)
             inter_top_right    = calculate_intersection(slope_right, intercept_right, slope_top,    intercept_top)
@@ -53,7 +53,7 @@ def circle_detection_corrected(images):
                 best_idx = idx
             
             #--- Plot section ---# Comment for final product
-            #image_draw = images[idx+1].copy()
+            #image_draw = images[idx].copy()
             #image_draw = draw_line_and_circles(image_draw, rightmost_wells,  slope_right,  intercept_right)  
             #image_draw = draw_line_and_circles(image_draw, leftmost_wells,   slope_left,   intercept_left)
             #image_draw = draw_line_and_circles(image_draw, topmost_wells,    slope_top,    intercept_top)
@@ -79,5 +79,6 @@ def circle_detection_corrected(images):
         #print(bottom_limit)
         grid_points = generate_grid_points(left_limit, right_limit, top_limit, bottom_limit)
     
-    plot(images[best_idx],"new_image")
+    # Imagen ganadora de las 3 
+    # plot(images[best_idx],"new_image")
     return grid_points, best_radius, images[best_idx]
