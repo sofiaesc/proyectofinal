@@ -17,7 +17,7 @@ def circle_detection_corrected(images):
     gray_images.append(cv.cvtColor(images[1], cv.COLOR_BGR2GRAY))
     gray_images.append(cv.cvtColor(images[2], cv.COLOR_BGR2GRAY))
     
-    for radius in range(90, 110, 2):
+    for radius in range(90, 106, 3):
         for idx in range(0, 3, 1):            
             wells = circle_detection(gray_images[idx], radius)
             

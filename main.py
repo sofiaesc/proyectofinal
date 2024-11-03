@@ -69,8 +69,10 @@ def process_data():
         # Convertir intensities a una lista si es un ndarray
         if isinstance(intensities, np.ndarray):
             intensities = intensities.tolist()
+        
+        output_image_path = "desarrollo_web/uploads/output_image.png"
+        plot_wells_with_intensity(image, centers, radius, intensities, output_image_path)
 
-        print(intensities)
         # Retornar los resultados
         return jsonify({"intensities": intensities})
 

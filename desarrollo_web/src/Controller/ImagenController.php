@@ -96,10 +96,15 @@ class ImagenController extends AbstractController
                         }
                     }
                     // Persistir el Test y todos los Pocillos asociados
+                    $output_image_path = $this->getParameter('kernel.project_dir') . '/uploads/output_image.png';
+                    $foto = file_get_contents($output_image_path);
+                    $test->setFoto($foto);
                     $test->setFechaHora(new \DateTime('now', new \DateTimeZone('America/Argentina/Buenos_Aires')));
                     $test->setPocillosHab($selected_wells);
                     $entityManager->persist($test);
                     $entityManager->flush(); // Ejecutar la transacción
+
+                    //si la transacción es correcta
 
                     return $this->render('front/test/test_list.html.twig', [
                         'respuesta_python' => $respuesta_python, // Pasar la matriz modificada a la vista
