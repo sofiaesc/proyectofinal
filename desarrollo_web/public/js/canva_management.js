@@ -103,7 +103,7 @@
             ctx.drawImage(img, imgX, imgY, img.width * imgScale, img.height * imgScale);
             
             // Dibujar el área de selección con transparencia
-            ctx.fillStyle = 'rgba(0, 255, 0, 0.3)'; // Color verde con transparencia
+            ctx.fillStyle = 'rgba(157,180,197, 0.45)'; 
             ctx.beginPath();
             ctx.moveTo(rectPoints[0].x, rectPoints[0].y);
             ctx.lineTo(rectPoints[1].x, rectPoints[1].y);
@@ -119,7 +119,7 @@
                 ctx.lineTo(rectPoints[i].x, rectPoints[i].y);
             }
             ctx.closePath();
-            ctx.strokeStyle = "black";
+            ctx.strokeStyle = "rgba(89,112,133,255)";
             ctx.lineWidth = 2;
             ctx.stroke();
 
@@ -127,7 +127,7 @@
             for (const point of rectPoints) {
                 ctx.beginPath();
                 ctx.arc(point.x, point.y, pointRadius, 0, Math.PI * 2);
-                ctx.fillStyle = "gray";
+                ctx.fillStyle = "rgba(55, 67, 82, 255)";
                 ctx.fill();
                 ctx.closePath();
             }
