@@ -1,4 +1,4 @@
-const fileInput = document.querySelector('input[type="file"]');
+        const fileInput = document.querySelector('input[type="file"]');
         const canvas = document.getElementById('imageCanvas');
         const ctx = canvas.getContext('2d');
         let img, imgScale, imgX, imgY;
@@ -22,6 +22,31 @@ const fileInput = document.querySelector('input[type="file"]');
             const canvasStyleHeight = canvas.clientHeight;
             canvas.width = canvasStyleWidth;
             canvas.height = canvasStyleHeight;
+        
+            // Redibujar la imagen y el rectángulo interactivo
+            if (img) {
+                // Recalcular la escala y las posiciones de la imagen
+                imgScale = Math.min(canvas.width / img.width, canvas.height / img.height);
+                imgX = (canvas.width - img.width * imgScale) / 2;
+                imgY = (canvas.height - img.height * imgScale) / 2;
+        
+                // Actualizar las coordenadas de los puntos del rectángulo
+                const rectX1 = imgX + (img.width * imgScale) * (1 / 3);
+                const rectX2 = imgX + (img.width * imgScale) * (2 / 3);
+                const rectY1 = imgY + (img.height * imgScale) * (1 / 3);
+                const rectY2 = imgY + (img.height * imgScale) * (2 / 3);
+        
+                rectPoints = [
+                    { x: rectX1, y: rectY1 },
+                    { x: rectX2, y: rectY1 },
+                    { x: rectX2, y: rectY2 },
+                    { x: rectX1, y: rectY2 }
+                ];
+        
+                // Dibujar el rectángulo interactivo
+                updateHiddenInputs();
+                drawInteractiveRectangle();
+            }
         }
 
         adjustCanvasSize();
@@ -200,3 +225,6 @@ const fileInput = document.querySelector('input[type="file"]');
 
         // Ajustar el tamaño del canvas cuando se cambia el tamaño de la ventana
         window.addEventListener('resize', adjustCanvasSize);
+
+        
+        
