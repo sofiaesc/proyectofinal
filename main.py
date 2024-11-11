@@ -13,11 +13,13 @@ app = Flask(__name__)
 def process_data():
     try:
         # Recibir la imagen y parámetros
-        image_file = request.files['image']  # Obtener la imagen
+        image_file = request.files['image']  
         top_left_x = int(request.form['top_left_x'])
         top_left_y = int(request.form['top_left_y'])
         bottom_right_x = int(request.form['bottom_right_x'])
         bottom_right_y = int(request.form['bottom_right_y'])
+        user_id = request.form['user_id']
+        image_id = request.form['image_id']
 
         # Verificar el tipo de contenido de la imagen
         if image_file.content_type not in ['image/jpeg', 'image/png']:
@@ -31,12 +33,6 @@ def process_data():
         if image is None:
             print("Received image is null.")
             return jsonify({"error": "Received image is null."}), 200
-
-        ## Guardar la imagen en un directorio específico usando OpenCV
-        #save_directory = 'uploads'
-        #os.makedirs(save_directory, exist_ok=True)  # Crear el directorio si no existe
-        #image_path = os.path.join(save_directory, f"{os.path.splitext(image_file.filename)[0]}_processed.png")
-        #cv.imwrite(image_path, image)  # Guardar la imagen
 
         # Convertir a escala de grises si es necesario
         if len(image.shape) == 3 and image.shape[2] == 3:  # Comprobar si tiene 3 canales (RGB)
@@ -70,7 +66,7 @@ def process_data():
         if isinstance(intensities, np.ndarray):
             intensities = intensities.tolist()
         
-        output_image_path = "desarrollo_web/uploads/output_image.png"
+        output_image_path = f"desarrollo_web/public/test_images/{user_id}/{image_id}.png"
         plot_wells_with_intensity(image, centers, radius, intensities, output_image_path)
 
         # Retornar los resultados

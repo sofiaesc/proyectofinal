@@ -7,8 +7,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Función para verificar la selección de pocillos
     function checkPocillosSelection(stateString) {
-        // Mostrar el mensaje de advertencia si no se seleccionó ningún pocillo
-        console.log(stateString);
         if (stateString === "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000") {
             warningMessage.style.display = "block"; // Mostrar el mensaje
             return true; // Indicar que se debe prevenir el envío

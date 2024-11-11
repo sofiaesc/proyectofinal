@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cargar Imagen{% endblock %}
+
+{% block body %}
+
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}?v={{ random() }}">
+    <style>
+        .loader {
+            border: 8px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 8px solid white;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>    
+
+    <!-- CONTENEDOR DE ANIMACIÓN DE CARGA -->
+    <div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 2000; justify-content: center; align-items: center;">
+        <div class="loader">...ඞ</div>
+    </div>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="main-container">
+        <div class="body-container">
+            <div class="carga-container">
+                <div style="display: flex; justify-content: center; align-items: center;">
+                    <canvas id="imageCanvas"></canvas>
+                </div>
+                {% if error is defined %}
+                    {{ error }}
+                    <h2>La imagen cargada no se reconoce como un test ELISA. Intente nuevamente</h2>
+                {% endif %}
+                {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <div>
+                        <button id="selectInterestButton" type="button" class="form-button">Seleccionar pocillos de interés</button>
+                    </div>
+                    <div id="message" style="color: red; display: none;">Debe seleccionar al menos un pocillo</div>
+                    <div>
+                        <button type="submit" class="form-button">Cargar imagen</button>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PARA MOSTRAR LOS CIRCULOS -->
+    <div id="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background: white; padding: 20px; border-radius: 8px; position: relative; text-align: center;">
+            <h2>Seleccionar pocillos de interés</h2>
+            <div class="container2">
+                {% set rows = 8 %}  <!-- 8 filas -->
+                {% set columns = 12 %} <!-- 12 columnas -->
+                {% for row in 1..rows %}
+                    {% for col in 1..columns %}
+                        <div class="circle"></div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            <div style="margin-top: 20px;">
+                <button id="selectAllButton" type="button" class="custom-button">Seleccionar todos los pocillos</button>
+                <button id="deselectAllButton" type="button" class="custom-button">Deseleccionar todos los pocillos</button>
+                <button id="closeModalButton" type="button" class="custom-button">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Animación de carga -->
+    <script src="js/wait_animation.js"></script>
+
+    <!-- Manejo del mensaje de advertencia -->
+    <script src="js/warning_message.js"></script>
+
+    <!-- Selección de pocillos válidos -->
+    <script src="js/wells_selection.js"></script>
+
+    <!-- Manejo del canva (y parámetros ocultos) -->
+    <script src="js/canva_management.js"></script>
+
+{% endblock %}

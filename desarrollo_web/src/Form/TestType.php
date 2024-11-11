@@ -28,6 +28,7 @@ class TestType extends AbstractType
                         'mimeTypesMessage' => 'Por favor sube una imagen válida (JPEG o PNG)',
                     ])
                 ],
+                'mapped' => false,
             ])
             // Campos ocultos para las coordenadas
             ->add('x1', HiddenType::class, ['mapped' => false])

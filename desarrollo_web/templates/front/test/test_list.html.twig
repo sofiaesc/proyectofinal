@@ -1,20 +1,59 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Lista de Tests{% endblock %}
+{% block title %}Resultados de test{% endblock %}
 
 {% block body %}
-<div>
-    <section class="test-list-section">
-        <h1>Lista de Pruebas ELISA</h1>
-        <ul>
-            <li>Prueba 1</li>
-            <li>Prueba 2</li>
-            <li>Prueba 3</li>
-            <li>Prueba 3</li>
-            <li>Prueba 3</li>
-            <li>Prueba 3</li>
-            <!-- Aquí añades más elementos de tu lista -->
-        </ul>
-    </section>
+<div class="main-container">
+    <div class="container my-4">
+        <h3 class="text-center my-3">Resultados de Test</h3>
+        <div class="table-responsive">
+            <table class="table table-bordered text-center">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="columna">Identificador</th>
+                        <th class="columna">Fecha de realización</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                        <tr class="tabla-fila" onclick="window.location.href='{{ path('app_test_show', {'id': item.id}) }}'">
+                            <td class="columna">{{ item.nombreAlt }}</td>
+                            <td class="columna">{{ item.fechaHora|date('d/m/Y H:i') }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="2" class="text-center">No hay resultados para mostrar.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Paginación -->
+        <div class="pagination justify-content-center mt-4">
+            <a href="?page={{ current_page - 1 }}" class="btn btn-secondary mx-1 {% if current_page == 1 %}disabled{% endif %}">Anterior</a>
+            <span class="mx-2">Página {{ current_page }} de {{ total_pages }}</span>
+            <a href="?page={{ current_page + 1 }}" class="btn btn-secondary mx-1 {% if current_page == total_pages %}disabled{% endif %}">Siguiente</a>
+        </div>
+    </div>
 </div>
+
+<style>
+
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 5px;
+}
+
+.tabla-fila {
+    cursor: pointer; /* Cambia el cursor para indicar que es clickeable */
+    transition: background-color 0.3s ease; 
+}
+
+.tabla-fila:hover {
+    background-color: #f2f2f2;
+}
+
+</style>
 {% endblock %}

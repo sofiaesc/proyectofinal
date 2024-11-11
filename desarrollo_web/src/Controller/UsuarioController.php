@@ -40,7 +40,7 @@ class UsuarioController extends AbstractController
             $entityManager->flush();
 
             // Opcionalmente, redirigir a otra página después de guardar
-            return $this->redirectToRoute('some_route_name');
+            return $this->redirectToRoute('app_index');
         }
 
         return $this->render('front/user/new_user.html.twig', [

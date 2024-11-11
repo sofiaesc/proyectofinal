@@ -36,8 +36,6 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
 
-        // Mostrar el string en la consola
-        console.log(stateString);
         pocillos_hab.value = stateString;
     });
 

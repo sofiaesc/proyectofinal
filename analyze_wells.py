@@ -1,6 +1,7 @@
 import cv2 as cv
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
@@ -38,6 +39,10 @@ def analyze_wells(image, grid_points, well_radius):
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
 
+import cv2 as cv
+import numpy as np
+import os
+
 def plot_wells_with_intensity(image, grid_points, well_radius, intensities, output_path):
     # Hacer una copia de la imagen original para no modificarla
     output_image = image.copy()
@@ -63,14 +68,29 @@ def plot_wells_with_intensity(image, grid_points, well_radius, intensities, outp
             else:
                 circle_color = (0, 165, 255)  # Naranja en BGR
 
-            # Dibujar el círculo
-            cv.circle(output_image, (int(pt[0]), int(pt[1])), well_radius, circle_color, 2)
+            # Dibujar el círculo con mayor grosor
+            cv.circle(output_image, (int(pt[0]), int(pt[1])), well_radius, circle_color, 10)
 
-            # Agregar el valor de la intensidad como texto
-            cv.putText(output_image, str(int(intensity)), (int(pt[0]), int(pt[1])),
-                       cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv.LINE_AA)
+            # Obtener tamaño del texto para centrarlo
+            text = str(int(intensity))
+            font_scale = 1.25
+            font_thickness = 4
+            (text_width, text_height), baseline = cv.getTextSize(text, cv.FONT_HERSHEY_SIMPLEX, font_scale, font_thickness)
+
+            # Calcular posición centrada del texto
+            text_x = int(pt[0] - text_width / 2)
+            text_y = int(pt[1] + text_height / 2)
+
+            # Dibujar el texto centrado en el círculo
+            cv.putText(output_image, text, (text_x, text_y), cv.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), font_thickness, cv.LINE_AA)
     
-    # Guardar la imagen en la ruta especificada
-    cv.imwrite(output_path, output_image)
+    # Guardar la imagen procesada
+    output_dir = os.path.dirname(output_path)
+    os.makedirs(output_dir, exist_ok=True)
+    if cv.imwrite(output_path, output_image):
+        print(f"Image successfully saved to {output_path}")
+    else:
+        print(f"Failed to save image to {output_path}")
+
 
 

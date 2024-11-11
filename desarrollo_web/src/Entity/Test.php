@@ -28,6 +28,9 @@ class Test
     #[ORM\ManyToOne(inversedBy: 'tests')]
     private ?Usuario $usuario = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $ruta_imagen = null;
+
     /**
      * @var Collection<int, pocillo>
      */
@@ -36,9 +39,6 @@ class Test
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $fechaHora = null;
-
-    #[ORM\Column(type: Types::BLOB)]
-    private $foto = null;
 
     public function __construct()
     {
@@ -140,14 +140,14 @@ class Test
         return $this;
     }
 
-    public function getFoto()
+    public function getRutaImagen(): ?string
     {
-        return $this->foto;
+        return $this->ruta_imagen;
     }
 
-    public function setFoto($foto): static
+    public function setRutaImagen(string $rutaImagen): self
     {
-        $this->foto = $foto;
+        $this->ruta_imagen = $rutaImagen;
 
         return $this;
     }

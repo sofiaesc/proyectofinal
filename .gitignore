@@ -4,6 +4,8 @@ __pycache__/
 # Ignorar el archivo de entorno de Symfony
 desarrollo_web/.env
 
+desarrollo_web/public/test_images
+
 # Ignorar otras carpetas de caché
 util/__pycache__/
 

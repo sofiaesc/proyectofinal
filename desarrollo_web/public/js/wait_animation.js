@@ -9,10 +9,8 @@ document.addEventListener("DOMContentLoaded", function() {
         const shouldPreventSubmit = window.checkPocillosSelection(pocillos_hab.value); // Obtén el valor del estado
 
         if (shouldPreventSubmit) {
-            console.log("previno");
             event.preventDefault(); // Prevenir el envío del formulario si no se seleccionó ningún pocillo
         } else {
-            console.log("no previno");
             // Mostrar la animación de carga
             loadingOverlay.style.display = 'flex';
 
