@@ -60,6 +60,7 @@ class ImagenController extends AbstractController
                 'bottom_right_x' => $x2,
                 'bottom_right_y' => $y2,
                 'image' => fopen($foto->getPathname(), 'r'),
+                'selected_wells' => $selected_wells,
                 'user_id' => $user_id,
                 'image_id' => $image_id,
             ];

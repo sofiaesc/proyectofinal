@@ -18,6 +18,7 @@ def process_data():
         top_left_y = int(request.form['top_left_y'])
         bottom_right_x = int(request.form['bottom_right_x'])
         bottom_right_y = int(request.form['bottom_right_y'])
+        selected_wells = request.form['selected_wells']
         user_id = request.form['user_id']
         image_id = request.form['image_id']
 
@@ -67,7 +68,7 @@ def process_data():
             intensities = intensities.tolist()
         
         output_image_path = f"desarrollo_web/public/test_images/{user_id}/{image_id}.png"
-        plot_wells_with_intensity(image, centers, radius, intensities, output_image_path)
+        plot_wells_with_intensity(image, centers, radius, intensities, output_image_path, selected_wells)
 
         # Retornar los resultados
         return jsonify({"intensities": intensities})

@@ -39,27 +39,27 @@ def analyze_wells(image, grid_points, well_radius):
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
 
-import cv2 as cv
-import numpy as np
-import os
+def plot_wells_with_intensity(image, grid_points, well_radius, intensities, output_path, selected_wells):
 
-def plot_wells_with_intensity(image, grid_points, well_radius, intensities, output_path):
-    # Hacer una copia de la imagen original para no modificarla
+
     output_image = image.copy()
+    overlay = output_image.copy()
     
-    # Convertir intensities a un numpy array si es necesario
     if isinstance(intensities, list):
         intensities = np.array(intensities)
     
-    # Asegurarse de que el radio del pozo sea un entero
     well_radius = int(well_radius)
-    
-    # Obtener las dimensiones de la imagen
     height, width = output_image.shape[:2]
+    well_num = 0
     
     # Iterar a través de los puntos y las intensidades
     for pt, intensity in zip(grid_points, intensities.flatten()):
-        if 0 <= pt[0] < width and 0 <= pt[1] < height:
+        if well_num >= len(selected_wells):
+            break 
+
+        # Dibujar solo si el pozo está seleccionado
+        if 0 <= pt[0] < width and 0 <= pt[1] < height and selected_wells[well_num] == '1':
+            
             # Determinar el color del círculo basado en la intensidad
             if intensity > 105:
                 circle_color = (0, 255, 0)  # Verde en BGR
@@ -67,22 +67,17 @@ def plot_wells_with_intensity(image, grid_points, well_radius, intensities, outp
                 circle_color = (0, 0, 255)  # Rojo en BGR
             else:
                 circle_color = (0, 165, 255)  # Naranja en BGR
+            
+            # Dibujar el círculo relleno (en la capa overlay)
+            cv.circle(overlay, (int(pt[0]), int(pt[1])), well_radius, circle_color, -1)  # -1 para relleno
 
-            # Dibujar el círculo con mayor grosor
+            # Dibujar el contorno del círculo (en la imagen original)
             cv.circle(output_image, (int(pt[0]), int(pt[1])), well_radius, circle_color, 10)
-
-            # Obtener tamaño del texto para centrarlo
-            text = str(int(intensity))
-            font_scale = 1.25
-            font_thickness = 4
-            (text_width, text_height), baseline = cv.getTextSize(text, cv.FONT_HERSHEY_SIMPLEX, font_scale, font_thickness)
-
-            # Calcular posición centrada del texto
-            text_x = int(pt[0] - text_width / 2)
-            text_y = int(pt[1] + text_height / 2)
-
-            # Dibujar el texto centrado en el círculo
-            cv.putText(output_image, text, (text_x, text_y), cv.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), font_thickness, cv.LINE_AA)
+        
+        well_num += 1
+    
+    alpha = 0.25  # Transparencia del relleno
+    output_image = cv.addWeighted(overlay, alpha, output_image, 1 - alpha, 0)
     
     # Guardar la imagen procesada
     output_dir = os.path.dirname(output_path)
@@ -91,6 +86,7 @@ def plot_wells_with_intensity(image, grid_points, well_radius, intensities, outp
         print(f"Image successfully saved to {output_path}")
     else:
         print(f"Failed to save image to {output_path}")
+
 
 
 
