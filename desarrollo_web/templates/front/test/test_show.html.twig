@@ -5,23 +5,25 @@
 {% block body %}
 <div class="main-container">
     <div class="container">
-        <h3 class="text-center my-3">Detalles del Test</h3>
-        
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">ID: {{ item.id }}</h5>
-                
-                {% if item.nombreAlt is not null %}
-                    <p class="mb-0 me-2"><strong>Nombre:</strong> {{ item.nombreAlt }}</p>
-                {% endif %}
-                
-                <p><strong>Fecha de realización:</strong> {{ item.fechaHora|date('d/m/Y H:i') }}</p>
-                {% if item.rutaImagen is not null %}
-                    <img src="{{ asset(item.rutaImagen) }}" alt="Foto" class="img-fluid custom-img">
-                {% else %}
-                    <p>No hay foto disponible.</p>
-                {% endif %}
-            </div>
+        <h3>Detalles del Test</h3>
+
+        <div>
+            <h5>ID: {{ item.id }}</h5>
+            
+            {% if item.nombreAlt is not null %}
+                <p><strong>Nombre:</strong> <span id="nombreAlt">{{ item.nombreAlt }}</span> 
+                    <a href="#" id="editNombreBtn" data-id="{{ item.id }}">
+                        <span class="material-icons">edit</span>
+                    </a>
+                </p>
+            {% endif %}
+            
+            <p><strong>Fecha de realización:</strong> {{ item.fechaHora|date('d/m/Y H:i') }}</p>
+            {% if item.rutaImagen is not null %}
+                <img src="{{ asset(item.rutaImagen) }}" alt="Foto" class="custom-img">
+            {% else %}
+                <p>No hay foto disponible.</p>
+            {% endif %}
         </div>
 
         <!-- Contenedor de botones -->
@@ -33,61 +35,5 @@
         </div>
     </div>
 </div>
-
-<style>
-/* Imagen dentro de la tarjeta */
-.custom-img {
-    max-height: 40vh; 
-    width: auto;      
-    object-fit: contain; 
-    margin: 15px;
-}
-
-/* Contenedor para los botones */
-.button-container {
-    display: flex;
-    justify-content: space-between; /* Espaciado entre botones */
-    align-items: center;
-}
-
-/* Estilos del botón de la izquierda */
-.btn-left {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-}
-
-.btn-left:hover {
-    background-color: #0056b3;
-}
-
-/* Estilos del botón de la derecha */
-.btn-right {
-    display: flex;
-    align-items: center;
-    background-color: #28a745;
-    color: white;
-    padding: 10px 15px;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-}
-
-.btn-right:hover {
-    background-color: #1e7e34;
-}
-
-/* Icono del PDF */
-.pdf-icon {
-    width: 20px;
-    height: auto;
-    margin-right: 8px; /* Espacio entre el icono y el texto */
-}
-</style>
 
 {% endblock %}

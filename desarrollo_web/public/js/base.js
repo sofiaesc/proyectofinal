@@ -93,4 +93,27 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('No se encontraron los elementos del modal o el botón.');
     }
     
+
+    /* Editar nombre */
+    // Obtener el modal y el botón de editar
+    const modal = document.getElementById("editNameModal");
+    const editButton = document.getElementById("editButton");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+
+    // Cuando el usuario hace clic en el botón de editar, abrir el modal
+    editButton.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // Cuando el usuario hace clic en el botón de cerrar (×), cerrar el modal
+    closeModalBtn.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // Cuando el usuario hace clic fuera del modal, también lo cierra
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    } 
 });

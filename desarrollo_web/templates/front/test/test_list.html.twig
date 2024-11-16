@@ -29,11 +29,11 @@
                     <div class="item-card">
                         <h5>{{ item.nombreAlt }}</h5>
                         <p>Fecha de realización: {{ item.fechaHora|date('d/m/Y H:i') }}</p>
-                        <div class="d-flex justify-content-between">
-                            <a href="{{ path('app_test_show', {'id': item.id}) }}" class="btn btn-link">
+                        <div class="d-flex">
+                            <a href="{{ path('app_test_show', {'id': item.id}) }}">
                                 <img src="{{ asset('images/details.png') }}" alt="Ver resultados" class="img-fluid" style="width: 30px; height: 30px;">
                             </a>
-                            <a href="{{ path('app_test_show', {'id': item.id}) }}" class="btn btn-link ml-auto">
+                            <a href="{{ path('app_test_show', {'id': item.id}) }}">
                                 <img src="{{ asset('images/delete.png') }}" alt="Eliminar test" class="img-fluid" style="width: 30px; height: 30px;">
                             </a>
                         </div>

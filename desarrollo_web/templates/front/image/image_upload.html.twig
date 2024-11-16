@@ -23,7 +23,7 @@
 
     <!-- CONTENEDOR DE ANIMACIÓN DE CARGA -->
     <div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 2000; justify-content: center; align-items: center;">
-        <div class="loader">...ඞ</div>
+        <div class="loader"></div>
     </div>
 
     <!-- CONTENEDOR PRINCIPAL -->
@@ -31,13 +31,16 @@
         <div class="body-container">
             <div class="carga-container">
                 {{ form_start(form) }}
-                <div class="row">
-                    <div style="text-align: left;"> 
-                        {{ form_label(form.nombre_alt) }}
-                    </div>
-                    <div>
-                        {{ form_widget(form.nombre_alt) }}
-                    </div>
+                <div style="position: relative; width: 100%;">
+                    <span class="material-icons" style="position: absolute; left: 8px; top: 50%; transform: translateY(-50%); color: #666;">
+                        edit
+                    </span>
+                    {{ form_widget(form.nombre_alt, {
+                        'attr': {
+                            'class': 'form-input',
+                            'style': 'padding-left: 36px;'
+                        }
+                    }) }}
                 </div>
                 <div style="display: flex; justify-content: center; align-items: center;">
                     <canvas id="imageCanvas"></canvas>

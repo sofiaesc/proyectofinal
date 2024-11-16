@@ -56,34 +56,29 @@ class TestController extends AbstractController
         ]);
     }
 
-    #[Route('/test_edit/{id}', name: 'app_test_edit')]
-    public function test_edit(int $id, Request $request, EntityManagerInterface $entityManager): Response
+    /**
+     * @Route("/test/{id}/edit-name", name="app_test_edit_name", methods={"POST"})
+     */
+    public function editName(int $id, Request $request): JsonResponse
     {
-        // Busca el test con el ID proporcionado
-        $test = $entityManager->getRepository(Test::class)->find($id);
+        // Buscar el test por su ID
+        $test = $this->getDoctrine()->getRepository(Test::class)->find($id);
+
         if (!$test) {
-            throw $this->createNotFoundException('El test no existe');
+            return new JsonResponse(['status' => 'error', 'message' => 'Test no encontrado'], 404);
         }
 
-        // Manejar el formulario (modificación de nombreAlt)
-        if ($request->isMethod('POST')) {
-            $nuevoNombre = $request->request->get('nombreAlt');
-            if ($nuevoNombre) {
-                $test->setNombreAlt($nuevoNombre); // Asegúrate de tener un setter en tu entidad
-                $entityManager->flush();
+        // Obtener el nuevo nombre desde la solicitud AJAX
+        $newName = $request->request->get('nombreAlt');
 
-                // Redirige a la vista del test después de guardar los cambios
-                return $this->redirectToRoute('app_test_show', ['id' => $test->getId()]);
-            }
+        // Actualizar el nombre
+        $test->setNombreAlt($newName);
 
-            // Si no se proporciona un nombre válido
-            $this->addFlash('error', 'El nombre no puede estar vacío.');
-        }
+        // Guardar los cambios
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->flush();
 
-        // Renderiza el formulario para editar el test
-        return $this->render('/front/test/test_edit.html.twig', [
-            'test' => $test,
-        ]);
+        return new JsonResponse(['status' => 'success', 'message' => 'Nombre actualizado correctamente']);
     }
 
 }

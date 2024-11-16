@@ -605,3 +605,62 @@ input {
 .custom-button:focus {
     outline: none;
 }
+
+/* detalle de test*/
+/* Imagen dentro de la tarjeta */
+.custom-img {
+    max-height: 40vh; /* Limita la altura máxima al 40% de la ventana */
+    max-width: 100%; /* Asegura que no exceda el ancho del contenedor */
+    width: auto; /* Mantiene las proporciones horizontales */
+    height: auto; /* Mantiene las proporciones verticales */
+    object-fit: contain; /* Ajusta la imagen dentro del espacio disponible */
+    margin: 15px; /* Espaciado */
+    display: block; /* Centra la imagen dentro del contenedor */
+    margin-left: auto; /* Centra horizontalmente */
+    margin-right: auto; /* Centra horizontalmente */
+}
+
+/* Contenedor para los botones */
+.button-container {
+    display: flex;
+    justify-content: space-between; /* Espaciado entre botones */
+    align-items: center;
+}
+
+/* Estilos del botón de la izquierda */
+.btn-left {
+    background-color: #545454;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-left:hover {
+    background-color: #484848;
+}
+
+/* Estilos del botón de la derecha */
+.btn-right {
+    display: flex;
+    align-items: center;
+    background-color: #6d9fc0;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-right:hover {
+    background-color: #427595;
+}
+
+.pdf-icon {
+    width: 20px;
+    height: auto;
+    margin-right: 8px; /* Espacio entre el icono y el texto */
+}
