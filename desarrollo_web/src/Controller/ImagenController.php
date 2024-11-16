@@ -8,12 +8,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Form\TestType;
 use App\Entity\Test;
 use App\Entity\Pocillo;
 
 class ImagenController extends AbstractController
 {
+    
     private $httpClient;
 
     public function __construct(HttpClientInterface $httpClient)
@@ -22,6 +24,7 @@ class ImagenController extends AbstractController
     }
 
     #[Route('/image_upload', name: 'app_image_upload', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_USER')]
     public function image_upload(Request $request, HttpClientInterface $client, EntityManagerInterface $entityManager): Response
     {
 
@@ -31,9 +34,17 @@ class ImagenController extends AbstractController
         }
         $user_id = $user->getId();
         $image_id = uniqid();
-         
+
+        $testRepository = $entityManager->getRepository(Test::class);
+        $testCount = $testRepository->createQueryBuilder('t')
+            ->select('COUNT(t.id)')
+            ->where('t.usuario = :usuario')
+            ->setParameter('usuario', $user_id)
+            ->getQuery()
+            ->getSingleScalarResult();
+
         $test = new Test();
-        
+        $test->setNombreAlt('TestN°' . ($testCount + 1));
         $form = $this->createForm(TestType::class, $test, [
             'allow_extra_fields' => true,
         ]);
@@ -83,15 +94,6 @@ class ImagenController extends AbstractController
                     $test->setFechaHora(new \DateTime('now', new \DateTimeZone('America/Argentina/Buenos_Aires')));
                     $test->setPocillosHab($selected_wells);
                     $test->setUsuario($user);
-
-                    $testRepository = $entityManager->getRepository(Test::class);
-                    $testCount = $testRepository->createQueryBuilder('t')
-                        ->select('COUNT(t.id)')
-                        ->where('t.usuario = :usuario')
-                        ->setParameter('usuario', $user_id)
-                        ->getQuery()
-                        ->getSingleScalarResult();
-                    $test->setNombreAlt('TestN°'.($testCount + 1));
 
                     $entityManager->persist($test);
                     $entityManager->flush();

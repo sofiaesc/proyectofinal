@@ -30,6 +30,15 @@
     <div class="main-container">
         <div class="body-container">
             <div class="carga-container">
+                {{ form_start(form) }}
+                <div class="row">
+                    <div style="text-align: left;"> 
+                        {{ form_label(form.nombre_alt) }}
+                    </div>
+                    <div>
+                        {{ form_widget(form.nombre_alt) }}
+                    </div>
+                </div>
                 <div style="display: flex; justify-content: center; align-items: center;">
                     <canvas id="imageCanvas"></canvas>
                 </div>
@@ -37,7 +46,6 @@
                     {{ error }}
                     <h2>La imagen cargada no se reconoce como un test ELISA. Intente nuevamente</h2>
                 {% endif %}
-                {{ form_start(form) }}
                     {{ form_widget(form) }}
                     <div>
                         <button id="selectInterestButton" type="button" class="form-button">Seleccionar pocillos de interés</button>
