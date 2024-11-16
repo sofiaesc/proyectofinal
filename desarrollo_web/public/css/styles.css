@@ -4,12 +4,13 @@
     width: 60vw; /* 60% del ancho de la ventana */
     max-height: 60vh; /* Máximo 60% de la altura de la ventana */
     display: grid;
-    grid-template-columns: repeat(12, 50px); /* 12 columnas de 50px cada una */
-    grid-template-rows: repeat(8, 50px); /* 8 filas de 50px cada una */
+    grid-template-columns: repeat(12, 40px); /* 12 columnas de 50px cada una */
+    grid-template-rows: repeat(8, 40px); /* 8 filas de 50px cada una */
     gap: 5px; /* Espaciado entre círculos */
     justify-content: center;
     align-items: center;
     margin: auto;
+    overflow-y: auto;
     background-color: #f0f0f0; /* Color de fondo del contenedor */
     padding: 20px; /* Espaciado interno */
     border-radius: 8px; /* Bordes redondeados */
@@ -18,8 +19,8 @@
 
 /* Estilos de los círculos */
 .circle {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     background-color: rgba(255, 0, 0, 0.46); /* Color inicial rojo con opacidad */
     border-radius: 50%;
     display: flex;
@@ -81,12 +82,12 @@ header {
     border-radius: 10px;
     cursor: pointer;
     margin: 5px 0;
-    background: #87B1D7;
+    background: #75a7c4;
     transition: 0.2s ease;
 }
 
 .form-button:hover {
-    background: #0097a7;
+    background: #5294bb;
 }
 
 .navbar {
@@ -459,31 +460,6 @@ input {
     box-shadow: none;
 }
 
-/* instrucciones */
-.custom-button {
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.custom-button:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
-}
-
-.custom-button:active {
-    background-color: #004085;
-}
-
-.custom-button:focus {
-    outline: none;
-}
-
 /* SECCIÓN DE RESULTADOS*/
 /* Contenedor de items */
 .resultados-container {
@@ -603,4 +579,29 @@ input {
     border-color: #007bff; /* Borde azul cuando tiene foco */
     box-shadow: 0 0 8px rgba(0, 123, 255, 0.5); /* Sombra alrededor */
     outline: none; /* Quitar contorno al hacer foco */
+}
+
+/* instrucciones */
+.custom-button {
+    background-color: #4788c1;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.custom-button:hover {
+    background-color: rgb(57, 96, 138);
+    transform: scale(1.03);
+}
+
+.custom-button:active {
+    background-color: rgb(49, 87, 127);
+}
+
+.custom-button:focus {
+    outline: none;
 }

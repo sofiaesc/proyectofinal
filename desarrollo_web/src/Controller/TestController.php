@@ -43,7 +43,6 @@ class TestController extends AbstractController
         ]);
     }
 
-
     #[Route('test_show/{id}', name: 'app_test_show')]
     public function test_show(int $id, EntityManagerInterface $entityManager): Response
     {
@@ -56,4 +55,35 @@ class TestController extends AbstractController
             'item' => $item,
         ]);
     }
+
+    #[Route('/test_edit/{id}', name: 'app_test_edit')]
+    public function test_edit(int $id, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        // Busca el test con el ID proporcionado
+        $test = $entityManager->getRepository(Test::class)->find($id);
+        if (!$test) {
+            throw $this->createNotFoundException('El test no existe');
+        }
+
+        // Manejar el formulario (modificación de nombreAlt)
+        if ($request->isMethod('POST')) {
+            $nuevoNombre = $request->request->get('nombreAlt');
+            if ($nuevoNombre) {
+                $test->setNombreAlt($nuevoNombre); // Asegúrate de tener un setter en tu entidad
+                $entityManager->flush();
+
+                // Redirige a la vista del test después de guardar los cambios
+                return $this->redirectToRoute('app_test_show', ['id' => $test->getId()]);
+            }
+
+            // Si no se proporciona un nombre válido
+            $this->addFlash('error', 'El nombre no puede estar vacío.');
+        }
+
+        // Renderiza el formulario para editar el test
+        return $this->render('/front/test/test_edit.html.twig', [
+            'test' => $test,
+        ]);
+    }
+
 }
