@@ -92,4 +92,5 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.error('No se encontraron los elementos del modal o el botón.');
     }
+    
 });

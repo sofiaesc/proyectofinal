@@ -1,5 +1,7 @@
 <?php
 
+// src/Controller/TestController.php
+
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,31 +15,34 @@ use App\Entity\Test;
 class TestController extends AbstractController
 {
     #[Route('/test_list', name: 'app_test_list')]
-    public function test_list(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager): Response
+    public function test_list(Request $request, EntityManagerInterface $entityManager): Response
     {
-        // Número de elementos por página
-        $itemsPerPage = 6;
+        // Obtén el término de búsqueda desde la consulta de la URL
+        $searchTerm = $request->query->get('search', '');
 
-        // Obtenemos la consulta de los items
-        $query = $entityManager->getRepository(Test::class)->createQueryBuilder('t')
-            ->orderBy('t.fechaHora', 'DESC') 
-            ->getQuery();
+        // Creamos la consulta base
+        $queryBuilder = $entityManager->getRepository(Test::class)->createQueryBuilder('t')
+            ->orderBy('t.fechaHora', 'DESC');
 
-        // Aplicamos la paginación
-        $page = $request->query->getInt('page', 1);
-        $pagination = $paginator->paginate(
-            $query,      
-            $page,      
-            $itemsPerPage 
-        );
+        // Si hay un término de búsqueda, filtramos por nombre_alt
+        if ($searchTerm) {
+            $queryBuilder->andWhere('t.nombre_alt LIKE :searchTerm')
+                        ->setParameter('searchTerm', '%' . $searchTerm . '%');
+        }
 
-        // Renderizamos la plantilla y pasamos la paginación como 'items'
+        // Obtenemos la consulta final
+        $query = $queryBuilder->getQuery();
+
+        // Ejecutamos la consulta para obtener los resultados completos
+        $items = $query->getResult();
+
+        // Renderizamos la plantilla y pasamos los elementos encontrados
         return $this->render('/front/test/test_list.html.twig', [
-            'items' => $pagination,
-            'current_page' => $page,
-            'total_pages' => ceil($pagination->getTotalItemCount() / $itemsPerPage),
+            'items' => $items,
+            'search' => $searchTerm, // Pasamos el término de búsqueda para mantenerlo en el formulario
         ]);
     }
+
 
     #[Route('test_show/{id}', name: 'app_test_show')]
     public function test_show(int $id, EntityManagerInterface $entityManager): Response

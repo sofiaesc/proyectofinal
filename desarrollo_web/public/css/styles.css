@@ -291,7 +291,7 @@ header {
 
     .carga-container {
         background-color: #597085;
-        border: 2px solid #61656B;
+        border: 2px solid #486077;
         border-radius: 15px;
         padding: 20px;
         width: 80vw;
@@ -337,7 +337,7 @@ header {
 
     .carga-container {
         background-color: #597085;
-        border: 2px solid #61656B;
+        border: 2px solid #486077;
         border-radius: 15px;
         padding: 20px;
         width: 40vw;
@@ -409,7 +409,7 @@ input {
     display: flex;
     justify-content: center; 
     align-items: center; 
-    height: 100vh; 
+    height: 110vh; 
 }
 
 .body-container {
@@ -482,4 +482,125 @@ input {
 
 .custom-button:focus {
     outline: none;
+}
+
+/* SECCIÓN DE RESULTADOS*/
+/* Contenedor de items */
+.resultados-container {
+    background-color: #597085;
+    border: 2px solid #486077;
+    width: 60vw; 
+    height: calc(60vh - 50px);
+    margin-top: 20px;
+    overflow-y: auto;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
+
+.items-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas */
+    gap: 20px; /* Espaciado entre items */
+}
+
+@media (max-width: 899px) {
+    .items-container {
+        grid-template-columns: repeat(2, 1fr); 
+    }
+
+    .resultados-container {
+        width: 80vw; 
+    }
+}
+
+/* Tarjetas individuales */
+.item-card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.item-card:hover {
+    transform: scale(1.05); /* Efecto hover */
+}
+
+.item-card h5 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.item-card p {
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.item-card .btn {
+    font-size: 0.8rem;
+}
+
+.d-flex {
+    display: flex;
+    justify-content: space-between; /* Asegura que los íconos estén a los extremos */
+    width: 100%;
+}
+
+.d-flex a {
+    display: inline-block;
+    text-align: center;
+}
+
+.ml-auto {
+    margin-left: auto; /* Empuja el segundo ícono hacia la derecha */
+}
+
+/* Contenedor principal que contiene tanto el buscador como los resultados */
+.contenedor-principal {
+    padding: 20px;  /* Espaciado general */
+    margin: 0 auto; /* Centrado del contenedor */
+}
+
+/* Barra de búsqueda con ícono dentro */
+.input-group {
+    width: 100%;
+    max-width: 400px; /* Limitar el ancho máximo */
+    margin: 0 auto; /* Centrar el formulario */
+    display: flex; /* Alinea los elementos en una fila */
+    align-items: center; /* Alinea verticalmente el ícono y el input */
+}
+
+/* Estilo para el ícono de la lupa */
+.input-group-text {
+    background-color: #ececec; /* Fondo suave para el ícono */
+    border-radius: 25px 0 0 25px; /* Bordes redondeados a la izquierda */
+    display: flex;
+    align-items: center; /* Centra el ícono verticalmente */
+    justify-content: center; /* Centra el ícono horizontalmente */
+    height: 40px; /* Aseguramos que la altura del ícono sea la misma que el input */
+    width: 40px; /* Ancho del ícono */
+    font-size: 18px; /* Tamaño de la lupa */
+    padding: 0; /* Eliminar cualquier relleno extra */
+}
+
+/* Estilo para el campo de texto */
+.input-group .form-control {
+    border-left: 0; /* Quitar borde izquierdo para que se conecte con el ícono */
+    border-radius: 0 25px 25px 0; /* Bordes redondeados a la derecha */
+    font-size: 16px; /* Tamaño de la fuente */
+    padding-left: 10px; /* Espacio para el texto */
+    height: 40px; /* Aseguramos que la altura sea la misma que el ícono */
+    flex: 1; /* Hace que el campo de texto ocupe el espacio restante */
+    margin: 0; /* Eliminar márgenes adicionales */
+}
+
+/* Estilo cuando el input tiene foco */
+.input-group .form-control:focus {
+    border-color: #007bff; /* Borde azul cuando tiene foco */
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5); /* Sombra alrededor */
+    outline: none; /* Quitar contorno al hacer foco */
 }
