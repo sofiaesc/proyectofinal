@@ -4,56 +4,45 @@
 
 {% block body %}
 <div class="main-container">
-    <div class="container my-4">
-        <h3 class="text-center my-3">Resultados de Test</h3>
-        <div class="table-responsive">
-            <table class="table table-bordered text-center">
-                <thead class="thead-dark">
-                    <tr>
-                        <th class="columna">Identificador</th>
-                        <th class="columna">Fecha de realización</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in items %}
-                        <tr class="tabla-fila" onclick="window.location.href='{{ path('app_test_show', {'id': item.id}) }}'">
-                            <td class="columna">{{ item.nombreAlt }}</td>
-                            <td class="columna">{{ item.fechaHora|date('d/m/Y H:i') }}</td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="2" class="text-center">No hay resultados para mostrar.</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    <!-- Contenedor principal que incluye el buscador y los resultados -->
+    <div class="contenedor-principal">
+        
+        <!-- Formulario de búsqueda -->
+        <div class="search-container">
+            <form method="get" action="{{ path('app_test_list') }}" class="d-flex align-items-center">
+                <!-- Barra de búsqueda con icono dentro -->
+                <div class="input-group">
+                    <!-- Ícono de lupa -->
+                    <span class="input-group-text" id="basic-addon1">
+                        <i class="material-icons">search</i>
+                    </span>
+                    <!-- Campo de texto -->
+                    <input type="text" name="search" class="form-control" placeholder="Buscar por nombre..." value="{{ search }}">
+                </div>
+            </form>
         </div>
 
-        <!-- Paginación -->
-        <div class="pagination justify-content-center mt-4">
-            <a href="?page={{ current_page - 1 }}" class="btn btn-secondary mx-1 {% if current_page == 1 %}disabled{% endif %}">Anterior</a>
-            <span class="mx-2">Página {{ current_page }} de {{ total_pages }}</span>
-            <a href="?page={{ current_page + 1 }}" class="btn btn-secondary mx-1 {% if current_page == total_pages %}disabled{% endif %}">Siguiente</a>
+        <!-- Contenedor de resultados -->
+        <div class="resultados-container">
+            <div class="items-container">
+                {% for item in items %}
+                    <div class="item-card">
+                        <h5>{{ item.nombreAlt }}</h5>
+                        <p>Fecha de realización: {{ item.fechaHora|date('d/m/Y H:i') }}</p>
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ path('app_test_show', {'id': item.id}) }}" class="btn btn-link">
+                                <img src="{{ asset('images/pdf.png') }}" alt="Consultar informe" class="img-fluid" style="width: 30px; height: 30px;">
+                            </a>
+                            <a href="{{ path('app_test_show', {'id': item.id}) }}" class="btn btn-link ml-auto">
+                                <img src="{{ asset('images/delete.webp') }}" alt="Eliminar test" class="img-fluid" style="width: 30px; height: 30px;">
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
+                    <p>No hay resultados para mostrar.</p>
+                {% endfor %}
+            </div>
         </div>
     </div>
 </div>
-
-<style>
-
-.table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 5px;
-}
-
-.tabla-fila {
-    cursor: pointer; /* Cambia el cursor para indicar que es clickeable */
-    transition: background-color 0.3s ease; 
-}
-
-.tabla-fila:hover {
-    background-color: #f2f2f2;
-}
-
-</style>
 {% endblock %}
