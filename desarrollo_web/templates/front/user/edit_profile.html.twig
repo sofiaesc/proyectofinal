@@ -1,48 +1,80 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Profile{% endblock %}
+{% block title %}Editar Perfil{% endblock %}
 
 {% block body %}
 
-<div class="main-container">
+<style>
+.no-border {
+    border: none !important;  /* Eliminar borde */
+    outline: none !important; /* Eliminar contorno al hacer foco */
+}
 
+/* Asegurarnos de que los bordes sean eliminados específicamente de los campos de texto */
+.no-border:focus {
+    outline: none !important;  /* Eliminar el contorno cuando el campo tiene foco */
+}
+
+/* Estilo para los mensajes de error */
+.form-error {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;  /* Espacio entre el campo y el error */
+    margin-bottom: 10px; /* Espacio entre errores */
+}
+
+</style>
+
+{{ form_start(form) }}
+<div class="main-container">
     <div class="body-container">
         <div class="container">
             <p class="edit-title">Editar perfil</p>
-            
+            {% if success %}
+                <div class="alert alert-danger" style="color:green">
+                    <strong>¡Exito!</strong> Su información personal fue actualizada.
+                </div>
+            {% endif %}
             <div class="edit-container">
-                <div class="edit-label">Nombre</div>
-                <input type="text" class="form-control" id="nombre" placeholder="Ingrese su nombre">
+                <div class="edit-label">{{ form_label(form.nombre) }}</div>
+                {{ form_widget(form.nombre) }}
+                <div class="form-error">{{ form_errors(form.nombre) }}</div>
             </div>
 
             <div class="edit-container">
-                <div class="edit-label">Apellido</div>
-                <input type="text" class="form-control" id="apellido" placeholder="Ingrese su apellido">
+                <div class="edit-label">{{ form_label(form.apellido) }}</div>
+                {{ form_widget(form.apellido) }}
+                <div class="form-error">{{ form_errors(form.apellido) }}</div>
             </div>
 
             <div class="edit-container">
-                <div class="edit-label">Email</div>
-                <input type="email" class="form-control" id="email" placeholder="Ingrese su email">
+                <div class="edit-label">{{ form_label(form.email) }}</div>
+                {{ form_widget(form.email) }}
+                <div class="form-error">{{ form_errors(form.email) }}</div>
             </div>
 
             <div class="edit-container">
-                <div class="edit-label">Nueva Contraseña</div>
-                <input type="password" class="form-control" id="newPassword" placeholder="Ingrese nueva contraseña">
+                <div class="edit-label">{{ form_label(form.password) }}</div>
+                {{ form_widget(form.password) }}
             </div>
+            <div class="form-error">{{ form_errors(form.password) }}</div>
 
             <div class="edit-container">
-                <div class="edit-label">Confirmar Contraseña</div>
-                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirme nueva contraseña">
+                <div class="edit-label">{{ form_label(form.confirmNewPassword) }}</div>
+                {{ form_widget(form.confirmNewPassword) }}
             </div>
+            <div class="form-error">{{ form_errors(form.confirmNewPassword) }}</div>
 
+            <hr class="divider" style="margin-top: 15px; margin-bottom: 17px">
             <div class="edit-container">
-                <div class="edit-label">Contraseña Anterior</div>
-                <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña actual">
+                <div class="edit-label">{{ form_label(form.actualPassword) }}</div>
+                {{ form_widget(form.actualPassword) }}
+                <div class="form-error">{{ form_errors(form.actualPassword) }}</div>
             </div>
 
             <button type="submit" class="form-button">Actualizar</button>
         </div>
     </div>
 </div>
-
+{{ form_end(form) }}
 {% endblock %}
