@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Carrusel - ELISATester{% endblock %}
+{% block title %}ELISATester{% endblock %}
 
 {% block body %}
 <!-- Carrusel -->
@@ -10,15 +10,16 @@
             <span class="material-icons">chevron_left</span>
         </button>
         <div class="carousel-inner">
-            <div class="carousel-item active" data-text="Carga tu imagen" data-link="{{ path('app_image_upload') }}">
-                <img src="images/img-1.png" alt="Image 1">
+            <div class="carousel-item active" data-text="Carga tu imagen">
+                <img data-src="images/firstgif.gif" alt="Image 1" class="lazy-load">
             </div>
-            <div class="carousel-item" data-text="Obtén los resultados" data-link="{{ path('app_test_list') }}">
-                <img src="images/img-2.png" alt="Image 2">
+            <div class="carousel-item" data-text="Selecciona los pocillos de interés">
+                <img data-src="images/secondgif.gif" alt="Image 2" class="lazy-load">
             </div>
-            <div class="carousel-item" data-text="Consulta tu informe" data-link="{{ path('app_test_list') }}">
-                <img src="images/img-3.png" alt="Image 3">
+            <div class="carousel-item" data-text="Consulta tus resultados">
+                <img data-src="images/thirdgif.gif" alt="Image 3" class="lazy-load">
             </div>
+
         </div>
         <button class="carousel-btn next" id="next-btn">
             <span class="material-icons">chevron_right</span>
@@ -34,12 +35,11 @@
         <h2>Instrucciones</h2>
         <br>
         <p style="text-align: left;">Esta aplicación esta desarrollada específicamente para el análisis de Test ELISA para detectar la enfermedad de Leishmaniasis.</p>
-        <p style="text-align: left;">La misma en ningún caso debería ser considerada un instrumento profesional para este tipo de detección.</p>
-        <p style="text-align: left;">El funcionamiento correcto de la aplicación se encuentra ligado al cumplimiento estricto de los siguientes requisitos.</p>
-        <p style="text-align: left;">- La foto de la placa se debe realizar sobre un fondo blanco</p>
-        <p style="text-align: left;">- La foto debe tomarse con el celular o cámara paralelo a la placa con una distancia de entre 35cm y 50cm</p>
-        <p style="text-align: left;">- La resolución de la foto resultante debe ser de al menos 512x512px</p>
-        <p style="text-align: left;">- La foto debe tomarse con iluminación uniforme, ya sea de carácter natural o artificial</p>
+        <p style="text-align: left;">El funcionamiento correcto de la aplicación se encuentra ligado al cumplimiento estricto de los siguientes requisitos:</p>
+        <p style="text-align: left;">- La foto de la placa se debe realizar sobre un fondo blanco.</p>
+        <p style="text-align: left;">- La foto debe tomarse con el celular o cámara paralelo a la placa con una distancia de entre 35cm y 50cm.</p>
+        <p style="text-align: left;">- La resolución de la foto resultante debe ser de al menos 512x512px.</p>
+        <p style="text-align: left;">- La foto debe tomarse con iluminación uniforme, ya sea de carácter natural o artificial.</p>
         <br>
         <button id="closeModalDisclaimer" type="button" class="form-button">Cerrar</button>
     </div>

@@ -38,54 +38,70 @@ document.addEventListener('DOMContentLoaded', () => {
     // -------------------- CARRUSEL -------------------- //
     const items = document.querySelectorAll('.carousel-item');
     const caption = document.querySelector('.carousel-caption');
-    
-    if (items.length > 0 && caption) {
-        let currentIndex = 0;
-        const totalItems = items.length;
+    let currentIndex = 0;
+    const totalItems = items.length;
 
-        // Mostrar imagen por indice
-        function showItem(index) {
-            items[currentIndex].classList.remove('active');
-            currentIndex = (index + totalItems) % totalItems;
-            items[currentIndex].classList.add('active');
-            updateCarousel();
-            updateCaption();
-        }
+    // Mostrar imagen por índice
+    function showItem(index) {
+        // Remover la clase 'active' del item actual
+        items[currentIndex].classList.remove('active');
+        // Actualizar el índice
+        currentIndex = (index + totalItems) % totalItems;
+        // Añadir la clase 'active' al nuevo item
+        items[currentIndex].classList.add('active');
 
-        // Sliding
-        function updateCarousel() {
-            const offset = -currentIndex * 100;
-            document.querySelector('.carousel-inner').style.transform = `translateX(${offset}%)`;
-        }
+        // Cargar la imagen solo si es el item activo
+        loadImage(currentIndex);
 
-        // Actualizar texto que acompaña la imagen
-        function updateCaption() {
-            const text = items[currentIndex].getAttribute('data-text');
-            caption.textContent = text;
-        }
-
-        // Siguiente imagen
-        function showNextItem() {
-            showItem(currentIndex + 1);
-        }
-
-        // Imagen previa
-        function showPrevItem() {
-            showItem(currentIndex - 1);
-        }
-
-        const nextBtn = document.getElementById('next-btn');
-        const prevBtn = document.getElementById('prev-btn');
-        
-        if (nextBtn) {
-            nextBtn.addEventListener('click', showNextItem);
-        }
-        if (prevBtn) {
-            prevBtn.addEventListener('click', showPrevItem);
-        }
-
-        showItem(currentIndex);
+        updateCarousel();
+        updateCaption();
     }
+
+    // Cargar la imagen solo si está activa
+    function loadImage(index) {
+        const activeItem = items[index];
+        const img = activeItem.querySelector('img');
+
+        // Solo cargar la imagen si no ha sido cargada previamente
+        if (img && !img.src) {
+            img.src = img.getAttribute('data-src'); // Establecer el src de la imagen
+        }
+    }
+
+    // Sliding
+    function updateCarousel() {
+        const offset = -currentIndex * 100;
+        document.querySelector('.carousel-inner').style.transform = `translateX(${offset}%)`;
+    }
+
+    // Actualizar texto que acompaña la imagen
+    function updateCaption() {
+        const text = items[currentIndex].getAttribute('data-text');
+        caption.textContent = text;
+    }
+
+    // Siguiente imagen
+    function showNextItem() {
+        showItem(currentIndex + 1);
+    }
+
+    // Imagen previa
+    function showPrevItem() {
+        showItem(currentIndex - 1);
+    }
+
+    const nextBtn = document.getElementById('next-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', showNextItem);
+    }
+    if (prevBtn) {
+        prevBtn.addEventListener('click', showPrevItem);
+    }
+
+    // Inicializar el primer item
+    showItem(currentIndex);
 
     // -------------------- INSTRUCCIONES -------------------- //
     const disclaimerButton = document.getElementById('disclaimer');

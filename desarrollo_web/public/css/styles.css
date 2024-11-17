@@ -7,13 +7,6 @@
     font-family: "Open Sans", sans-serif;
 }
 
-body {
-    height: 100vh;
-    width: 100%;
-    background: radial-gradient(circle, #c4daea, #647d90);
-    font-family: 'Source Sans Pro', sans-serif;
-}
-
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: 700;
@@ -25,15 +18,20 @@ p {
 }
 
 header {
-    position: fixed;
-    height: 110px; 
-    background-color: #485E71; 
+    position: relative;  /* O 'static', ya que es el comportamiento por defecto */
+    height: 110px;
+    background-color: #485E71;
     color: #fff;
     padding: 0 10px;
     width: 100%;
-    top: 0;
-    left: 0;
     z-index: 10;
+}
+
+body {
+    height: 100vh;
+    width: 100%;
+    background: radial-gradient(circle, #c4daea, #647d90);
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 .form-button {
@@ -170,8 +168,8 @@ header {
 .carousel-container {
     background-color: #597085; 
     padding: 20px 20px 10px;
-    max-width: 500px;
-    margin: 150px auto 20px; 
+    max-width: 600px;
+    margin: 60px auto 20px; 
     position: relative;
     border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -213,13 +211,18 @@ header {
     transform: translateY(-50%);
     background-color: rgba(0, 0, 0, 0.5);
     border: none;
-    padding: 10px;
+    padding: 0;
+    width: 50px; /* Set fixed width */
+    height: 50px; /* Set fixed height */
     cursor: pointer;
-    border-radius: 50%; 
+    border-radius: 50%;
     z-index: 5;
     transition: background-color 0.3s ease;
     font-size: 24px; 
-    color: #ffffff; 
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .carousel-btn:hover {
@@ -460,7 +463,7 @@ input {
     display: flex;
     justify-content: center; 
     align-items: center; 
-    height: 110vh; 
+    padding-top: 40px;
 }
 
 .body-container {
@@ -468,7 +471,6 @@ input {
     justify-content: flex-start; 
     align-items: flex-start; 
     flex-direction: column;
-    padding-top: 100px; 
 }
 
 /* EDITAR PERFIL */
