@@ -25,7 +25,16 @@
                 <li><a href="{{ path('app_index') }}">Contacto</a></li>
             </ul>
             {% if app.user %}
-                <span>{{ app.user.nombre }} {{ app.user.apellido }}</span>
+                <div class="user-menu">
+                    <span>
+                        {{ app.user.nombre }} {{ app.user.apellido }}
+                        <span class="material-symbols-rounded">expand_more</span>
+                    </span>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ path('app_edit_profile') }}">Editar perfil</a></li>
+                        <li><a href="{{ path('app_logout') }}">Cerrar sesión</a></li>
+                    </ul>
+                </div>
             {% else %}
                 <button class="login-btn" onclick="window.location.href='{{ path('app_login') }}'">Iniciar Sesión</button>
             {% endif %}
