@@ -1,38 +1,3 @@
-
-/* Contenedor envolvente */
-.container2 {
-    width: 60vw; /* 60% del ancho de la ventana */
-    max-height: 60vh; /* Máximo 60% de la altura de la ventana */
-    display: grid;
-    grid-template-columns: repeat(12, 40px); /* 12 columnas de 50px cada una */
-    grid-template-rows: repeat(8, 40px); /* 8 filas de 50px cada una */
-    gap: 5px; /* Espaciado entre círculos */
-    justify-content: center;
-    align-items: center;
-    margin: auto;
-    overflow-y: auto;
-    background-color: #f0f0f0; /* Color de fondo del contenedor */
-    padding: 20px; /* Espaciado interno */
-    border-radius: 8px; /* Bordes redondeados */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra */
-}
-
-/* Estilos de los círculos */
-.circle {
-    width: 40px;
-    height: 40px;
-    background-color: rgba(255, 0, 0, 0.46); /* Color inicial rojo con opacidad */
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.circle:hover {
-    cursor: pointer;
-}
-
-
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap");
 
 * {
@@ -413,6 +378,40 @@ header {
         height: auto; 
         }
     
+}
+
+/* seleccionar pocillos*/
+/* Contenedor envolvente */
+.container2 {
+    width: 60vw; /* 60% del ancho de la ventana */
+    max-height: 60vh; /* Máximo 60% de la altura de la ventana */
+    display: grid;
+    grid-template-columns: repeat(12, 40px); /* 12 columnas de 50px cada una */
+    grid-template-rows: repeat(8, 40px); /* 8 filas de 50px cada una */
+    gap: 5px; /* Espaciado entre círculos */
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    overflow-y: auto;
+    background-color: #f0f0f0; /* Color de fondo del contenedor */
+    padding: 20px; /* Espaciado interno */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+/* Estilos de los círculos */
+.circle {
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 0, 0, 0.46); /* Color inicial rojo con opacidad */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle:hover {
+    cursor: pointer;
 }
 
 /* LOGIN - SIGNUP */

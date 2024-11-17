@@ -11,19 +11,13 @@
         </button>
         <div class="carousel-inner">
             <div class="carousel-item active" data-text="Carga tu imagen" data-link="{{ path('app_image_upload') }}">
-                <a href="{{ path('app_image_upload') }}">
-                    <img src="images/img-1.png" alt="Image 1">
-                </a>
+                <img src="images/img-1.png" alt="Image 1">
             </div>
             <div class="carousel-item" data-text="Obtén los resultados" data-link="{{ path('app_test_list') }}">
-                <a href="{{ path('app_test_list') }}">
-                    <img src="images/img-2.png" alt="Image 2">
-                </a>
+                <img src="images/img-2.png" alt="Image 2">
             </div>
             <div class="carousel-item" data-text="Consulta tu informe" data-link="{{ path('app_test_list') }}">
-                <a href="{{ path('app_test_list') }}">
-                    <img src="images/img-3.png" alt="Image 3">
-                </a>
+                <img src="images/img-3.png" alt="Image 3">
             </div>
         </div>
         <button class="carousel-btn next" id="next-btn">
@@ -36,7 +30,7 @@
 </div>
 
 <div id="modal-disclaimer" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1000; justify-content: center; align-items: center;">
-    <div style="background: white; width: 50%; padding: 20px; border-radius: 8px; position: relative; text-align: center;">
+    <div style="background: white; width: 70%; max-height: 60%; padding: 20px; border-radius: 8px; position: relative; text-align: center; overflow-y: auto;">
         <h2>Instrucciones</h2>
         <br>
         <p style="text-align: left;">Esta aplicación esta desarrollada específicamente para el análisis de Test ELISA para detectar la enfermedad de Leishmaniasis.</p>
