@@ -1,37 +1,3 @@
-
-/* Contenedor envolvente */
-.container2 {
-    width: 60vw; /* 60% del ancho de la ventana */
-    max-height: 60vh; /* Máximo 60% de la altura de la ventana */
-    display: grid;
-    grid-template-columns: repeat(12, 50px); /* 12 columnas de 50px cada una */
-    grid-template-rows: repeat(8, 50px); /* 8 filas de 50px cada una */
-    gap: 5px; /* Espaciado entre círculos */
-    justify-content: center;
-    align-items: center;
-    margin: auto;
-    background-color: #f0f0f0; /* Color de fondo del contenedor */
-    padding: 20px; /* Espaciado interno */
-    border-radius: 8px; /* Bordes redondeados */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra */
-}
-
-/* Estilos de los círculos */
-.circle {
-    width: 50px;
-    height: 50px;
-    background-color: rgba(255, 0, 0, 0.46); /* Color inicial rojo con opacidad */
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.circle:hover {
-    cursor: pointer;
-}
-
-
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap");
 
 * {
@@ -39,13 +5,6 @@
     padding: 0;
     box-sizing: border-box;
     font-family: "Open Sans", sans-serif;
-}
-
-body {
-    height: 100vh;
-    width: 100%;
-    background: radial-gradient(circle, #c4daea, #647d90);
-    font-family: 'Source Sans Pro', sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -59,15 +18,20 @@ p {
 }
 
 header {
-    position: fixed;
-    height: 110px; 
-    background-color: #485E71; 
+    position: relative;  /* O 'static', ya que es el comportamiento por defecto */
+    height: 110px;
+    background-color: #485E71;
     color: #fff;
     padding: 0 10px;
     width: 100%;
-    top: 0;
-    left: 0;
     z-index: 10;
+}
+
+body {
+    height: 100vh;
+    width: 100%;
+    background: radial-gradient(circle, #c4daea, #647d90);
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 .form-button {
@@ -81,12 +45,12 @@ header {
     border-radius: 10px;
     cursor: pointer;
     margin: 5px 0;
-    background: #87B1D7;
+    background: #75a7c4;
     transition: 0.2s ease;
 }
 
 .form-button:hover {
-    background: #0097a7;
+    background: #5294bb;
 }
 
 .navbar {
@@ -150,11 +114,62 @@ header {
     background: #cecece;
 }
 
+/*USUARIO CUANDO ESTÁ LOGEADO*/
+/* Contenedor del menú de usuario */
+.user-menu {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    color: #fff; /* Cambia según tu diseño */
+    font-weight: bold;
+}
+
+/* Ícono de desplegable */
+.user-menu .material-symbols-rounded {
+    font-size: 20px;
+    vertical-align: middle;
+}
+
+/* Estilo del menú desplegable */
+.dropdown-menu {
+    position: absolute;
+    top: 100%; /* Debajo del nombre */
+    right: 0;
+    background-color: #fff;
+    color: #333;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    list-style: none;
+    padding: 8px 0;
+    margin: 0;
+    display: none; /* Oculto por defecto */
+    z-index: 10;
+    min-width: 150px;
+}
+
+/* Clase para mostrar el menú */
+#user-dropdown-menu.show {
+    display: block;
+}
+
+/* Cada elemento del menú */
+.dropdown-menu li {
+    padding: 8px 16px;
+}
+
+.dropdown-menu li a {
+    color: inherit;
+    text-decoration: none;
+    display: block;
+}
+
+/* Carrusel*/
+
 .carousel-container {
     background-color: #597085; 
     padding: 20px 20px 10px;
-    max-width: 500px;
-    margin: 150px auto 20px; 
+    max-width: 600px;
+    margin: 60px auto 20px; 
     position: relative;
     border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -196,13 +211,18 @@ header {
     transform: translateY(-50%);
     background-color: rgba(0, 0, 0, 0.5);
     border: none;
-    padding: 10px;
+    padding: 0;
+    width: 50px; /* Set fixed width */
+    height: 50px; /* Set fixed height */
     cursor: pointer;
-    border-radius: 50%; 
+    border-radius: 50%;
     z-index: 5;
     transition: background-color 0.3s ease;
     font-size: 24px; 
-    color: #ffffff; 
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .carousel-btn:hover {
@@ -363,6 +383,40 @@ header {
     
 }
 
+/* seleccionar pocillos*/
+/* Contenedor envolvente */
+.container2 {
+    width: 60vw; /* 60% del ancho de la ventana */
+    max-height: 60vh; /* Máximo 60% de la altura de la ventana */
+    display: grid;
+    grid-template-columns: repeat(12, 40px); /* 12 columnas de 50px cada una */
+    grid-template-rows: repeat(8, 40px); /* 8 filas de 50px cada una */
+    gap: 5px; /* Espaciado entre círculos */
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    overflow-y: auto;
+    background-color: #f0f0f0; /* Color de fondo del contenedor */
+    padding: 20px; /* Espaciado interno */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+/* Estilos de los círculos */
+.circle {
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 0, 0, 0.46); /* Color inicial rojo con opacidad */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle:hover {
+    cursor: pointer;
+}
+
 /* LOGIN - SIGNUP */
 input {
     width: 100%;
@@ -409,7 +463,7 @@ input {
     display: flex;
     justify-content: center; 
     align-items: center; 
-    height: 110vh; 
+    padding-top: 40px;
 }
 
 .body-container {
@@ -417,7 +471,6 @@ input {
     justify-content: flex-start; 
     align-items: flex-start; 
     flex-direction: column;
-    padding-top: 100px; 
 }
 
 /* EDITAR PERFIL */
@@ -457,31 +510,6 @@ input {
 .form-control:focus {
     outline: none; 
     box-shadow: none;
-}
-
-/* instrucciones */
-.custom-button {
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.custom-button:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
-}
-
-.custom-button:active {
-    background-color: #004085;
-}
-
-.custom-button:focus {
-    outline: none;
 }
 
 /* SECCIÓN DE RESULTADOS*/
@@ -603,4 +631,88 @@ input {
     border-color: #007bff; /* Borde azul cuando tiene foco */
     box-shadow: 0 0 8px rgba(0, 123, 255, 0.5); /* Sombra alrededor */
     outline: none; /* Quitar contorno al hacer foco */
+}
+
+/* instrucciones */
+.custom-button {
+    background-color: #4788c1;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.custom-button:hover {
+    background-color: rgb(57, 96, 138);
+    transform: scale(1.03);
+}
+
+.custom-button:active {
+    background-color: rgb(49, 87, 127);
+}
+
+.custom-button:focus {
+    outline: none;
+}
+
+/* detalle de test*/
+/* Imagen dentro de la tarjeta */
+.custom-img {
+    max-height: 40vh; /* Limita la altura máxima al 40% de la ventana */
+    max-width: 100%; /* Asegura que no exceda el ancho del contenedor */
+    width: auto; /* Mantiene las proporciones horizontales */
+    height: auto; /* Mantiene las proporciones verticales */
+    object-fit: contain; /* Ajusta la imagen dentro del espacio disponible */
+    margin: 15px; /* Espaciado */
+    display: block; /* Centra la imagen dentro del contenedor */
+    margin-left: auto; /* Centra horizontalmente */
+    margin-right: auto; /* Centra horizontalmente */
+}
+
+/* Contenedor para los botones */
+.button-container {
+    display: flex;
+    justify-content: space-between; /* Espaciado entre botones */
+    align-items: center;
+}
+
+/* Estilos del botón de la izquierda */
+.btn-left {
+    background-color: #545454;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-left:hover {
+    background-color: #484848;
+}
+
+/* Estilos del botón de la derecha */
+.btn-right {
+    display: flex;
+    align-items: center;
+    background-color: #6d9fc0;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-right:hover {
+    background-color: #427595;
+}
+
+.pdf-icon {
+    width: 20px;
+    height: auto;
+    margin-right: 8px; /* Espacio entre el icono y el texto */
 }

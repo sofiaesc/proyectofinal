@@ -4,41 +4,36 @@
 
 {% block body %}
 <div class="main-container">
-    <div class="container my-4">
-        <h3 class="text-center my-3">Detalles del Test</h3>
-        
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">ID: {{ item.id }}</h5>
-                
-                {% if item.nombreAlt is not null %}
-                    <p><strong>Nombre Alternativo:</strong> {{ item.nombreAlt }}</p>
-                {% endif %}
-                
-                {% if item.descripción is not null %}
-                    <p><strong>Descripción:</strong> {{ item.descripción }}</p>
-                {% endif %}
-                
-                <p><strong>Fecha de realización:</strong> {{ item.fechaHora|date('d/m/Y H:i') }}</p>
-                {% if item.rutaImagen is not null %}
-                    <div>
-                        <strong>Foto:</strong>
-                        <img src="{{ asset(item.rutaImagen) }}" alt="Foto" class="img-fluid custom-img">
-                    </div>
-                {% else %}
-                    <p>No hay foto disponible.</p>
-                {% endif %}
-            </div>
+    <div class="container">
+        <h3>Detalles del Test</h3>
+
+        <div>
+            <h5>ID: {{ item.id }}</h5>
+            
+            {% if item.nombreAlt is not null %}
+                <p><strong>Nombre:</strong> <span id="nombreAlt">{{ item.nombreAlt }}</span> 
+                    <a href="#" id="editNombreBtn" data-id="{{ item.id }}">
+                        <span class="material-icons">edit</span>
+                    </a>
+                </p>
+            {% endif %}
+            
+            <p><strong>Fecha de realización:</strong> {{ item.fechaHora|date('d/m/Y H:i') }}</p>
+            {% if item.rutaImagen is not null %}
+                <img src="{{ asset(item.rutaImagen) }}" alt="Foto" class="custom-img">
+            {% else %}
+                <p>No hay foto disponible.</p>
+            {% endif %}
         </div>
-        
-        <a href="{{ path('app_test_list') }}" class="btn btn-primary mt-3">Volver a la lista</a>
+
+        <!-- Contenedor de botones -->
+        <div class="button-container">
+            <a href="{{ path('app_test_list') }}" class="btn-left">Volver</a>
+            <a href="{{ path('app_test_list', { id: item.id }) }}" class="btn-right">
+                <img src="{{ asset('images/pdf.png') }}" alt="Descargar informe" class="pdf-icon"> Descargar informe
+            </a>
+        </div>
     </div>
 </div>
-<style>
-.custom-img {
-    max-height: 40vh; 
-    width: auto;      
-    object-fit: contain; 
-}
-</style>
+
 {% endblock %}

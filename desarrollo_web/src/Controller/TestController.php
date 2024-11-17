@@ -43,7 +43,6 @@ class TestController extends AbstractController
         ]);
     }
 
-
     #[Route('test_show/{id}', name: 'app_test_show')]
     public function test_show(int $id, EntityManagerInterface $entityManager): Response
     {
@@ -56,4 +55,30 @@ class TestController extends AbstractController
             'item' => $item,
         ]);
     }
+
+    /**
+     * @Route("/test/{id}/edit-name", name="app_test_edit_name", methods={"POST"})
+     */
+    public function editName(int $id, Request $request): JsonResponse
+    {
+        // Buscar el test por su ID
+        $test = $this->getDoctrine()->getRepository(Test::class)->find($id);
+
+        if (!$test) {
+            return new JsonResponse(['status' => 'error', 'message' => 'Test no encontrado'], 404);
+        }
+
+        // Obtener el nuevo nombre desde la solicitud AJAX
+        $newName = $request->request->get('nombreAlt');
+
+        // Actualizar el nombre
+        $test->setNombreAlt($newName);
+
+        // Guardar los cambios
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->flush();
+
+        return new JsonResponse(['status' => 'success', 'message' => 'Nombre actualizado correctamente']);
+    }
+
 }
