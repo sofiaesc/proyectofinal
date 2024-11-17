@@ -7,9 +7,16 @@
     <div class="body-container">
         <form action="{{ path('app_login') }}" method="post">
             <div class="container">
+                {% if error %}
+                    <div class="alert alert-danger" style="color:red">
+                        <strong>¡Error!</strong> El correo electrónico o la contraseña ingresada son incorrectos.
+                    </div>
+                {% endif %}
+
+
                 <div class="input-container">
                     <span class="material-icons">mail</span>
-                    <input type="email" placeholder="Ingrese su correo electrónico" name="email" required>
+                    <input type="email" placeholder="Ingrese su correo electrónico" name="email" value="{{ last_username }}" required>
                 </div>
 
                 <div class="input-container">
