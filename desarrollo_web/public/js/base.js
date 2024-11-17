@@ -1,12 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-
+    // -------------------- MENU -------------------- //
     const menuBtn = document.querySelector(".menu-btn");
     const navLinks = document.querySelector(".nav-links");
-    const disclaimerButton = document.getElementById('disclaimer');
-    const modalDisclaimer = document.getElementById('modal-disclaimer');
-    const closeModalDisclaimer = document.getElementById('closeModalDisclaimer');
 
-    // -------------------- MENU -------------------- //
     // Toggle del menu
     menuBtn.addEventListener("click", () => {
         navLinks.classList.toggle("show-menu");
@@ -20,6 +16,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // ---------------- MENU USUARIO ------------------- //
+    const userMenuToggle = document.getElementById("user-menu-toggle");
+    const userDropdownMenu = document.getElementById("user-dropdown-menu");
+
+    userMenuToggle.addEventListener("click", (e) => {
+        e.stopPropagation(); // Evita que el clic se propague al body
+        userDropdownMenu.classList.toggle("show"); // Muestra u oculta el menú
+    });
+
+    // Cierra el menú si se hace clic fuera de él
+    document.addEventListener("click", () => {
+        userDropdownMenu.classList.remove("show");
+    });
+    
 
     // -------------------- CARRUSEL -------------------- //
     const items = document.querySelectorAll('.carousel-item'); 
@@ -72,6 +83,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // -------------------- INSTRUCCIONES -------------------- //
+    const disclaimerButton = document.getElementById('disclaimer');
+    const modalDisclaimer = document.getElementById('modal-disclaimer');
+    const closeModalDisclaimer = document.getElementById('closeModalDisclaimer');
+
     if (disclaimerButton) {
         // Mostrar el modal
         disclaimerButton.addEventListener('click', function() {

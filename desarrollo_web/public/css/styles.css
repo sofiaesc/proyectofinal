@@ -184,6 +184,11 @@ header {
     min-width: 150px;
 }
 
+/* Clase para mostrar el menú */
+#user-dropdown-menu.show {
+    display: block;
+}
+
 /* Cada elemento del menú */
 .dropdown-menu li {
     padding: 8px 16px;
@@ -194,15 +199,6 @@ header {
     text-decoration: none;
     display: block;
 }
-
-.dropdown-menu li:hover {
-    background-color: #f5f5f5;
-}
-
-.user-menu:hover .dropdown-menu {
-    display: block;
-}
-
 
 /* Carrusel*/
 
