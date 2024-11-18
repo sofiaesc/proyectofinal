@@ -5,6 +5,7 @@
 {% block body %}
 <!-- Carrusel -->
 <div class="carousel-container">
+    <div class="carousel-caption"></div>
     <div class="carousel">
         <button class="carousel-btn prev" id="prev-btn">
             <span class="material-icons">chevron_left</span>
@@ -19,22 +20,24 @@
             <div class="carousel-item" data-text="Consulta tus resultados">
                 <img data-src="images/thirdgif.gif" alt="Image 3" class="lazy-load">
             </div>
-
         </div>
         <button class="carousel-btn next" id="next-btn">
             <span class="material-icons">chevron_right</span>
         </button>
     </div>
-    <div class="carousel-caption"></div>
-
-    <button id="disclaimer" class="form-button">Instrucciones</button>
+    <div class="instructions-container">
+        <button id="disclaimer" class="info-button">
+            <span class="material-icons">info</span>
+        </button>
+    </div>    
 </div>
 
+<!-- Modal -->
 <div id="modal-disclaimer" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1000; justify-content: center; align-items: center;">
     <div style="background: white; width: 70%; max-height: 60%; padding: 20px; border-radius: 8px; position: relative; text-align: center; overflow-y: auto;">
         <h2>Instrucciones</h2>
         <br>
-        <p style="text-align: left;">Esta aplicación esta desarrollada específicamente para el análisis de Test ELISA para detectar la enfermedad de Leishmaniasis.</p>
+        <p style="text-align: left;">Esta aplicación está desarrollada específicamente para el análisis de Test ELISA para detectar la enfermedad de Leishmaniasis.</p>
         <p style="text-align: left;">El funcionamiento correcto de la aplicación se encuentra ligado al cumplimiento estricto de los siguientes requisitos:</p>
         <p style="text-align: left;">- La foto de la placa se debe realizar sobre un fondo blanco.</p>
         <p style="text-align: left;">- La foto debe tomarse con el celular o cámara paralelo a la placa con una distancia de entre 35cm y 50cm.</p>
@@ -46,5 +49,4 @@
 </div>
 
 <div class="blur-bg-overlay"></div>
-
 {% endblock %}
