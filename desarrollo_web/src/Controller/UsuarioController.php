@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface; 
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Form\UsuarioEditType;
+use App\Form\UsuarioType;
 use App\Entity\Usuario;
 
 class UsuarioController extends AbstractController
@@ -19,7 +20,7 @@ class UsuarioController extends AbstractController
                              EntityManagerInterface $entityManager, 
                              UserPasswordHasherInterface $passwordHasher): Response    {
         $usuario = new Usuario();
-        $form = $this->createForm(UsuarioEditType::class, $usuario);
+        $form = $this->createForm(UsuarioType::class, $usuario);
 
         // Procesar el formulario con la solicitud HTTP
         $form->handleRequest($request);
