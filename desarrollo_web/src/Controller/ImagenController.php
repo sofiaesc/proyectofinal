@@ -29,9 +29,6 @@ class ImagenController extends AbstractController
     {
 
         $user = $this->getUser();
-        if (!$user) {
-            return $this->redirectToRoute('app_index'); 
-        }
         $user_id = $user->getId();
         $image_id = uniqid();
 
