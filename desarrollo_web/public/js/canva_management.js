@@ -133,44 +133,56 @@
             }
         }
 
-        // Evento para detectar si se está arrastrando una esquina
-        canvas.addEventListener('mousedown', function(event) {
-            const mouseX = event.clientX - canvas.getBoundingClientRect().left;
-            const mouseY = event.clientY - canvas.getBoundingClientRect().top;
 
-            // Detectar si el clic está sobre algún punto del rectángulo
+
+
+        // Evento para detectar si se está arrastrando una esquina (táctil y ratón)
+        canvas.addEventListener('mousedown', startDrag);
+        canvas.addEventListener('touchstart', startDrag, { passive: false });
+
+        canvas.addEventListener('mousemove', drag);
+        canvas.addEventListener('touchmove', drag, { passive: false });
+
+        canvas.addEventListener('mouseup', endDrag);
+        canvas.addEventListener('touchend', endDrag);
+
+        // Función para detectar el inicio del arrastre
+        function startDrag(event) {
+            const { x, y } = getMouseOrTouchPos(event);
+        
+            // Detectar si el clic o toque está sobre algún punto del rectángulo
             for (let i = 0; i < rectPoints.length; i++) {
                 const point = rectPoints[i];
-                const distance = Math.sqrt((mouseX - point.x) ** 2 + (mouseY - point.y) ** 2);
+                const distance = Math.sqrt((x - point.x) ** 2 + (y - point.y) ** 2);
                 if (distance < pointRadius) {
                     draggingPoint = i;
+                    event.preventDefault(); // Prevenir comportamientos por defecto en táctil
                     break;
                 }
             }
-        });
+        }
 
-        // Evento para mover el punto arrastrado
-        canvas.addEventListener('mousemove', function(event) {
+        // Función para mover el punto arrastrado
+        function drag(event) {
             if (draggingPoint !== null) {
-                const mouseX = event.clientX - canvas.getBoundingClientRect().left;
-                const mouseY = event.clientY - canvas.getBoundingClientRect().top;
-
+                const { x, y } = getMouseOrTouchPos(event);
+            
                 // Verificar si el nuevo punto está dentro de los límites de la imagen
                 const minX = imgX; // Límite izquierdo de la imagen
                 const maxX = imgX + img.width * imgScale; // Límite derecho de la imagen
                 const minY = imgY; // Límite superior de la imagen
                 const maxY = imgY + img.height * imgScale; // Límite inferior de la imagen
-
+            
                 // Actualizar las coordenadas del punto en función de cuál esquina se está moviendo
-                let newX = mouseX;
-                let newY = mouseY;
-
+                let newX = x;
+                let newY = y;
+            
                 // Asegurarse de que el nuevo punto no salga de los límites de la imagen
                 if (newX < minX) newX = minX;
                 if (newX > maxX) newX = maxX;
                 if (newY < minY) newY = minY;
                 if (newY > maxY) newY = maxY;
-
+            
                 switch (draggingPoint) {
                     case 0: // Esquina superior izquierda
                         rectPoints[draggingPoint].x = newX;
@@ -187,44 +199,58 @@
                     case 2: // Esquina inferior derecha
                         rectPoints[draggingPoint].x = newX;
                         rectPoints[draggingPoint].y = newY;
-                        rectPoints[3].y = newY; // Esquina inferior izquierda
                         rectPoints[1].x = newX; // Esquina superior derecha
+                        rectPoints[3].y = newY; // Esquina inferior izquierda
                         break;
                     case 3: // Esquina inferior izquierda
                         rectPoints[draggingPoint].x = newX;
                         rectPoints[draggingPoint].y = newY;
-                        rectPoints[2].y = newY; // Esquina inferior derecha
                         rectPoints[0].x = newX; // Esquina superior izquierda
+                        rectPoints[2].y = newY; // Esquina inferior derecha
                         break;
                 }
-
-                // Volver a dibujar el rectángulo con las nuevas coordenadas
                 updateHiddenInputs();
                 drawInteractiveRectangle();
-
-                // Mostrar las coordenadas del punto gris que se está moviendo
-                const coordinatesDiv = document.getElementById('coordinates');
-                const point = rectPoints[draggingPoint];
-                coordinatesDiv.textContent = `Coordenadas del punto: (${(point.x - imgX) / imgScale}, ${(point.y - imgY) / imgScale})`;
             }
-        });
-
-
-        // Finalizar el arrastre al soltar el mouse
-        canvas.addEventListener('mouseup', function() {
-            draggingPoint = null;
-        });
-
-
-        function updateHiddenInputs() {
-        inputX1.value = (rectPoints[0].x - imgX) / imgScale;
-        inputY1.value = (rectPoints[0].y - imgY) / imgScale;
-        inputX2.value = (rectPoints[2].x - imgX) / imgScale;
-        inputY2.value = (rectPoints[2].y - imgY) / imgScale;
         }
 
-        // Ajustar el tamaño del canvas cuando se cambia el tamaño de la ventana
-        window.addEventListener('resize', adjustCanvasSize);
+        // Función para finalizar el arrastre
+        function endDrag() {
+            draggingPoint = null;
+        }
+
+        // Función para obtener la posición del ratón o toque
+        function getMouseOrTouchPos(event) {
+            const rect = canvas.getBoundingClientRect();
+            const x = (event.touches ? event.touches[0].clientX : event.clientX) - rect.left;
+            const y = (event.touches ? event.touches[0].clientY : event.clientY) - rect.top;
+            return { x, y };
+        }
+
+        function updateHiddenInputs() {
+            inputX1.value = (rectPoints[0].x - imgX) / imgScale;
+            inputY1.value = (rectPoints[0].y - imgY) / imgScale;
+            inputX2.value = (rectPoints[2].x - imgX) / imgScale;
+            inputY2.value = (rectPoints[2].y - imgY) / imgScale;
+        }
+
+
+        // Prevención de reajuste del tamaño del canva para móvil
+        // El desplazamiento por la pantalla produce un resize 
+        let lastWidth = window.innerWidth;
+        let lastHeight = window.innerHeight;
+
+        window.addEventListener('resize', function () {
+            const currentWidth = window.innerWidth;
+            const currentHeight = window.innerHeight;
+        
+            // Solo ejecutar adjustCanvasSize si el tamaño de la ventana ha cambiado
+            if (currentWidth !== lastWidth || currentHeight !== lastHeight) {
+                adjustCanvasSize();
+                lastWidth = currentWidth;
+                lastHeight = currentHeight;
+            }
+        });
 
         
         
