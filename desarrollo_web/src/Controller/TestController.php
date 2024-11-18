@@ -14,28 +14,33 @@ use App\Entity\Test;
 
 class TestController extends AbstractController
 {
+
     #[Route('/test_list', name: 'app_test_list')]
     public function test_list(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $usuario = $this->getUser()->getId();  // Obtén el ID del usuario actual
         // Obtén el término de búsqueda desde la consulta de la URL
         $searchTerm = $request->query->get('search', '');
-
+    
         // Creamos la consulta base
         $queryBuilder = $entityManager->getRepository(Test::class)->createQueryBuilder('t')
-            ->orderBy('t.fechaHora', 'DESC');
-
+            ->orderBy('t.fechaHora', 'DESC')
+            // Filtramos por el usuario relacionado (usamos 'usuario' para la relación)
+            ->andWhere('t.usuario = :usuario')  // Relación con la entidad Usuario
+            ->setParameter('usuario', $usuario);  // Establecemos el valor del parámetro
+    
         // Si hay un término de búsqueda, filtramos por nombre_alt
         if ($searchTerm) {
             $queryBuilder->andWhere('t.nombre_alt LIKE :searchTerm')
-                        ->setParameter('searchTerm', '%' . $searchTerm . '%');
+                         ->setParameter('searchTerm', '%' . $searchTerm . '%');
         }
-
+    
         // Obtenemos la consulta final
         $query = $queryBuilder->getQuery();
-
+    
         // Ejecutamos la consulta para obtener los resultados completos
         $items = $query->getResult();
-
+    
         // Renderizamos la plantilla y pasamos los elementos encontrados
         return $this->render('/front/test/test_list.html.twig', [
             'items' => $items,
@@ -43,18 +48,33 @@ class TestController extends AbstractController
         ]);
     }
 
+
     #[Route('test_show/{id}', name: 'app_test_show')]
     public function test_show(int $id, EntityManagerInterface $entityManager): Response
     {
+        // Obtén el ID del usuario autenticado
+        $usuarioId = $this->getUser()->getId();
+    
+        // Buscar el test por su ID
         $item = $entityManager->getRepository(Test::class)->find($id);
+    
+        // Si no se encuentra el test, lanzamos un error 404
         if (!$item) {
             throw $this->createNotFoundException('Test no encontrado');
         }
-
+    
+        // Verificar si el test le pertenece al usuario autenticado
+        if ($item->getUsuario()->getId() !== $usuarioId) {
+            // Si no es el mismo usuario, redirigir a la página de inicio (app_index)
+            return $this->redirectToRoute('app_test_list');
+        }
+    
+        // Renderizamos la plantilla con el test encontrado
         return $this->render('/front/test/test_show.html.twig', [
             'item' => $item,
         ]);
     }
+    
 
     /**
      * @Route("/test/{id}/edit-name", name="app_test_edit_name", methods={"POST"})
