@@ -16,38 +16,71 @@
 
         const pointRadius = 10;  // Tamaño aumentado de los puntos grises
 
-        // Función para ajustar el tamaño del canvas en píxeles
+        // Variables para las proporciones relativas de los puntos
+        let pointRatios = []; 
+
         function adjustCanvasSize() {
             const canvasStyleWidth = canvas.clientWidth;
             const canvasStyleHeight = canvas.clientHeight;
             canvas.width = canvasStyleWidth;
             canvas.height = canvasStyleHeight;
         
-            // Redibujar la imagen y el rectángulo interactivo
             if (img) {
-                // Recalcular la escala y las posiciones de la imagen
+                // Recalcular escala y posición de la imagen
                 imgScale = Math.min(canvas.width / img.width, canvas.height / img.height);
                 imgX = (canvas.width - img.width * imgScale) / 2;
                 imgY = (canvas.height - img.height * imgScale) / 2;
-        
-                // Actualizar las coordenadas de los puntos del rectángulo
-                const rectX1 = imgX + (img.width * imgScale) * (1 / 3);
-                const rectX2 = imgX + (img.width * imgScale) * (2 / 3);
-                const rectY1 = imgY + (img.height * imgScale) * (1 / 3);
-                const rectY2 = imgY + (img.height * imgScale) * (2 / 3);
-        
-                rectPoints = [
-                    { x: rectX1, y: rectY1 },
-                    { x: rectX2, y: rectY1 },
-                    { x: rectX2, y: rectY2 },
-                    { x: rectX1, y: rectY2 }
-                ];
-        
+            
+                // Si los puntos ya están definidos, recalcular sus posiciones según las proporciones
+                if (pointRatios.length === 4) {
+                    rectPoints = pointRatios.map(({ xRatio, yRatio }) => ({
+                        x: imgX + xRatio * (img.width * imgScale),
+                        y: imgY + yRatio * (img.height * imgScale)
+                    }));
+                } else {
+                    // Inicializar los puntos en proporción 1/3 y 2/3
+                    const rectX1 = imgX + (img.width * imgScale) * (1 / 3);
+                    const rectX2 = imgX + (img.width * imgScale) * (2 / 3);
+                    const rectY1 = imgY + (img.height * imgScale) * (1 / 3);
+                    const rectY2 = imgY + (img.height * imgScale) * (2 / 3);
+                
+                    rectPoints = [
+                        { x: rectX1, y: rectY1 },
+                        { x: rectX2, y: rectY1 },
+                        { x: rectX2, y: rectY2 },
+                        { x: rectX1, y: rectY2 }
+                    ];
+                }
+            
                 // Dibujar el rectángulo interactivo
                 updateHiddenInputs();
                 drawInteractiveRectangle();
             }
         }
+
+        // Guardar las proporciones relativas antes del resize
+        function savePointRatios() {
+            pointRatios = rectPoints.map(point => ({
+                xRatio: (point.x - imgX) / (img.width * imgScale),
+                yRatio: (point.y - imgY) / (img.height * imgScale)
+            }));
+        }
+
+        // Detectar cambios de tamaño en la ventana
+        let lastWidth = window.innerWidth;
+        let lastHeight = window.innerHeight;
+
+        window.addEventListener('resize', function () {
+            const currentWidth = window.innerWidth;
+            const currentHeight = window.innerHeight;
+
+            if (currentWidth !== lastWidth || currentHeight !== lastHeight) {
+                savePointRatios(); // Guardar las proporciones antes de ajustar el tamaño
+                adjustCanvasSize();
+                lastWidth = currentWidth;
+                lastHeight = currentHeight;
+            }
+        });
 
         adjustCanvasSize();
 
@@ -233,24 +266,6 @@
             inputX2.value = (rectPoints[2].x - imgX) / imgScale;
             inputY2.value = (rectPoints[2].y - imgY) / imgScale;
         }
-
-
-        // Prevención de reajuste del tamaño del canva para móvil
-        // El desplazamiento por la pantalla produce un resize 
-        let lastWidth = window.innerWidth;
-        let lastHeight = window.innerHeight;
-
-        window.addEventListener('resize', function () {
-            const currentWidth = window.innerWidth;
-            const currentHeight = window.innerHeight;
-        
-            // Solo ejecutar adjustCanvasSize si el tamaño de la ventana ha cambiado
-            if (currentWidth !== lastWidth || currentHeight !== lastHeight) {
-                adjustCanvasSize();
-                lastWidth = currentWidth;
-                lastHeight = currentHeight;
-            }
-        });
 
         
         
