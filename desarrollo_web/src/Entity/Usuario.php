@@ -154,6 +154,12 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getNombreCompleto(): ?string
+    {
+        return $this->apellido . ', ' . $this->nombre;
+    }
+
+
     /**
      * @return Collection<int, test>
      */
