@@ -9,8 +9,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
-use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\Test;
+
 
 class TestController extends AbstractController
 {
@@ -76,9 +76,7 @@ class TestController extends AbstractController
     }
     
 
-    /**
-     * @Route("/test/{id}/edit-name", name="app_test_edit_name", methods={"POST"})
-     */
+    #[Route('"/test/{id}/edit-name', name: 'app_test_edit_name')]
     public function editName(int $id, Request $request): JsonResponse
     {
         // Buscar el test por su ID
@@ -99,6 +97,25 @@ class TestController extends AbstractController
         $entityManager->flush();
 
         return new JsonResponse(['status' => 'success', 'message' => 'Nombre actualizado correctamente']);
+    }
+
+
+    #[Route('/generar_pdf/{id}', name: 'app_generar_pdf')]
+    public function generarPdf(
+        int $id,
+        EntityManagerInterface $entityManager
+    ): Response {
+        // Buscar el test en la base de datos
+        $test = $entityManager->getRepository(Test::class)->find($id);
+    
+        if (!$test) {
+            throw $this->createNotFoundException('El test no existe.');
+        }
+    
+        $rutaResultado = $test->getRutaImagen();
+        $logoUrl = '/images/logo.png';
+    
+        ...
     }
 
 }
