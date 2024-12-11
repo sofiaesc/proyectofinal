@@ -8,9 +8,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Test;
-
 
 class TestController extends AbstractController
 {
@@ -77,10 +77,10 @@ class TestController extends AbstractController
     
 
     #[Route('"/test/{id}/edit-name', name: 'app_test_edit_name')]
-    public function editName(int $id, Request $request): JsonResponse
+    public function editName(int $id, Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
         // Buscar el test por su ID
-        $test = $this->getDoctrine()->getRepository(Test::class)->find($id);
+        $test = $entityManager()->getRepository(Test::class)->find($id);
 
         if (!$test) {
             return new JsonResponse(['status' => 'error', 'message' => 'Test no encontrado'], 404);
@@ -93,7 +93,6 @@ class TestController extends AbstractController
         $test->setNombreAlt($newName);
 
         // Guardar los cambios
-        $entityManager = $this->getDoctrine()->getManager();
         $entityManager->flush();
 
         return new JsonResponse(['status' => 'success', 'message' => 'Nombre actualizado correctamente']);
@@ -101,21 +100,24 @@ class TestController extends AbstractController
 
 
     #[Route('/generar_pdf/{id}', name: 'app_generar_pdf')]
-    public function generarPdf(
-        int $id,
-        EntityManagerInterface $entityManager
-    ): Response {
-        // Buscar el test en la base de datos
+    public function generarPdf(int $id, EntityManagerInterface $entityManager): Response
+    {
         $test = $entityManager->getRepository(Test::class)->find($id);
-    
+
         if (!$test) {
             throw $this->createNotFoundException('El test no existe.');
         }
-    
-        $rutaResultado = $test->getRutaImagen();
-        $logoUrl = '/images/logo.png';
-    
-        ...
+
+        $usuarioId = $this->getUser()->getId();
+        if ($test->getUsuario()->getId() !== $usuarioId) {
+            $this->addFlash('error', 'No tienes permiso para generar el PDF de este test.');
+            return $this->redirectToRoute('app_test_list');
+        }
+
+        // Lógica para generar el PDF (por implementar)
+        // Puedes usar Dompdf o cualquier otra librería
+
+        return new Response('Funcionalidad de generar PDF en construcción');
     }
 
 }
