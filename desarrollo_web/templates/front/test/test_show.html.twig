@@ -8,19 +8,19 @@
         <h3>Detalles del Test</h3>
 
         <div>
-            <h5>ID: {{ item.id }}</h5>
+            <h5>ID: {{ test.id }}</h5>
             
-            {% if item.nombreAlt is not null %}
-                <p><strong>Nombre:</strong> <span id="nombreAlt">{{ item.nombreAlt }}</span> 
-                    <a href="#" id="editNombreBtn" data-id="{{ item.id }}">
+            {% if test.nombreAlt is not null %}
+                <p><strong>Nombre:</strong> <span id="nombreAlt">{{ test.nombreAlt }}</span> 
+                    <a href="#" id="editNombreBtn" data-id="{{ test.id }}">
                         <span class="material-icons">edit</span>
                     </a>
                 </p>
             {% endif %}
             
-            <p><strong>Fecha de realización:</strong> {{ item.fechaHora|date('d/m/Y H:i') }}</p>
-            {% if item.rutaImagen is not null %}
-                <img src="{{ asset(item.rutaImagen) }}" alt="Foto" class="custom-img">
+            <p><strong>Fecha de realización:</strong> {{ test.fechaHora|date('d/m/Y H:i') }}</p>
+            {% if test.rutaImagen is not null %}
+                <img src="{{ asset(test.rutaImagen) }}" alt="Foto" class="custom-img">
             {% else %}
                 <p>No hay foto disponible.</p>
             {% endif %}
@@ -29,7 +29,7 @@
         <!-- Contenedor de botones -->
         <div class="button-container">
             <a href="{{ path('app_test_list') }}" class="btn-left">Volver</a>
-            <a href="{{ path('app_generar_pdf', { id: item.id }) }}" class="btn-right">
+            <a href="{{ path('app_generar_pdf', { id: test.id }) }}" class="btn-right">
                 <img src="{{ asset('images/pdf.png') }}" alt="Descargar informe" class="pdf-icon"> Descargar informe
             </a>
         </div>
