@@ -123,12 +123,14 @@ class TestController extends AbstractController
             $this->convertirImagenABase64($this->getParameter('kernel.project_dir') . '/public/images/ref_red.png'),
         ];
     
+        $css = file_get_contents($this->getParameter('kernel.project_dir') . '/public/css/pdf.css');
         // Cargar y renderizar el contenido del PDF
         $html = $this->renderView('resultado.html.twig', [
             'test' => $test,
             'logoBase64' => $logoBase64,
             'imagenBase64' => $imagenBase64,
-            'referencias' => $referencias
+            'referencias' => $referencias,
+            'css' => $css,
         ]);
     
         $html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
@@ -144,6 +146,8 @@ class TestController extends AbstractController
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => sprintf('attachment; filename="%s"', $nombreArchivo),
         ]);
+
+        // EN CASO DE FALLA AUMENTAR EL LIMITE DE MEMORIA EN EL php.ini
     }
     
 
