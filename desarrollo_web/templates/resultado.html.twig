@@ -1,46 +1,80 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .header img {
-            max-height: 80px;
-        }
-        .header h1 {
-            font-size: 20px;
-            text-align: right;
-        }
-        .content {
-            margin: 20px;
-        }
-        .image-container img {
-            max-width: 100%;
-            height: auto;
-        }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <img src="{{ logoBase64 }}" alt="logo" class="logo-img">
-        <h1>IAL</h1>
-    </div>
-    <div class="content">
-        <h2>{{ test.nombreAlt }}</h2>
-        <p><strong>Fecha:</strong> {{ test.fechaHora|date('d/m/Y H:i') }}</p>
-        <p><strong>Investigador:</strong> {{ test.usuario.nombreCompleto }}</p>
+    <head>
+        <style>
+            body {
+                font-family: 'Open Sans', sans-serif;
+                margin: 0;
+                padding: 20px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            table td {
+                padding: 5px;
+                vertical-align: middle;
+            }
+            .ref-container {
+                max-width: 40px;
+                height: auto;
+            }
+
+            .logo-img {
+                max-height: 160px; /* Duplicar el tamaño del logo */
+                vertical-align: middle; /* Alineación vertical con el texto */
+            }
+            .h1 {
+                font-size: 40px; /* Duplicar el tamaño del texto */
+                margin: 0;
+                vertical-align: middle; /* Alineación vertical del texto */
+                display: inline-block; /* Comportamiento en línea del texto */
+                line-height: 160px; /* Alineación vertical con el logo */
+            }
+            .row {
+                display: block; /* Asegura que los elementos se alineen uno al lado del otro */
+                margin-bottom: 10px;
+            }
+            .hr {
+                border: none;
+                border-top: 1px solid #ccc;
+                margin: 10px 0;
+            }
+            .image-container img {
+                max-width: 100%;
+                height: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="row">
+            <img src="{{ logoBase64 }}" alt="logo" class="logo-img">
+            <h1 class="h1" style="margin-left: 20px; margin-top: 20px;">ELISATester</h1>
+        </div>
+        <hr>
+        <p><strong>Nombre:</strong> {{ test.nombreAlt }}</p>
+        <p><strong>Usuario:</strong> {{ test.usuario.nombreCompleto }}</p>
+        <p><strong>Fecha y hora de realización:</strong> {{ test.fechaHora|date('d/m/Y H:i') }}</p>
         <div class="image-container">
             <img src="{{ imagenBase64 }}" alt="Resultado">
         </div>
-    </div>
-</body>
+        <br>
+        <table>
+            <tr>
+                <td><img src="{{ referencias[2] }}" class="ref-container"></td>
+                <td><strong>Negativo</strong></td>
+            </tr>
+            <tr>
+                <td><img src="{{ referencias[0] }}" class="ref-container"></td>
+                <td><strong>Positivo</strong></td>
+            </tr>
+            <tr>
+                <td><img src="{{ referencias[1] }}" class="ref-container"></td>
+                <td>
+                    <strong>Posible</strong><br>
+                    <span>(volver a testear o verificar con otro método)</span>
+                </td>
+            </tr>
+        </table>
+    </body>
 </html>

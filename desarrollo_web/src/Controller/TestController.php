@@ -97,7 +97,7 @@ class TestController extends AbstractController
     public function generarPdf(int $id, EntityManagerInterface $entityManager): Response
     {
         $test = $entityManager->getRepository(Test::class)->find($id);
-
+    
         // Verificar si el test existe y le pertenece al usuario autenticado
         if (!$test) {
             throw $this->createNotFoundException('El test no existe.');
@@ -107,35 +107,45 @@ class TestController extends AbstractController
             $this->addFlash('error', 'No tienes permiso para generar el PDF de este test.');
             return $this->redirectToRoute('app_test_list');
         }
-
+    
         // Conseguir las imagenes para el pdf
-        $logoBase64 = $this->convertirImagenABase64('C:/Users/naeli/Documents/proyectofinal/desarrollo_web/public/images/logo.png');
+        $logoBase64 = $this->convertirImagenABase64($this->getParameter('kernel.project_dir') . '/public/images/logo.png');
         $imagenBase64 = $this->convertirImagenABase64($test->getRutaImagen());   
-
+    
         // Configurar Dompdf
         $options = new Options();
-        $options->set('defaultFont', 'Arial');
+        $options->set('defaultFont', 'Open Sans'); // Establecer Lora como la fuente por defecto
         $dompdf = new Dompdf($options);
-        $dompdf->setBasePath($this->getParameter('kernel.project_dir') . '/public');
-
-        // Renderizar contenido para el PDF
+    
+        $referencias = [
+            $this->convertirImagenABase64($this->getParameter('kernel.project_dir') . '/public/images/ref_green.png'),
+            $this->convertirImagenABase64($this->getParameter('kernel.project_dir') . '/public/images/ref_orange.png'),
+            $this->convertirImagenABase64($this->getParameter('kernel.project_dir') . '/public/images/ref_red.png'),
+        ];
+    
+        // Cargar y renderizar el contenido del PDF
         $html = $this->renderView('resultado.html.twig', [
             'test' => $test,
             'logoBase64' => $logoBase64,
             'imagenBase64' => $imagenBase64,
+            'referencias' => $referencias
         ]);
-        
+    
         $html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
     
-        // Enviar el PDF como respuesta
+        // Generar el nombre del archivo basado en test.nombreAlt
+        $nombreArchivo = sprintf('%s.pdf', $test->getNombreAlt());
+    
+        // Enviar el PDF como archivo descargable
         return new Response($dompdf->output(), 200, [
             'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="test.pdf"',
+            'Content-Disposition' => sprintf('attachment; filename="%s"', $nombreArchivo),
         ]);
     }
+    
 
     private function convertirImagenABase64($rutaImagen) {
         $tipo = pathinfo($rutaImagen, PATHINFO_EXTENSION);
