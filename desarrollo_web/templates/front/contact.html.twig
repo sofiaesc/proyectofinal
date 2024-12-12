@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contacto{% endblock %}
+
+{% block body %}
+
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}?v={{ random() }}"> 
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="main-container" style="margin-top: 20vh;">
+        <div class="card" style="border-radius: 10px; padding: 20px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 100%; width: 500px; margin: 0 auto;">
+            <!-- Título centrado -->
+            <h2 style="text-align: center; margin-bottom: 10px;">Desarrolladores</h2>
+            
+            <div class="developer-info" style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #ddd;">
+                <p style="margin: 0;">Sofia Escudero</p>
+                <p style="margin: 0;">ssfescudero@gmail.com</p>
+            </div>
+            
+            <div class="developer-info" style="display: flex; justify-content: space-between; padding: 10px 0;">
+                <p style="margin: 0;">Nael Jesus Pighin</p>
+                <p style="margin: 0;">npighin00@gmail.com</p>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Estilos generales */
+        .card {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .developer-info {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+        }
+
+        /* Responsividad */
+        @media (max-width: 768px) {
+            .card {
+                padding: 15px;
+                width: 90%;
+            }
+
+            .developer-info {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .developer-info p {
+                margin-bottom: 8px;
+            }
+        }
+    </style>
+
+{% endblock %}
