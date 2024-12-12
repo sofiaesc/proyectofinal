@@ -93,6 +93,37 @@ class TestController extends AbstractController
     }
 
 
+    #[Route('/test/{id}/delete', name: 'app_test_delete')]
+    public function delete(int $id, EntityManagerInterface $entityManager): Response
+    {
+        // Obtener el test desde la base de datos
+        $test = $entityManager->getRepository(Test::class)->find($id);
+    
+        // Si no se encuentra el test, lanzamos una excepción 404
+        if (!$test) {
+            throw $this->createNotFoundException('Test no encontrado');
+        }
+    
+        // Verificar si el test le pertenece al usuario autenticado
+        $usuarioId = $this->getUser()->getId();
+        if ($test->getUsuario()->getId() !== $usuarioId) {
+            $this->addFlash('error', 'No tienes permiso para eliminar este test.');
+            return $this->redirectToRoute('app_test_list');
+        }
+    
+        // Eliminar el test
+        $entityManager->remove($test);
+        $entityManager->flush();
+    
+        // Agregar un mensaje flash para confirmar la eliminación
+        $this->addFlash('success', 'Test eliminado correctamente.');
+    
+        // Redirigir al listado de tests
+        return $this->redirectToRoute('app_test_list');
+    }
+
+
+
     #[Route('/generar_pdf/{id}', name: 'app_generar_pdf')]
     public function generarPdf(int $id, EntityManagerInterface $entityManager): Response
     {

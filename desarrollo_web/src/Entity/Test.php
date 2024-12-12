@@ -32,10 +32,11 @@ class Test
     private ?string $ruta_imagen = null;
 
     /**
-     * @var Collection<int, pocillo>
+     * @var Collection<int, Pocillo>
      */
-    #[ORM\OneToMany(targetEntity: Pocillo::class, mappedBy: 'test')]
+    #[ORM\OneToMany(targetEntity: Pocillo::class, mappedBy: 'test', orphanRemoval: true)]
     private Collection $pocillos;
+
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $fechaHora = null;
