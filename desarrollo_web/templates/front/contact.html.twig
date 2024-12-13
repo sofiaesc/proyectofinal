@@ -3,9 +3,6 @@
 {% block title %}Contacto{% endblock %}
 
 {% block body %}
-
-    <link rel="stylesheet" href="{{ asset('css/styles.css') }}?v={{ random() }}"> 
-
     <!-- CONTENEDOR PRINCIPAL -->
     <div class="main-container" style="margin-top: 20vh;">
         <div class="card" style="border-radius: 10px; padding: 20px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 100%; width: 500px; margin: 0 auto;">
@@ -14,12 +11,16 @@
             
             <div class="developer-info" style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #ddd;">
                 <p style="margin: 0;">Sofia Escudero</p>
-                <p style="margin: 0;">ssfescudero@gmail.com</p>
+                <p style="margin: 0;">
+                    <a href="mailto:ssfescudero@gmail.com">ssfescudero@gmail.com</a>
+                </p>
             </div>
             
             <div class="developer-info" style="display: flex; justify-content: space-between; padding: 10px 0;">
                 <p style="margin: 0;">Nael Jesus Pighin</p>
-                <p style="margin: 0;">npighin00@gmail.com</p>
+                <p style="margin: 0;">
+                    <a href="mailto:npighin00@gmail.com">npighin00@gmail.com</a>
+                </p>
             </div>
         </div>
     </div>
@@ -39,7 +40,7 @@
         }
 
         /* Responsividad */
-        @media (max-width: 768px) {
+        @media (max-width: 899px) {
             .card {
                 padding: 15px;
                 width: 90%;

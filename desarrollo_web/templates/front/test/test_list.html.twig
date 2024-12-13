@@ -6,17 +6,13 @@
 <div class="main-container">
     <!-- Contenedor principal que incluye el buscador y los resultados -->
     <div class="contenedor-principal">
-        
         <!-- Formulario de búsqueda -->
         <div class="search-container">
             <form method="get" action="{{ path('app_test_list') }}" class="d-flex align-items-center">
-                <!-- Barra de búsqueda con icono dentro -->
                 <div class="input-group">
-                    <!-- Ícono de lupa -->
                     <span class="input-group-text" id="basic-addon1">
                         <i class="material-icons">search</i>
                     </span>
-                    <!-- Campo de texto -->
                     <input type="text" name="search" class="form-control" placeholder="Buscar por nombre..." value="{{ search }}">
                 </div>
             </form>
@@ -33,9 +29,22 @@
                             <a href="{{ path('app_test_show', {'id': item.id}) }}">
                                 <img src="{{ asset('images/details.png') }}" alt="Ver resultados" class="img-fluid" style="width: 30px; height: 30px;">
                             </a>
-                            <a href="{{ path('app_test_delete', {'id': item.id}) }}">
+                            <!-- Botón que abre el modal de confirmación -->
+                            <a href="#" onclick="openModal({{ item.id }})">
                                 <img src="{{ asset('images/delete.png') }}" alt="Eliminar test" class="img-fluid" style="width: 30px; height: 30px;">
                             </a>
+                        </div>
+                    </div>
+
+                    <!-- Modal de confirmación (ubicado fuera del contenedor principal) -->
+                    <div class="modal" id="modal-{{ item.id }}" style="display: none;">
+                        <div class="modal-content">
+                            <h3>Confirmar eliminación</h3>
+                            <p>¿Está seguro de que desea eliminar el test "{{ item.nombreAlt }}"? Esta acción no se puede deshacer.</p>
+                            <div class="modal-actions">
+                                <button onclick="closeModal({{ item.id }})" class="cancel-button">Cancelar</button>
+                                <a href="{{ path('app_test_delete', {'id': item.id}) }}" class="delete-button" onclick="disableDeleteButton(this)">Eliminar</a>
+                            </div>
                         </div>
                     </div>
                 {% else %}
@@ -45,4 +54,24 @@
         </div>
     </div>
 </div>
+
+<script>
+function openModal(id) {
+    const modal = document.getElementById(`modal-${id}`);
+    if (modal) {
+        modal.style.display = 'flex';
+    }
+}
+
+function closeModal(id) {
+    const modal = document.getElementById(`modal-${id}`);
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+function disableDeleteButton(button) {
+    button.style.pointerEvents = 'none';
+}
+</script>
 {% endblock %}
