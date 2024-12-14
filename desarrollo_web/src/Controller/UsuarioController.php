@@ -69,56 +69,57 @@ class UsuarioController extends AbstractController
     }
 
     #[Route('/edit_profile', name: 'app_edit_profile')]
-    public function edit_profile(Request $request, 
-                                 EntityManagerInterface $entityManager,
-                                 UserPasswordHasherInterface $passwordHasher): Response
-    {
-        // Obtener el usuario autenticado
-        $usuario = $this->getUser();
+public function edit_profile(Request $request, 
+                             EntityManagerInterface $entityManager,
+                             UserPasswordHasherInterface $passwordHasher): Response
+{
+    // Obtener el usuario autenticado
+    $usuario = $this->getUser();
 
-        // Verificar que el usuario esté autenticado
-        if (!$usuario) {
-            return $this->redirectToRoute('app_login');
-        }
+    // Verificar que el usuario esté autenticado
+    if (!$usuario) {
+        return $this->redirectToRoute('app_login');
+    }
 
-        // Crear el formulario para editar el perfil
-        $form = $this->createForm(UsuarioEditType::class, $usuario);
-        $form->handleRequest($request);
+    // Crear el formulario para editar el perfil
+    $form = $this->createForm(UsuarioEditType::class, $usuario);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $actPassword = $form->get('actualPassword')->getData();
-            
-            // Verifica si la contraseña actual es válida
-            if (!$passwordHasher->isPasswordValid($usuario, $actPassword)) {
-                $this->addFlash('error', 'La contraseña actual no es correcta.');
-                return $this->redirectToRoute('app_edit_profile');
-            }
-        
-            $newPassword = $form->get('password')->getData();
+    $mensaje_resultado = "";
+    $color_resultado = null;
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $actPassword = $form->get('actualPassword')->getData();
+        $newPassword = $form->get('password')->getData();
+
+        // Validar la contraseña actual
+        if (!$passwordHasher->isPasswordValid($usuario, $actPassword)) {
+            $color_resultado = "#eb3017";
+            $mensaje_resultado = "La contraseña ingresada es incorrecta. Intente nuevamente.";
+
+            // Recargar los datos originales desde la base de datos
+            $entityManager->refresh($usuario);
+        } else {
+            // Actualizar la contraseña si se introdujo una nueva
             if ($newPassword) {
                 $hashedPassword = $passwordHasher->hashPassword($usuario, $newPassword);
                 $usuario->setPassword($hashedPassword);
             }
-        
-            $usuario->setNombre($form->get('nombre')->getData());
-            $usuario->setApellido($form->get('apellido')->getData());
-            $usuario->setEmail($form->get('email')->getData());
-        
+
             $entityManager->persist($usuario);
             $entityManager->flush();
-        
-            $this->addFlash('success', 'Perfil actualizado con éxito.');
-            return $this->render('front/user/edit_profile.html.twig', [
-                'form' => $form->createView(),
-                'success' => true
-            ]);
-        }
-        
 
-        // Renderizar la página con el formulario
-        return $this->render('front/user/edit_profile.html.twig', [
-            'form' => $form->createView(),
-            'success' => null
-        ]);
+            $color_resultado = "#47db1a";
+            $mensaje_resultado = "¡Éxito! La información se guardó correctamente.";
+        }
     }
+
+    // Renderizar la página con el formulario
+    return $this->render('front/user/edit_profile.html.twig', [
+        'form' => $form->createView(),
+        'mensaje_resultado' => $mensaje_resultado,
+        'color_resultado' => $color_resultado 
+    ]);
+}
+
 }

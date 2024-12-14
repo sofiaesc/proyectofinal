@@ -6,21 +6,20 @@
 
 <style>
 .no-border {
-    border: none !important;  /* Eliminar borde */
-    outline: none !important; /* Eliminar contorno al hacer foco */
+    border: none !important;
+    outline: none !important;
 }
-
-/* Asegurarnos de que los bordes sean eliminados específicamente de los campos de texto */
 .no-border:focus {
-    outline: none !important;  /* Eliminar el contorno cuando el campo tiene foco */
+    outline: none !important;
 }
-
-/* Estilo para los mensajes de error */
 .form-error {
     color: red;
     font-size: 0.9em;
-    margin-top: 5px;  /* Espacio entre el campo y el error */
-    margin-bottom: 10px; /* Espacio entre errores */
+    margin-top: 5px; 
+    margin-bottom: 10px; 
+}
+ul.form-error {
+    list-style-type: none;
 }
 
 </style>
@@ -30,11 +29,7 @@
     <div class="body-container">
         <div class="container">
             <p class="edit-title">Editar perfil</p>
-            {% if success %}
-                <div class="alert alert-danger" style="color:green">
-                    <strong>¡Exito!</strong> Su información personal fue actualizada.
-                </div>
-            {% endif %}
+            <p style="color: {{color_resultado}};"> {{mensaje_resultado}} </p>
             <div class="edit-container">
                 <div class="edit-label">{{ form_label(form.nombre) }}</div>
                 {{ form_widget(form.nombre) }}
@@ -71,7 +66,6 @@
                 {{ form_widget(form.actualPassword) }}
                 <div class="form-error">{{ form_errors(form.actualPassword) }}</div>
             </div>
-
             <button type="submit" class="form-button">Actualizar</button>
         </div>
     </div>
