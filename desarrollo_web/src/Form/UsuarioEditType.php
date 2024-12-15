@@ -67,7 +67,7 @@ class UsuarioEditType extends AbstractType
             ->add('confirmNewPassword', PasswordType::class, [
                 'required' => false,
                 'mapped' => false,
-                'label' => 'Repita la nueva contraseña',
+                'label' => 'Repita la contraseña',
                 'attr' => [
                     'class' => 'no-border',
                     'placeholder' => 'Opcional'
