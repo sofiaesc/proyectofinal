@@ -19,7 +19,7 @@ class TestDescripcionType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Length([
-                        'max' => 5000,
+                        'max' => 500,
                         'maxMessage' => 'La descripción no puede tener más de {{ limit }} caracteres.',
                     ]),
                 ],
