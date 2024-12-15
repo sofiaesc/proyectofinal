@@ -12,6 +12,7 @@
         <p><strong>Nombre:</strong> {{ test.nombreAlt }}</p>
         <p><strong>Usuario:</strong> {{ test.usuario.nombreCompleto }}</p>
         <p><strong>Fecha y hora de realización:</strong> {{ test.fechaHora|date('d/m/Y H:i') }}</p>
+        <p><strong>Descripción:</strong> {{ test.descripcion }}</p>
         <div class="image-container">
             <img src="{{ imagenBase64 }}" alt="Resultado">
         </div>
