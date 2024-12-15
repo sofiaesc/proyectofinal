@@ -11,19 +11,40 @@
             <h5>ID: {{ test.id }}</h5>
             
             {% if test.nombreAlt is not null %}
-                <p><strong>Nombre:</strong> <span id="nombreAlt">{{ test.nombreAlt }}</span> 
-                    <a href="#" id="editNombreBtn" data-id="{{ test.id }}">
+                <div class="nombreAlt-container">
+                    <p>
+                        <strong>Nombre:</strong> 
+                        <span id="nombreAlt">{{ test.nombreAlt }}</span>
+                    </p>
+
+                    <button type="button" class="edit-icon btn-right">
                         <span class="material-icons">edit</span>
-                    </a>
-                </p>
+                    </button>
+                </div>
             {% endif %}
+
             
             <p><strong>Fecha de realización:</strong> {{ test.fechaHora|date('d/m/Y H:i') }}</p>
+            
             {% if test.rutaImagen is not null %}
                 <img src="{{ asset(test.rutaImagen) }}" alt="Foto" class="custom-img">
             {% else %}
                 <p>No hay foto disponible.</p>
             {% endif %}
+
+            <!-- Formulario de descripción -->
+            <div class="descripcion-container">
+                {{ form_start(form) }}
+                <div class="descripcion-input-container">
+                    
+                    {{ form_widget(form.descripcion) }}
+                    
+                    <button type="submit" class="save-icon btn-right">
+                        <span class="material-icons">save</span>
+                    </button>
+                </div>
+                {{ form_end(form) }}
+            </div>
         </div>
 
         <!-- Contenedor de botones -->
@@ -37,4 +58,76 @@
     </div>
 </div>
 
+
+<style>
+
+    .nombreAlt-container {
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+}
+  
+
+   .descripcion-input-container {
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .descripcion-input {
+        flex-grow: 1;
+        width: 100%;
+        height: 60px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        resize: none;
+    }
+
+    .save-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 35px;
+        height: 35px;
+        color: white;
+        border-radius: 50%;
+        text-align: center;
+        margin-top: 10px;
+        text-decoration: none;
+        border: none;
+        font-size: 10px !important ;
+    }
+
+    .edit-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        color: white;
+        border-radius: 50%;
+        text-align: center;
+        margin-top: 2px;
+        text-decoration: none;
+        border: none;
+    }
+
+    .edit-icon .material-icons {
+        font-size: 20px !important; 
+    }
+
+    /* Estilo para asegurar que el contenedor de la descripción no exceda el ancho de la imagen */
+    .descripcion-container {
+        width: 100%;
+        max-width: 100%; /* Asegura que no se exceda el ancho disponible */
+    }
+
+
+</style>
 {% endblock %}

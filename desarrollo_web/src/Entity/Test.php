@@ -23,7 +23,7 @@ class Test
     private ?string $nombre_alt = null;
 
     #[ORM\Column(length: 5000, nullable: true)]
-    private ?string $descripción = null;
+    private ?string $descripcion = null;
 
     #[ORM\ManyToOne(inversedBy: 'tests')]
     private ?Usuario $usuario = null;
@@ -75,14 +75,14 @@ class Test
         return $this;
     }
 
-    public function getDescripción(): ?string
+    public function getDescripcion(): ?string
     {
-        return $this->descripción;
+        return $this->descripcion;
     }
 
-    public function setDescripción(?string $descripción): static
+    public function setDescripcion(?string $descripcion): static
     {
-        $this->descripción = $descripción;
+        $this->descripcion = $descripcion;
 
         return $this;
     }

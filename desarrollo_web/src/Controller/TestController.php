@@ -1,7 +1,5 @@
 <?php
 
-// src/Controller/TestController.php
-
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Test;
+use App\Form\TestDescripcionType;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
@@ -49,27 +48,42 @@ class TestController extends AbstractController
 
 
     #[Route('test_show/{id}', name: 'app_test_show')]
-    public function test_show(int $id, EntityManagerInterface $entityManager): Response
-    {
+public function test_show(int $id, EntityManagerInterface $entityManager, Request $request): Response
+{
+    $usuarioId = $this->getUser()->getId();
+    $test = $entityManager->getRepository(Test::class)->find($id);
 
-        $usuarioId = $this->getUser()->getId();
-        $test = $entityManager->getRepository(Test::class)->find($id);
-    
-        // Si no se encuentra el item se lanza un 404
-        if (!$test) {
-            throw $this->createNotFoundException('Test no encontrado');
-        }
-    
-        // Verificar si el test le pertenece al usuario autenticado
-        if ($test->getUsuario()->getId() !== $usuarioId) {
-            return $this->redirectToRoute('app_test_list');
-        }
-    
-        // Render de la plantilla
-        return $this->render('/front/test/test_show.html.twig', [
-            'test' => $test,
-        ]);
+    // Si no se encuentra el item se lanza un 404
+    if (!$test) {
+        throw $this->createNotFoundException('Test no encontrado');
     }
+
+    // Verificar si el test le pertenece al usuario autenticado
+    if ($test->getUsuario()->getId() !== $usuarioId) {
+        return $this->redirectToRoute('app_test_list');
+    }
+
+    // Crear el formulario TestDescripcionType
+    $form = $this->createForm(TestDescripcionType::class, $test);
+
+    // Manejar el envío del formulario
+    $form->handleRequest($request);
+    if ($form->isSubmitted() && $form->isValid()) {
+        $entityManager->persist($test);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Descripción actualizada con éxito.');
+        return $this->redirectToRoute('app_test_show', ['id' => $id]);
+    }
+
+    // Render de la plantilla con el formulario
+    return $this->render('/front/test/test_show.html.twig', [
+        'test' => $test,
+        'form' => $form->createView(),
+    ]);
+}
+
+
     
 
     #[Route('"/test/{id}/edit-name', name: 'app_test_edit_name')]
@@ -98,26 +112,26 @@ class TestController extends AbstractController
     {
         // Obtener el test desde la base de datos
         $test = $entityManager->getRepository(Test::class)->find($id);
-    
+
         // Si no se encuentra el test, lanzamos una excepción 404
         if (!$test) {
             throw $this->createNotFoundException('Test no encontrado');
         }
-    
+
         // Verificar si el test le pertenece al usuario autenticado
         $usuarioId = $this->getUser()->getId();
         if ($test->getUsuario()->getId() !== $usuarioId) {
             $this->addFlash('error', 'No tienes permiso para eliminar este test.');
             return $this->redirectToRoute('app_test_list');
         }
-    
+
         // Eliminar el test
         $entityManager->remove($test);
         $entityManager->flush();
-    
+
         // Agregar un mensaje flash para confirmar la eliminación
         $this->addFlash('success', 'Test eliminado correctamente.');
-    
+
         // Redirigir al listado de tests
         return $this->redirectToRoute('app_test_list');
     }
