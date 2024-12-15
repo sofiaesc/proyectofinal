@@ -28,56 +28,69 @@ class UsuarioEditType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class, [
-                'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'El correo no puede estar vacío.',
-                    ]),
-                    new Assert\Email([
-                        'message' => 'Por favor, ingrese un correo electrónico válido.',
-                    ]),
-                ],
-                'attr' => ['class' => 'no-border']
-            ])
-            ->add('nombre', TextType::class, [
-                'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'El nombre no puede estar vacío.',
-                    ]),
-                ],
-                'attr' => ['class' => 'no-border']
-            ])
-            ->add('apellido', TextType::class, [
-                'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'El apellido no puede estar vacío.',
-                    ]),
-                ],
-                'attr' => ['class' => 'no-border']
-            ])
-            ->add('password', PasswordType::class, [
-                'required' => false,
-                'mapped' => false,
-                'label' => 'Contraseña nueva',
-                'attr' => [
-                    'class' => 'no-border',
-                    'placeholder' => 'Opcional'
-                ]
-            ])
-            ->add('confirmNewPassword', PasswordType::class, [
-                'required' => false,
-                'mapped' => false,
-                'label' => 'Repita la contraseña',
-                'attr' => [
-                    'class' => 'no-border',
-                    'placeholder' => 'Opcional'
-                ]
-            ])
-            ->add('actualPassword', PasswordType::class, [
-                'mapped' => false,
-                'label' => 'Contraseña actual',
-                'attr' => ['class' => 'no-border']
-            ]);
+        ->add('email', EmailType::class, [
+            'constraints' => [
+                new Assert\NotBlank([
+                    'message' => 'El correo no puede estar vacío.',
+                ]),
+                new Assert\Email([
+                    'message' => 'Por favor, ingrese un correo electrónico válido.',
+                ]),
+            ],
+            'attr' => [
+                'class' => 'no-border',
+                'placeholder' => 'Ingrese su correo electrónico'
+            ]
+        ])
+        ->add('nombre', TextType::class, [
+            'constraints' => [
+                new Assert\NotBlank([
+                    'message' => 'El nombre no puede estar vacío.',
+                ]),
+            ],
+            'attr' => [
+                'class' => 'no-border',
+                'placeholder' => 'Ingrese su nombre'
+            ]
+        ])
+        ->add('apellido', TextType::class, [
+            'constraints' => [
+                new Assert\NotBlank([
+                    'message' => 'El apellido no puede estar vacío.',
+                ]),
+            ],
+            'attr' => [
+                'class' => 'no-border',
+                'placeholder' => 'Ingrese su apellido'
+            ]
+        ])
+        ->add('password', PasswordType::class, [
+            'required' => false,
+            'mapped' => false,
+            'label' => 'Contraseña nueva',
+            'attr' => [
+                'class' => 'no-border',
+                'placeholder' => 'Ingrese su nueva contraseña (opcional)'
+            ]
+        ])
+        ->add('confirmNewPassword', PasswordType::class, [
+            'required' => false,
+            'mapped' => false,
+            'label' => 'Repita la contraseña',
+            'attr' => [
+                'class' => 'no-border',
+                'placeholder' => 'Repita su nueva contraseña (opcional)'
+            ]
+        ])
+        ->add('actualPassword', PasswordType::class, [
+            'mapped' => false,
+            'label' => 'Contraseña actual',
+            'attr' => [
+                'class' => 'no-border',
+                'placeholder' => 'Ingrese su contraseña actual'
+            ]
+        ]);
+
 
         // Verificar si las contraseñas coinciden en el POST_SUBMIT
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
