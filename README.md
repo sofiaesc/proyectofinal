@@ -1,6 +1,6 @@
 # ELISATester
 
-**ELISATester** es el producto final del proyecto de carrera en Ingeniería en Informática, diseñado para ofrecer una solución innovadora en el análisis de resultados de pruebas ELISA (Enzyme-Linked Immunosorbent Assay) para el diagnóstico de la leishmaniasis en perros. Esta aplicación web, que también cuenta con soporte móvil, permite a los usuarios cargar fotografías de las pruebas y obtener resultados más rápidos y precisos en comparación con la interpretación manual, reduciendo la dependencia de métodos tradicionales y herramientas costosas como el espectrofotómetro.
+**ELISATester** es el producto del proyecto final de carrera en Ingeniería en Informática, diseñado para ofrecer una solución innovadora en el análisis de resultados de pruebas ELISA (Enzyme-Linked Immunosorbent Assay) para el diagnóstico de la leishmaniasis en perros. Esta aplicación web con soporte movil permite a los usuarios cargar fotografías de las pruebas y obtener resultados más rápidos y precisos en comparación con la interpretación manual, reduciendo la dependencia de herramientas costosas como el espectrofotómetro.
 
 ![image](https://github.com/user-attachments/assets/1a00bf95-5b4c-4c95-9944-ace5845b1aa7)
 
