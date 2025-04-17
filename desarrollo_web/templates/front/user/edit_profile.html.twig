@@ -18,10 +18,6 @@
     margin-top: 5px; 
     margin-bottom: 10px; 
 }
-ul.form-error {
-    list-style-type: none;
-}
-
 </style>
 
 {{ form_start(form) }}
@@ -29,46 +25,63 @@ ul.form-error {
     <div class="body-container">
         <div class="container">
             <p class="edit-title">Editar perfil</p>
-            <p style="color: {{color_resultado}};"> {{mensaje_resultado}} </p>
+            <p style="color: {{ color_resultado }};">{{ mensaje_resultado }}</p>
+
             <div class="edit-container">
                 <div class="edit-label">{{ form_label(form.nombre) }}</div>
                 {{ form_widget(form.nombre) }}
-                <div class="form-error">{{ form_errors(form.nombre) }}</div>
             </div>
+            {% for error in form.nombre.vars.errors %}
+                <div class="form-error">{{ error.message }}</div>
+            {% endfor %}
+            
 
             <div class="edit-container">
                 <div class="edit-label">{{ form_label(form.apellido) }}</div>
                 {{ form_widget(form.apellido) }}
-                <div class="form-error">{{ form_errors(form.apellido) }}</div>
             </div>
+            {% for error in form.apellido.vars.errors %}
+                <div class="form-error">{{ error.message }}</div>
+            {% endfor %}
 
             <div class="edit-container">
                 <div class="edit-label">{{ form_label(form.email) }}</div>
                 {{ form_widget(form.email) }}
-                <div class="form-error">{{ form_errors(form.email) }}</div>
             </div>
+            {% for error in form.email.vars.errors %}
+                <div class="form-error">{{ error.message }}</div>
+            {% endfor %}
 
             <div class="edit-container">
                 <div class="edit-label">{{ form_label(form.password) }}</div>
                 {{ form_widget(form.password) }}
             </div>
-            <div class="form-error">{{ form_errors(form.password) }}</div>
+            {% for error in form.password.vars.errors %}
+                <div class="form-error">{{ error.message }}</div>
+            {% endfor %}
 
             <div class="edit-container">
                 <div class="edit-label">{{ form_label(form.confirmNewPassword) }}</div>
                 {{ form_widget(form.confirmNewPassword) }}
             </div>
-            <div class="form-error">{{ form_errors(form.confirmNewPassword) }}</div>
+            {% for error in form.confirmNewPassword.vars.errors %}
+                <div class="form-error">{{ error.message }}</div>
+            {% endfor %}
 
             <hr class="divider" style="margin-top: 15px; margin-bottom: 17px">
+
             <div class="edit-container">
                 <div class="edit-label">{{ form_label(form.actualPassword) }}</div>
                 {{ form_widget(form.actualPassword) }}
-                <div class="form-error">{{ form_errors(form.actualPassword) }}</div>
             </div>
+            {% for error in form.actualPassword.vars.errors %}
+                <div class="form-error">{{ error.message }}</div>
+            {% endfor %}
+
             <button type="submit" class="form-button">Actualizar</button>
         </div>
     </div>
 </div>
 {{ form_end(form) }}
+
 {% endblock %}
