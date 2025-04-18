@@ -48,7 +48,10 @@ class TestType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Test::class, // Define tu entidad relacionada.
+            'data_class' => Test::class,
+            'csrf_protection' => true,
+            'csrf_field_name' => '_token',
+            'csrf_token_id'   => 'test_token_id',
         ]);
     }
 }

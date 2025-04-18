@@ -22,7 +22,7 @@
                     <span class="material-icons">lock</span>
                     <input type="password" placeholder="Ingrese su contraseña" name="password" required>
                 </div>
-
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                 <button type="submit" class="form-button">Iniciar sesión</button>
 
                 <div class="form-footer"> 

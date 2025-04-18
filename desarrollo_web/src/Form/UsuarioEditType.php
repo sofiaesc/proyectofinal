@@ -142,6 +142,9 @@ class UsuarioEditType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Usuario::class,
+            'csrf_protection' => true,
+            'csrf_field_name' => '_token',
+            'csrf_token_id'   => 'usuario_edit_token_id',
         ]);
     }
 }
